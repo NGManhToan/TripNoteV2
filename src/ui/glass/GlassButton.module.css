@@ -1,0 +1,5 @@
+.button { display:inline-flex;min-height:44px;align-items:center;justify-content:center;gap:8px;padding:0 16px;border:1px solid var(--ui-stroke);border-radius:999px;color:var(--ui-text);font:inherit;font-size:.84rem;font-weight:750; }
+.button svg { width:17px;height:17px; }
+.primary { border-color:rgba(203,249,239,.3);background:linear-gradient(105deg,#62dcc5,#2699b8 65%,#337fc1);box-shadow:0 10px 30px rgba(38,166,180,.2),inset 0 1px rgba(255,255,255,.25); }
+.quiet { background:rgba(255,255,255,.065); }
+.button:focus-visible { outline:3px solid #8be8e0;outline-offset:3px; }

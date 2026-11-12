@@ -1,0 +1,350 @@
+[
+  {
+    "view": "welcome",
+    "width": 414,
+    "height": 906,
+    "scrollWidth": 414,
+    "bodyHeight": 906,
+    "title": "Trip Note — Plan · Go · Remember",
+    "main": "Trip Note\n\nPlan · Go · Remember",
+    "error": false,
+    "layoutBounds": [],
+    "cards": [
+      {
+        "className": "_card_ic828_1 _topLeft_ic828_5",
+        "rect": {
+          "x": 10.13278579711914,
+          "y": 87.33108520507812,
+          "width": 112.53909301757812,
+          "height": 156.19154357910156
+        },
+        "opacity": "1",
+        "zIndex": "3"
+      },
+      {
+        "className": "_card_ic828_1 _topRight_ic828_6",
+        "rect": {
+          "x": 287.3949279785156,
+          "y": 94.23080444335938,
+          "width": 112.53909301757812,
+          "height": 156.19155883789062
+        },
+        "opacity": "1",
+        "zIndex": "3"
+      },
+      {
+        "className": "_card_ic828_1 _bottomLeft_ic828_7",
+        "rect": {
+          "x": 6.731464385986328,
+          "y": 483.36328125,
+          "width": 112.53909301757812,
+          "height": 156.1915283203125
+        },
+        "opacity": "1",
+        "zIndex": "3"
+      },
+      {
+        "className": "_card_ic828_1 _bottomRight_ic828_8",
+        "rect": {
+          "x": 295.2608337402344,
+          "y": 472.28375244140625,
+          "width": 112.53909301757812,
+          "height": 156.19158935546875
+        },
+        "opacity": "1",
+        "zIndex": "3"
+      }
+    ]
+  },
+  {
+    "view": "welcome",
+    "width": 390,
+    "height": 844,
+    "scrollWidth": 390,
+    "bodyHeight": 844,
+    "title": "Trip Note — Plan · Go · Remember",
+    "main": "Trip Note\n\nPlan · Go · Remember",
+    "error": false,
+    "layoutBounds": []
+  },
+  {
+    "view": "welcome",
+    "width": 414,
+    "height": 896,
+    "scrollWidth": 414,
+    "bodyHeight": 896,
+    "title": "Trip Note — Plan · Go · Remember",
+    "main": "Trip Note\n\nPlan · Go · Remember",
+    "error": false,
+    "layoutBounds": []
+  },
+  {
+    "view": "welcome-transition",
+    "path": "/home",
+    "dashboardVisible": true
+  },
+  {
+    "view": "dashboard-discover",
+    "width": 414,
+    "height": 906,
+    "scrollWidth": 414,
+    "bodyHeight": 906,
+    "title": "Trip Note — Plan · Go · Remember",
+    "main": "11:41\nTrip Note\nChào mừng bạn!\n\nHôm nay bạn muốn đi đâu?\n\nBãi biển\nNúi non\nĐô thị\nCổ kính\nĐiểm đến dành cho bạn\nVịnh Hạ Long\nVịnh biển với những đảo đá vôi và cảnh quan được UNESCO",
+    "error": false,
+    "layoutBounds": [
+      {
+        "className": "_search_cal2h_34",
+        "left": 52,
+        "right": 362,
+        "width": 310,
+        "scrollWidth": 308,
+        "clientWidth": 308,
+        "overflow": false
+      },
+      {
+        "className": "_categoryRail_cal2h_9",
+        "left": 52,
+        "right": 362,
+        "width": 310,
+        "scrollWidth": 310,
+        "clientWidth": 310,
+        "overflow": false
+      },
+      {
+        "className": "_category_cal2h_9",
+        "left": 52,
+        "right": 124,
+        "width": 72,
+        "scrollWidth": 70,
+        "clientWidth": 70,
+        "overflow": false
+      },
+      {
+        "className": "_category_cal2h_9",
+        "left": 131,
+        "right": 204,
+        "width": 72,
+        "scrollWidth": 70,
+        "clientWidth": 70,
+        "overflow": false
+      },
+      {
+        "className": "_category_cal2h_9",
+        "left": 211,
+        "right": 283,
+        "width": 72,
+        "scrollWidth": 70,
+        "clientWidth": 70,
+        "overflow": false
+      },
+      {
+        "className": "_category_cal2h_9",
+        "left": 290,
+        "right": 362,
+        "width": 72,
+        "scrollWidth": 70,
+        "clientWidth": 70,
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "view": "trip-list",
+    "width": 414,
+    "height": 906,
+    "scrollWidth": 414,
+    "bodyHeight": 906,
+    "hasTrips": true
+  },
+  {
+    "view": "trip-detail",
+    "width": 360,
+    "height": 640,
+    "scrollWidth": 360,
+    "bodyHeight": 674,
+    "title": "Trip Note — Plan · Go · Remember",
+    "main": "Đà Lạt\n\n10/12/2026 – 12/12/2026\n·\n3 ngày\n\n0%\n3.410.000 đ\nCòn lại trong ngân sách\n3.410.000 đ\nĐã chi\n0 đ\nNgày 2 · Sáu, 11/12\nThứ Sáu, 11/12\n• Dự kiến: 550.000 đ\nSăn mây Đồi Chè Cầu ",
+    "error": false,
+    "layoutBounds": [
+      {
+        "className": "_bottomNav_zxe5r_31",
+        "left": 0,
+        "right": 360,
+        "width": 360,
+        "scrollWidth": 360,
+        "clientWidth": 360,
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "view": "trip-detail",
+    "width": 375,
+    "height": 812,
+    "scrollWidth": 375,
+    "bodyHeight": 812,
+    "title": "Trip Note — Plan · Go · Remember",
+    "main": "Đà Lạt\n\n10/12/2026 – 12/12/2026\n·\n3 ngày\n\n0%\n3.410.000 đ\nCòn lại trong ngân sách\n3.410.000 đ\nĐã chi\n0 đ\nNgày 2 · Sáu, 11/12\nThứ Sáu, 11/12\n• Dự kiến: 550.000 đ\nSăn mây Đồi Chè Cầu ",
+    "error": false,
+    "layoutBounds": [
+      {
+        "className": "_bottomNav_zxe5r_31",
+        "left": 0,
+        "right": 375,
+        "width": 375,
+        "scrollWidth": 375,
+        "clientWidth": 375,
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "view": "trip-detail",
+    "width": 390,
+    "height": 844,
+    "scrollWidth": 390,
+    "bodyHeight": 844,
+    "title": "Trip Note — Plan · Go · Remember",
+    "main": "Đà Lạt\n\n10/12/2026 – 12/12/2026\n·\n3 ngày\n\n0%\n3.410.000 đ\nCòn lại trong ngân sách\n3.410.000 đ\nĐã chi\n0 đ\nNgày 2 · Sáu, 11/12\nThứ Sáu, 11/12\n• Dự kiến: 550.000 đ\nSăn mây Đồi Chè Cầu ",
+    "error": false,
+    "layoutBounds": [
+      {
+        "className": "_bottomNav_zxe5r_31",
+        "left": 0,
+        "right": 390,
+        "width": 390,
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "view": "trip-detail",
+    "width": 414,
+    "height": 896,
+    "scrollWidth": 414,
+    "bodyHeight": 896,
+    "title": "Trip Note — Plan · Go · Remember",
+    "main": "Đà Lạt\n\n10/12/2026 – 12/12/2026\n·\n3 ngày\n\n0%\n3.410.000 đ\nCòn lại trong ngân sách\n3.410.000 đ\nĐã chi\n0 đ\nNgày 2 · Sáu, 11/12\nThứ Sáu, 11/12\n• Dự kiến: 550.000 đ\nSăn mây Đồi Chè Cầu ",
+    "error": false,
+    "layoutBounds": [
+      {
+        "className": "_bottomNav_zxe5r_31",
+        "left": 0,
+        "right": 414,
+        "width": 414,
+        "scrollWidth": 414,
+        "clientWidth": 414,
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "view": "trip-detail",
+    "width": 414,
+    "height": 906,
+    "scrollWidth": 414,
+    "bodyHeight": 906,
+    "title": "Trip Note — Plan · Go · Remember",
+    "main": "Đà Lạt\n\n10/12/2026 – 12/12/2026\n·\n3 ngày\n\n0%\n3.410.000 đ\nCòn lại trong ngân sách\n3.410.000 đ\nĐã chi\n0 đ\nNgày 2 · Sáu, 11/12\nThứ Sáu, 11/12\n• Dự kiến: 550.000 đ\nSăn mây Đồi Chè Cầu ",
+    "error": false,
+    "layoutBounds": [
+      {
+        "className": "_bottomNav_zxe5r_31",
+        "left": 0,
+        "right": 414,
+        "width": 414,
+        "scrollWidth": 414,
+        "clientWidth": 414,
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "view": "trip-detail",
+    "width": 430,
+    "height": 932,
+    "scrollWidth": 430,
+    "bodyHeight": 932,
+    "title": "Trip Note — Plan · Go · Remember",
+    "main": "Đà Lạt\n\n10/12/2026 – 12/12/2026\n·\n3 ngày\n\n0%\n3.410.000 đ\nCòn lại trong ngân sách\n3.410.000 đ\nĐã chi\n0 đ\nNgày 2 · Sáu, 11/12\nThứ Sáu, 11/12\n• Dự kiến: 550.000 đ\nSăn mây Đồi Chè Cầu ",
+    "error": false,
+    "layoutBounds": [
+      {
+        "className": "_bottomNav_zxe5r_31",
+        "left": 0,
+        "right": 430,
+        "width": 430,
+        "scrollWidth": 430,
+        "clientWidth": 430,
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "view": "trip-detail",
+    "width": 768,
+    "height": 1024,
+    "scrollWidth": 768,
+    "bodyHeight": 1024,
+    "title": "Trip Note — Plan · Go · Remember",
+    "main": "",
+    "error": false,
+    "layoutBounds": []
+  },
+  {
+    "view": "trip-detail",
+    "width": 1280,
+    "height": 800,
+    "scrollWidth": 1265,
+    "bodyHeight": 809,
+    "title": "Trip Note — Plan · Go · Remember",
+    "main": "Đà Lạt\n\n10/12/2026 – 12/12/2026\n·\n3 ngày\n\n0%\n3.410.000 đ\nCòn lại trong ngân sách\n3.410.000 đ\nĐã chi\n0 đ\nNgày 2 · Sáu, 11/12\nThứ Sáu, 11/12\n• Dự kiến: 550.000 đ\nSăn mây Đồi Chè Cầu ",
+    "error": false,
+    "layoutBounds": [
+      {
+        "className": "_bottomNav_zxe5r_31",
+        "left": 843,
+        "right": 859,
+        "width": 16,
+        "scrollWidth": 146,
+        "clientWidth": 16,
+        "overflow": true
+      }
+    ]
+  },
+  {
+    "view": "trip-detail",
+    "width": 1440,
+    "height": 900,
+    "scrollWidth": 1440,
+    "bodyHeight": 900,
+    "title": "Trip Note — Plan · Go · Remember",
+    "main": "Đà Lạt\n\n10/12/2026 – 12/12/2026\n·\n3 ngày\n\n0%\n3.410.000 đ\nCòn lại trong ngân sách\n3.410.000 đ\nĐã chi\n0 đ\nNgày 2 · Sáu, 11/12\nThứ Sáu, 11/12\n• Dự kiến: 550.000 đ\nSăn mây Đồi Chè Cầu ",
+    "error": false,
+    "layoutBounds": [
+      {
+        "className": "_bottomNav_zxe5r_31",
+        "left": 505,
+        "right": 935,
+        "width": 430,
+        "scrollWidth": 430,
+        "clientWidth": 430,
+        "overflow": false
+      }
+    ]
+  },
+  {
+    "view": "trip-report",
+    "width": 414,
+    "height": 906,
+    "scrollWidth": 414,
+    "bodyHeight": 906,
+    "title": "Trip Note — Plan · Go · Remember",
+    "main": "BÁO CÁO CHUYẾN ĐI\nĐà Lạt\nNgân sách đã sử dụng\n0%\nĐã chi\n0 đ\nNgân sách\n3.410.000 đ\nTổng dự kiến\n3.410.000 đ\nĐã chi\n0 đ\nCòn lại\n3.410.000 đ\nThời lượng\n3 ngày · 3 hoạt động\nPHÂN BỔ NG",
+    "error": false,
+    "layoutBounds": []
+  }
+]

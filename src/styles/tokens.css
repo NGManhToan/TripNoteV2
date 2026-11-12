@@ -1,0 +1,69 @@
+:root {
+  --color-night: #07121f;
+  --color-night-raised: #0c1d2d;
+  --color-night-soft: #11263a;
+  --color-glass: rgba(13, 31, 49, .72);
+  --color-glass-strong: rgba(11, 25, 41, .9);
+  --color-glass-line: rgba(195, 225, 247, .15);
+  --color-text-primary: #f2f7fc;
+  --color-text-secondary: #a7bacb;
+  --color-cyan: #62d6e7;
+  --color-turquoise: #75e1ce;
+  --color-gold-soft: #f3d5a0;
+  --shadow-spatial: 0 20px 54px rgba(0, 0, 0, .32), inset 0 1px rgba(255,255,255,.08);
+  --glass-light: rgba(255,255,255,.055);
+  --glass-medium: rgba(255,255,255,.09);
+  --glass-strong: rgba(255,255,255,.13);
+  --motion-fast: 160ms;
+  --motion-normal: 260ms;
+  --motion-medium: 420ms;
+  --motion-slow: 700ms;
+  /* Color palette */
+  --color-primary: #635bff;
+  --color-primary-strong: #4941df;
+  --color-accent: #47d7c3;
+  --color-ink: #18213a;
+  --color-muted: #68728a;
+  --color-canvas: #f7f8ff;
+  --color-surface: #ffffff;
+  --color-line: rgba(255, 255, 255, 0.52);
+  --color-focus: #ffb84d;
+
+  /* Typography */
+  --font-body: "Manrope", sans-serif;
+  --font-heading: var(--font-body);
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.375rem;
+  --text-display: clamp(2.65rem, 11vw, 5.25rem);
+
+  /* Spacing */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+
+  /* Shape and depth */
+  --radius-sm: 0.75rem;
+  --radius-md: 1.25rem;
+  --radius-lg: 2rem;
+  --radius-pill: 999px;
+  --shadow-soft: 0 24px 80px rgba(33, 42, 92, 0.16);
+  --shadow-button: 0 12px 28px rgba(70, 64, 220, 0.3);
+  --shadow-glass: inset 0 1px 0 rgba(255, 255, 255, 0.65);
+
+  /* Motion */
+  --ease-standard: cubic-bezier(0.2, 0.75, 0.25, 1);
+  --duration-fast: 180ms;
+  --duration-normal: 320ms;
+
+  /* Shared mobile navigation controls */
+  --mobile-back-size: 36px;
+  --mobile-back-icon-size: 17px;
+}

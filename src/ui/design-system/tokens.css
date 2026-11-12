@@ -1,0 +1,15 @@
+:root {
+  --ui-bg: #050b15;
+  --ui-surface: rgba(12, 25, 42, .76);
+  --ui-surface-raised: rgba(20, 39, 60, .84);
+  --ui-stroke: rgba(187, 224, 243, .14);
+  --ui-text: #f2f7fb;
+  --ui-muted: #9aafbf;
+  --ui-cyan: #72d9df;
+  --ui-teal: #72dfca;
+  --ui-gold: #edc987;
+  --ui-radius-card: 22px;
+  --ui-radius-sheet: 30px;
+  --ui-blur-card: 18px;
+  --ui-shadow-depth: 0 20px 54px rgba(0, 0, 0, .34), inset 0 1px rgba(255,255,255,.06);
+}

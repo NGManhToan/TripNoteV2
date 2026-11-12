@@ -1,0 +1,24 @@
+{
+  "sheetOpened": true,
+  "customType": {
+    "name": "Chụp ảnh",
+    "group": "Tham quan",
+    "icon": "🍜",
+    "color": "#18a899",
+    "id": "custom-996f8a41-9ecb-45e1-a062-ba36acc3b444"
+  },
+  "savedActivity": {
+    "id": "activity-ea9d2138-212b-4820-9aee-076d7f91c42f",
+    "name": "Hoạt động kiểm thử loại mới",
+    "location": "",
+    "time": "",
+    "category": "Chụp ảnh",
+    "categoryGroup": "Tham quan",
+    "customTypeId": "custom-996f8a41-9ecb-45e1-a062-ba36acc3b444",
+    "cost": 2000,
+    "plannedCost": 2000,
+    "actualCost": 1500,
+    "status": "Dự kiến"
+  },
+  "survivesReload": true
+}

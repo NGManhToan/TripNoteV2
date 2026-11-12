@@ -1,0 +1,28 @@
+{
+  "catalog": {
+    "count": 118,
+    "uniqueIds": 118,
+    "uniqueNames": 118,
+    "accentlessDaLatCentral": [
+      "da-lat"
+    ],
+    "accentlessDaLatSouth": [],
+    "provinceSearch": [
+      "ha-giang"
+    ]
+  },
+  "southernFilter": {
+    "dataCount": 0,
+    "ui": {
+      "cards": 0,
+      "empty": true
+    }
+  },
+  "centralFilter": {
+    "dataCount": 1,
+    "ui": {
+      "cards": 2,
+      "hasDaLat": true
+    }
+  }
+}

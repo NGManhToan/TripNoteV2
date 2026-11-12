@@ -1,0 +1,12 @@
+.button { position:absolute;z-index:9;right:21%;bottom:11.8%;left:21%;display:flex;min-height:clamp(54px,12vw,74px);align-items:center;justify-content:center;gap:13px;overflow:hidden;border:1px solid rgba(235,244,248,.78);border-radius:999px;color:#f7fafc;background:linear-gradient(105deg,rgba(105,164,190,.68),rgba(114,137,157,.62) 53%,rgba(198,164,115,.69));box-shadow:0 12px 35px rgba(165,188,202,.14),inset 0 1px rgba(255,255,255,.65),inset 0 -1px rgba(235,241,244,.19);backdrop-filter:blur(18px);font:inherit;font-size:clamp(.94rem,4vw,1.35rem);font-weight:650;letter-spacing:.01em;-webkit-tap-highlight-color:transparent;will-change:transform,box-shadow; }
+.button::before { position:absolute;inset:0;background:linear-gradient(112deg,transparent 30%,rgba(255,255,255,.33) 49%,transparent 63%);transform:translateX(-120%);transition:transform .8s cubic-bezier(.18,.72,.22,1);content:""; }
+.button::before { animation:buttonSheen 9s cubic-bezier(.42,0,.58,1) infinite; }
+.button:hover::before { transform:translateX(120%);animation:none; }
+.button i { display:grid;width:32px;height:32px;place-items:center;border:1px solid rgba(248,251,253,.65);border-radius:50%;font-size:1.05rem;font-style:normal; }
+.button:focus-visible { outline:2px solid #fff;outline-offset:4px; }
+.button:disabled { cursor:progress; }
+.ripple { position:absolute;inset:0;border-radius:inherit;background:radial-gradient(circle at 50% 50%,rgba(255,255,255,.75),rgba(216,231,240,.25) 35%,transparent 68%);pointer-events:none;will-change:transform,opacity; }
+@keyframes buttonSheen { 0%,70% { transform:translateX(-120%); } 88%,100% { transform:translateX(120%); } }
+@media (prefers-reduced-motion:reduce) { .button::before { animation:none; } }
+@media (max-width:370px) { .button { right:17%;left:17%;bottom:10%; } }
+@media (min-width:600px) { .button { right:calc(50% - 188px);left:calc(50% - 188px); } }

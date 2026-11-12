@@ -1,0 +1,31 @@
+.page { --ink:#eff7fb; --muted:#98afbf; display:flex; width:100%; max-width:430px; height:100dvh; min-height:100svh; flex-direction:column; gap:16px; margin-inline:auto; padding:calc(18px + env(safe-area-inset-top)) 18px calc(22px + env(safe-area-inset-bottom)); overflow-y:auto; color:var(--ink); background:radial-gradient(ellipse at 90% 8%,rgba(72,166,190,.18),transparent 34%),linear-gradient(160deg,#07121e,#0b1c2b 58%,#081420); }
+.header { display:flex; align-items:center; gap:13px; }
+.header button { display:grid; width:var(--mobile-back-size); height:var(--mobile-back-size); flex:0 0 var(--mobile-back-size); place-items:center; border:1px solid rgba(220,240,251,.15); border-radius:50%; color:var(--ink); background:rgba(255,255,255,.07); }
+.header button svg,.header>svg { width:var(--mobile-back-icon-size); height:var(--mobile-back-icon-size); }
+.header>svg { margin-left:auto; color:#8ce0d8; }
+.header span,.stop small { color:#84c8d0; font-size:.63rem; font-weight:800; letter-spacing:.1em; }
+.header h1 { margin-top:3px; font-size:1.35rem; letter-spacing:-.035em; }
+.mapPanel { position:relative; display:grid; gap:9px; min-height:220px; align-content:start; padding:16px 13px; overflow:hidden; border:1px solid rgba(209,232,245,.14); border-radius:25px; background:linear-gradient(145deg,rgba(39,87,109,.24),rgba(8,27,43,.7)); box-shadow:inset 0 1px rgba(255,255,255,.08),0 20px 48px rgba(0,0,0,.25); }
+.mapGlow { position:absolute; top:30px; left:26px; width:230px; height:230px; border-radius:50%; background:rgba(46,169,186,.12); filter:blur(50px); pointer-events:none; }
+.mapRoute { position:absolute; top:48px; bottom:52px; left:33px; width:1px; background:linear-gradient(#6fdcd0,#55a4c2 70%,transparent); opacity:.4; }
+.stop { position:relative; display:grid; grid-template-columns:34px minmax(0,1fr) auto; align-items:center; gap:10px; padding:11px 9px; border:1px solid rgba(213,234,244,.11); border-radius:16px; background:rgba(4,17,29,.52); }
+.marker { z-index:1; display:grid; width:30px; height:30px; place-items:center; border:1px solid rgba(132,224,215,.36); border-radius:50%; color:#b5f2e8; background:#123847; font-size:.75rem; font-weight:800; box-shadow:0 0 18px rgba(90,218,208,.15); }
+.stop>div { display:grid; min-width:0; gap:4px; }
+.stop small { font-size:.55rem; letter-spacing:.06em; }
+.stop strong { overflow:hidden; color:#edf6fa; font-size:.85rem; text-overflow:ellipsis; white-space:nowrap; }
+.stop p { display:flex; align-items:center; gap:4px; overflow:hidden; color:#9bb1bf; font-size:.68rem; text-overflow:ellipsis; white-space:nowrap; }
+.stop p svg { width:12px; height:12px; flex:0 0 auto; color:#81cfd0; }
+.placeLink { display:inline-flex;width:max-content;align-items:center;gap:4px;margin-top:2px;color:#78d9d3;font-size:.6rem;font-weight:700;text-decoration:none; }.placeLink svg { width:12px;height:12px; }
+.stop>b { color:#dceaf0; font-size:.68rem; white-space:nowrap; }
+.empty { display:grid; min-height:210px; place-content:center; justify-items:center; gap:9px; color:#a6bfce; text-align:center; }
+.empty svg { width:27px; height:27px; color:#83ddd5; }
+.empty strong { color:#eff7fb; }
+.empty button { min-height:38px;margin-top:3px;padding:0 13px;border:1px solid rgba(126,220,214,.28);border-radius:999px;color:#a9eee5;background:rgba(41,159,159,.12);font:inherit;font-size:.68rem;font-weight:750; }
+.empty p,.note { color:var(--muted); font-size:.78rem; line-height:1.5; }
+.note { margin:0; padding:0 3px; }
+.actions { display:grid; gap:9px; margin-top:auto; }
+.actions a,.actions button { display:flex; min-height:48px; align-items:center; justify-content:center; gap:8px; border:1px solid rgba(205,231,245,.16); border-radius:999px; color:#eff9fb; background:linear-gradient(110deg,rgba(105,218,198,.92),rgba(46,138,176,.92)); font:inherit; font-size:.84rem; font-weight:800; text-decoration:none; }
+.actions a svg { width:16px; height:16px; }
+.actions button { color:#b9d0dd; background:rgba(255,255,255,.065); }
+@media (min-width:600px) { .page { height:min(100dvh,950px); min-height:min(100dvh,950px); margin-block:auto; border:1px solid rgba(221,239,248,.12); border-radius:28px; } }
+@media (prefers-reduced-motion:reduce) { .page { scroll-behavior:auto; } }

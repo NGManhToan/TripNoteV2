@@ -1,0 +1,4 @@
+.orbitPath { position:absolute;z-index:5;top:27%;left:50%;width:75vw;height:44vw;max-width:520px;max-height:305px;border-radius:50%;translate:-50% -50%;pointer-events:none;will-change:transform; }
+.plane { position:absolute;top:-5%;left:50%;width:clamp(90px,27vw,176px);height:auto;filter:drop-shadow(0 3px 12px rgba(223,236,245,.52));transform-origin:55% 50%;will-change:transform,filter; }
+.trail { position:absolute;top:6%;left:44%;width:28%;height:1px;background:linear-gradient(90deg,transparent,rgba(247,230,196,.86));box-shadow:0 0 8px rgba(255,230,181,.86);transform:rotate(-16deg);transform-origin:right center;will-change:opacity,transform; }
+@media (min-width:600px) { .orbitPath { width:430px;height:250px; } }

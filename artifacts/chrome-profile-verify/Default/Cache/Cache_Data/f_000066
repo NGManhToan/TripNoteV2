@@ -1,0 +1,290 @@
+import haLong from "/src/assets/images/dashboard/island-bay.png?import";
+import phuQuoc from "/src/assets/images/dashboard/reference-phu-quoc.png?import";
+import saPa from "/src/assets/images/dashboard/reference-sa-pa.png?import";
+import hoiAn from "/src/assets/images/dashboard/reference-hoi-an.png?import";
+import { officialDestinationRecords } from "/src/features/destinations/officialRecords.ts";
+const portal = "https://vietnam.travel/vi/place-to-go/";
+const officialSources = {
+	"ha-long": `${portal}red-river-delta/ha-long/`,
+	"phu-quoc": `${portal}mekong-delta/phu-quoc/`,
+	"sa-pa": "https://vietnam.travel/vi/place-to-go/northern-midlands-mountains/sapa/",
+	"hoi-an": portal,
+	"da-lat": "https://vietnam.travel/vi/places-to-go/central-vietnam/da-lat",
+	"ha-noi": `${portal}red-river-delta/ha-noi/`,
+	"hue": `${portal}north-central-coast/hue/`,
+	"da-nang": `${portal}south-central-coast-central-highlands/da-nang/`,
+	"ninh-binh": `${portal}red-river-delta/ninh-binh/`,
+	"ha-giang": "https://www.vietnam.travel/vi/places-to-go/northern-vietnam/ha-giang"
+};
+const destination = (item) => ({
+	...item,
+	normalizedName: normalizeVietnamese(item.name),
+	slug: normalizeVietnamese(item.name).replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""),
+	gallery: item.cover ? [item.cover] : [],
+	coordinates: null,
+	sources: [officialSources[item.id] ?? portal],
+	verification: "official-source"
+});
+const provincesByMacroRegion = {
+	"Miền Bắc": [
+		"Bắc Giang",
+		"Bắc Kạn",
+		"Bắc Ninh",
+		"Cao Bằng",
+		"Điện Biên",
+		"Hà Giang",
+		"Hà Nam",
+		"Hà Nội",
+		"Hải Dương",
+		"Hải Phòng",
+		"Hòa Bình",
+		"Hưng Yên",
+		"Lai Châu",
+		"Lạng Sơn",
+		"Lào Cai",
+		"Nam Định",
+		"Ninh Bình",
+		"Phú Thọ",
+		"Quảng Ninh",
+		"Sơn La",
+		"Thái Bình",
+		"Thái Nguyên",
+		"Tuyên Quang",
+		"Vĩnh Phúc",
+		"Yên Bái"
+	],
+	"Miền Trung": [
+		"Bình Định",
+		"Bình Thuận",
+		"Đà Nẵng",
+		"Đắk Lắk",
+		"Đắk Nông",
+		"Gia Lai",
+		"Hà Tĩnh",
+		"Huế",
+		"Khánh Hòa",
+		"Kon Tum",
+		"Lâm Đồng",
+		"Nghệ An",
+		"Ninh Thuận",
+		"Phú Yên",
+		"Quảng Bình",
+		"Quảng Nam",
+		"Quảng Ngãi",
+		"Quảng Trị",
+		"Thanh Hóa"
+	],
+	"Miền Nam": [
+		"An Giang",
+		"Bạc Liêu",
+		"Bến Tre",
+		"Bình Dương",
+		"Bình Phước",
+		"Cà Mau",
+		"Cần Thơ",
+		"Đồng Nai",
+		"Đồng Tháp",
+		"Hậu Giang",
+		"Kiên Giang",
+		"Long An",
+		"Sóc Trăng",
+		"Tây Ninh",
+		"Tiền Giang",
+		"Trà Vinh",
+		"Vĩnh Long",
+		"Thành phố Hồ Chí Minh"
+	]
+};
+const macroRegionFor = (province) => Object.entries(provincesByMacroRegion).find(([, provinces]) => provinces.includes(province))?.[0] ?? "Miền Trung";
+const inferredTypes = (name) => {
+	const normalized = normalizeVietnamese(name);
+	const types = [];
+	if (/nui|deo /.test(normalized)) types.push("Núi");
+	if (/bien|vinh|dao|cat ba|cua viet|ca na/.test(normalized)) types.push("Biển");
+	if (/nui|thac|hang|vuon quoc gia|vuon chim|rung|ho |suoi|dong mo|dong mo/.test(normalized)) types.push("Thiên nhiên");
+	if (/den|chua|dinh|bao tang|di tich|le hoi|thanh dia|phu hien|nha co|nha tho|lang nghe|tuong dai/.test(normalized)) types.push("Văn hóa");
+	if (types.length === 0) types.push("Đô thị");
+	return [...new Set(types)];
+};
+const officialDestinations = officialDestinationRecords.map((record) => {
+	const id = `vnt-${normalizeVietnamese(record.name).replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}`;
+	const macroRegion = macroRegionFor(record.province);
+	return {
+		id,
+		slug: normalizeVietnamese(record.name).replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""),
+		name: record.name,
+		normalizedName: normalizeVietnamese(record.name),
+		province: record.province,
+		macroRegion,
+		region: macroRegion,
+		types: inferredTypes(record.name),
+		description: "Tên địa điểm và địa phương được ghi trong Cơ sở dữ liệu ngành Du lịch Việt Nam.",
+		gallery: [],
+		coordinates: null,
+		sources: [`https://csdl.vietnamtourism.gov.vn/dest?page=${record.page}`],
+		verification: "official-source"
+	};
+});
+export function normalizeVietnamese(value) {
+	return value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").replace(/Đ/g, "D").toLocaleLowerCase("vi-VN").trim();
+}
+const curatedDestinations = [
+	destination({
+		id: "ha-long",
+		name: "Vịnh Hạ Long",
+		province: "Quảng Ninh",
+		macroRegion: "Miền Bắc",
+		region: "Đồng bằng sông Hồng",
+		types: [
+			"Biển",
+			"Thiên nhiên",
+			"Di sản"
+		],
+		description: "Vịnh biển với những đảo đá vôi và cảnh quan được UNESCO ghi danh.",
+		cover: haLong
+	}),
+	destination({
+		id: "phu-quoc",
+		name: "Phú Quốc",
+		province: "An Giang",
+		macroRegion: "Miền Nam",
+		region: "Đồng bằng sông Cửu Long",
+		types: [
+			"Biển",
+			"Đảo",
+			"Nghỉ dưỡng"
+		],
+		description: "Đảo với bãi biển cát trắng và hệ sinh thái được bảo tồn.",
+		cover: phuQuoc
+	}),
+	destination({
+		id: "sa-pa",
+		name: "Sa Pa",
+		province: "Lào Cai",
+		macroRegion: "Miền Bắc",
+		region: "Trung du & Miền núi Bắc Bộ",
+		types: [
+			"Núi",
+			"Thiên nhiên",
+			"Văn hóa"
+		],
+		description: "Thung lũng, ruộng bậc thang và các tuyến đi bộ miền núi.",
+		cover: saPa
+	}),
+	destination({
+		id: "hoi-an",
+		name: "Hội An",
+		province: "Đà Nẵng",
+		macroRegion: "Miền Trung",
+		region: "Nam Trung Bộ & Tây Nguyên",
+		types: [
+			"Di sản",
+			"Văn hóa",
+			"Biển"
+		],
+		description: "Phố cổ ven sông, di sản kiến trúc và bãi biển lân cận.",
+		cover: hoiAn
+	}),
+	destination({
+		id: "da-lat",
+		name: "Đà Lạt",
+		province: "Lâm Đồng",
+		macroRegion: "Miền Trung",
+		region: "Nam Trung Bộ & Tây Nguyên",
+		types: [
+			"Cao nguyên",
+			"Thiên nhiên",
+			"Văn hóa"
+		],
+		description: "Thành phố cao nguyên với hồ, đồi núi và hoạt động ngoài trời."
+	}),
+	destination({
+		id: "ha-noi",
+		name: "Hà Nội",
+		province: "Hà Nội",
+		macroRegion: "Miền Bắc",
+		region: "Đồng bằng sông Hồng",
+		types: [
+			"Đô thị",
+			"Văn hóa",
+			"Ẩm thực"
+		],
+		description: "Thủ đô với khu phố cổ, hồ, di tích lịch sử và ẩm thực."
+	}),
+	destination({
+		id: "hue",
+		name: "Huế",
+		province: "Huế",
+		macroRegion: "Miền Trung",
+		region: "Bắc Trung Bộ",
+		types: [
+			"Di sản",
+			"Văn hóa",
+			"Ẩm thực"
+		],
+		description: "Cố đô với di sản triều Nguyễn và cảnh quan sông Hương."
+	}),
+	destination({
+		id: "da-nang",
+		name: "Đà Nẵng",
+		province: "Đà Nẵng",
+		macroRegion: "Miền Trung",
+		region: "Nam Trung Bộ & Tây Nguyên",
+		types: [
+			"Biển",
+			"Đô thị",
+			"Thiên nhiên"
+		],
+		description: "Thành phố biển, bán đảo Sơn Trà và các cung đường ven biển."
+	}),
+	destination({
+		id: "ninh-binh",
+		name: "Ninh Bình",
+		province: "Ninh Bình",
+		macroRegion: "Miền Bắc",
+		region: "Đồng bằng sông Hồng",
+		types: [
+			"Thiên nhiên",
+			"Di sản",
+			"Sông nước"
+		],
+		description: "Dãy núi đá vôi, sông nước và di sản Hoa Lư."
+	}),
+	destination({
+		id: "ha-giang",
+		name: "Hà Giang",
+		province: "Tuyên Quang",
+		macroRegion: "Miền Bắc",
+		region: "Trung du & Miền núi Bắc Bộ",
+		types: [
+			"Núi",
+			"Thiên nhiên",
+			"Phiêu lưu"
+		],
+		description: "Cao nguyên đá, cung đường miền núi và dòng Nho Quế."
+	})
+];
+export const destinationCatalog = [...curatedDestinations, ...officialDestinations].filter((place, index, entries) => entries.findIndex((item) => item.normalizedName === place.normalizedName) === index);
+export const destinationRegions = [
+	"Miền Bắc",
+	"Miền Trung",
+	"Miền Nam"
+];
+export const destinationTypes = [
+	"Biển",
+	"Núi",
+	"Đô thị",
+	"Văn hóa",
+	"Ẩm thực",
+	"Thiên nhiên",
+	...new Set(destinationCatalog.flatMap((place) => place.types))
+].filter((type, index, all) => all.indexOf(type) === index);
+export function searchDestinations(query, region = "Tất cả", type = "Tất cả") {
+	const term = normalizeVietnamese(query);
+	return destinationCatalog.filter((place) => {
+		const matchesText = !term || normalizeVietnamese(`${place.name} ${place.province} ${place.region} ${place.types.join(" ")} ${place.description}`).includes(term);
+		return matchesText && (region === "Tất cả" || place.macroRegion === region || place.region === region) && (type === "Tất cả" || place.types.includes(type));
+	});
+}
+
+//# sourceMappingURL=data:application/json;base64,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QW9CLEtBQUs7Q0FDdEMsT0FBTyxtQkFBbUIsUUFBUSxVQUFVO0VBQzFDLE1BQU0sY0FBYyxDQUFDLFFBQVEsb0JBQW9CLEdBQUcsTUFBTSxLQUFLLEdBQUcsTUFBTSxTQUFTLEdBQUcsTUFBTSxPQUFPLEdBQUcsTUFBTSxNQUFNLEtBQUssR0FBRyxFQUFFLEdBQUcsTUFBTSxhQUFhLENBQUMsQ0FBQyxTQUFTLElBQUk7RUFDL0osT0FBTyxnQkFBZ0IsV0FBVyxZQUFZLE1BQU0sZ0JBQWdCLFVBQVUsTUFBTSxXQUFXLFlBQVksU0FBUyxZQUFZLE1BQU0sTUFBTSxTQUFTLElBQUk7Q0FDM0osQ0FBQztBQUNIIiwibmFtZXMiOltdLCJzb3VyY2VzIjpbImNhdGFsb2cudHMiXSwidmVyc2lvbiI6Mywic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IGhhTG9uZyBmcm9tIFwiLi4vLi4vYXNzZXRzL2ltYWdlcy9kYXNoYm9hcmQvaXNsYW5kLWJheS5wbmdcIjtcbmltcG9ydCBwaHVRdW9jIGZyb20gXCIuLi8uLi9hc3NldHMvaW1hZ2VzL2Rhc2hib2FyZC9yZWZlcmVuY2UtcGh1LXF1b2MucG5nXCI7XG5pbXBvcnQgc2FQYSBmcm9tIFwiLi4vLi4vYXNzZXRzL2ltYWdlcy9kYXNoYm9hcmQvcmVmZXJlbmNlLXNhLXBhLnBuZ1wiO1xuaW1wb3J0IGhvaUFuIGZyb20gXCIuLi8uLi9hc3NldHMvaW1hZ2VzL2Rhc2hib2FyZC9yZWZlcmVuY2UtaG9pLWFuLnBuZ1wiO1xuaW1wb3J0IHsgb2ZmaWNpYWxEZXN0aW5hdGlvblJlY29yZHMgfSBmcm9tIFwiLi9vZmZpY2lhbFJlY29yZHNcIjtcblxuZXhwb3J0IHR5cGUgRGVzdGluYXRpb24gPSB7XG4gIGlkOiBzdHJpbmc7XG4gIG5hbWU6IHN0cmluZztcbiAgbm9ybWFsaXplZE5hbWU6IHN0cmluZztcbiAgcHJvdmluY2U6IHN0cmluZztcbiAgcmVnaW9uOiBzdHJpbmc7XG4gIG1hY3JvUmVnaW9uOiBcIk1p4buBbiBC4bqvY1wiIHwgXCJNaeG7gW4gVHJ1bmdcIiB8IFwiTWnhu4FuIE5hbVwiO1xuICBzbHVnOiBzdHJpbmc7XG4gIHR5cGVzOiBzdHJpbmdbXTtcbiAgZGVzY3JpcHRpb246IHN0cmluZztcbiAgY292ZXI/OiBzdHJpbmc7XG4gIGdhbGxlcnk6IHN0cmluZ1tdO1xuICBjb29yZGluYXRlczogeyBsYXRpdHVkZTogbnVtYmVyOyBsb25naXR1ZGU6IG51bWJlciB9IHwgbnVsbDtcbiAgc291cmNlczogc3RyaW5nW107XG4gIHZlcmlmaWNhdGlvbjogXCJvZmZpY2lhbC1zb3VyY2VcIiB8IFwidW52ZXJpZmllZFwiO1xufTtcblxuY29uc3QgcG9ydGFsID0gXCJodHRwczovL3ZpZXRuYW0udHJhdmVsL3ZpL3BsYWNlLXRvLWdvL1wiO1xuY29uc3Qgb2ZmaWNpYWxTb3VyY2VzOiBSZWNvcmQ8c3RyaW5nLCBzdHJpbmc+ID0ge1xuICBcImhhLWxvbmdcIjogYCR7cG9ydGFsfXJlZC1yaXZlci1kZWx0YS9oYS1sb25nL2AsXG4gIFwicGh1LXF1b2NcIjogYCR7cG9ydGFsfW1la29uZy1kZWx0YS9waHUtcXVvYy9gLFxuICBcInNhLXBhXCI6IFwiaHR0cHM6Ly92aWV0bmFtLnRyYXZlbC92aS9wbGFjZS10by1nby9ub3J0aGVybi1taWRsYW5kcy1tb3VudGFpbnMvc2FwYS9cIixcbiAgXCJob2ktYW5cIjogcG9ydGFsLFxuICBcImRhLWxhdFwiOiBcImh0dHBzOi8vdmlldG5hbS50cmF2ZWwvdmkvcGxhY2VzLXRvLWdvL2NlbnRyYWwtdmlldG5hbS9kYS1sYXRcIixcbiAgXCJoYS1ub2lcIjogYCR7cG9ydGFsfXJlZC1yaXZlci1kZWx0YS9oYS1ub2kvYCxcbiAgXCJodWVcIjogYCR7cG9ydGFsfW5vcnRoLWNlbnRyYWwtY29hc3QvaHVlL2AsXG4gIFwiZGEtbmFuZ1wiOiBgJHtwb3J0YWx9c291dGgtY2VudHJhbC1jb2FzdC1jZW50cmFsLWhpZ2hsYW5kcy9kYS1uYW5nL2AsXG4gIFwibmluaC1iaW5oXCI6IGAke3BvcnRhbH1yZWQtcml2ZXItZGVsdGEvbmluaC1iaW5oL2AsXG4gIFwiaGEtZ2lhbmdcIjogXCJodHRwczovL3d3dy52aWV0bmFtLnRyYXZlbC92aS9wbGFjZXMtdG8tZ28vbm9ydGhlcm4tdmlldG5hbS9oYS1naWFuZ1wiLFxufTtcbmNvbnN0IGRlc3RpbmF0aW9uID0gKGl0ZW06IE9taXQ8RGVzdGluYXRpb24sIFwic2x1Z1wiIHwgXCJub3JtYWxpemVkTmFtZVwiIHwgXCJnYWxsZXJ5XCIgfCBcImNvb3JkaW5hdGVzXCIgfCBcInNvdXJjZXNcIiB8IFwidmVyaWZpY2F0aW9uXCI+KTogRGVzdGluYXRpb24gPT4gKHtcbiAgLi4uaXRlbSxcbiAgbm9ybWFsaXplZE5hbWU6IG5vcm1hbGl6ZVZpZXRuYW1lc2UoaXRlbS5uYW1lKSxcbiAgc2x1Zzogbm9ybWFsaXplVmlldG5hbWVzZShpdGVtLm5hbWUpLnJlcGxhY2UoL1teYS16MC05XSsvZywgXCItXCIpLnJlcGxhY2UoL14tfC0kL2csIFwiXCIpLFxuICBnYWxsZXJ5OiBpdGVtLmNvdmVyID8gW2l0ZW0uY292ZXJdIDogW10sXG4gIGNvb3JkaW5hdGVzOiBudWxsLFxuICBzb3VyY2VzOiBbb2ZmaWNpYWxTb3VyY2VzW2l0ZW0uaWRdID8/IHBvcnRhbF0sXG4gIHZlcmlmaWNhdGlvbjogXCJvZmZpY2lhbC1zb3VyY2VcIixcbn0pO1xuXG5jb25zdCBwcm92aW5jZXNCeU1hY3JvUmVnaW9uOiBSZWNvcmQ8RGVzdGluYXRpb25bXCJtYWNyb1JlZ2lvblwiXSwgc3RyaW5nW10+ID0ge1xuICBcIk1p4buBbiBC4bqvY1wiOiBbXCJC4bqvYyBHaWFuZ1wiLCBcIkLhuq9jIEvhuqFuXCIsIFwiQuG6r2MgTmluaFwiLCBcIkNhbyBC4bqxbmdcIiwgXCLEkGnhu4duIEJpw6puXCIsIFwiSMOgIEdpYW5nXCIsIFwiSMOgIE5hbVwiLCBcIkjDoCBO4buZaVwiLCBcIkjhuqNpIETGsMahbmdcIiwgXCJI4bqjaSBQaMOybmdcIiwgXCJIw7JhIELDrG5oXCIsIFwiSMawbmcgWcOqblwiLCBcIkxhaSBDaMOidVwiLCBcIkzhuqFuZyBTxqFuXCIsIFwiTMOgbyBDYWlcIiwgXCJOYW0gxJDhu4tuaFwiLCBcIk5pbmggQsOsbmhcIiwgXCJQaMO6IFRo4buNXCIsIFwiUXXhuqNuZyBOaW5oXCIsIFwiU8ahbiBMYVwiLCBcIlRow6FpIELDrG5oXCIsIFwiVGjDoWkgTmd1ecOqblwiLCBcIlR1ecOqbiBRdWFuZ1wiLCBcIlbEqW5oIFBow7pjXCIsIFwiWcOqbiBCw6FpXCJdLFxuICBcIk1p4buBbiBUcnVuZ1wiOiBbXCJCw6xuaCDEkOG7i25oXCIsIFwiQsOsbmggVGh14bqtblwiLCBcIsSQw6AgTuG6tW5nXCIsIFwixJDhuq9rIEzhuq9rXCIsIFwixJDhuq9rIE7DtG5nXCIsIFwiR2lhIExhaVwiLCBcIkjDoCBUxKluaFwiLCBcIkh14bq/XCIsIFwiS2jDoW5oIEjDsmFcIiwgXCJLb24gVHVtXCIsIFwiTMOibSDEkOG7k25nXCIsIFwiTmdo4buHIEFuXCIsIFwiTmluaCBUaHXhuq1uXCIsIFwiUGjDuiBZw6puXCIsIFwiUXXhuqNuZyBCw6xuaFwiLCBcIlF14bqjbmcgTmFtXCIsIFwiUXXhuqNuZyBOZ8OjaVwiLCBcIlF14bqjbmcgVHLhu4tcIiwgXCJUaGFuaCBIw7NhXCJdLFxuICBcIk1p4buBbiBOYW1cIjogW1wiQW4gR2lhbmdcIiwgXCJC4bqhYyBMacOqdVwiLCBcIkLhur9uIFRyZVwiLCBcIkLDrG5oIETGsMahbmdcIiwgXCJCw6xuaCBQaMaw4bubY1wiLCBcIkPDoCBNYXVcIiwgXCJD4bqnbiBUaMahXCIsIFwixJDhu5NuZyBOYWlcIiwgXCLEkOG7k25nIFRow6FwXCIsIFwiSOG6rXUgR2lhbmdcIiwgXCJLacOqbiBHaWFuZ1wiLCBcIkxvbmcgQW5cIiwgXCJTw7NjIFRyxINuZ1wiLCBcIlTDonkgTmluaFwiLCBcIlRp4buBbiBHaWFuZ1wiLCBcIlRyw6AgVmluaFwiLCBcIlbEqW5oIExvbmdcIiwgXCJUaMOgbmggcGjhu5EgSOG7kyBDaMOtIE1pbmhcIl0sXG59O1xuXG5jb25zdCBtYWNyb1JlZ2lvbkZvciA9IChwcm92aW5jZTogc3RyaW5nKTogRGVzdGluYXRpb25bXCJtYWNyb1JlZ2lvblwiXSA9PiBPYmplY3QuZW50cmllcyhwcm92aW5jZXNCeU1hY3JvUmVnaW9uKS5maW5kKChbLCBwcm92aW5jZXNdKSA9PiBwcm92aW5jZXMuaW5jbHVkZXMocHJvdmluY2UpKT8uWzBdIGFzIERlc3RpbmF0aW9uW1wibWFjcm9SZWdpb25cIl0gPz8gXCJNaeG7gW4gVHJ1bmdcIjtcbmNvbnN0IGluZmVycmVkVHlwZXMgPSAobmFtZTogc3RyaW5nKTogc3RyaW5nW10gPT4ge1xuICBjb25zdCBub3JtYWxpemVkID0gbm9ybWFsaXplVmlldG5hbWVzZShuYW1lKTtcbiAgY29uc3QgdHlwZXM6IHN0cmluZ1tdID0gW107XG4gIGlmICgvbnVpfGRlbyAvLnRlc3Qobm9ybWFsaXplZCkpIHR5cGVzLnB1c2goXCJOw7ppXCIpO1xuICBpZiAoL2JpZW58dmluaHxkYW98Y2F0IGJhfGN1YSB2aWV0fGNhIG5hLy50ZXN0KG5vcm1hbGl6ZWQpKSB0eXBlcy5wdXNoKFwiQmnhu4NuXCIpO1xuICBpZiAoL251aXx0aGFjfGhhbmd8dnVvbiBxdW9jIGdpYXx2dW9uIGNoaW18cnVuZ3xobyB8c3VvaXxkb25nIG1vfGRvbmcgbW8vLnRlc3Qobm9ybWFsaXplZCkpIHR5cGVzLnB1c2goXCJUaGnDqm4gbmhpw6puXCIpO1xuICBpZiAoL2RlbnxjaHVhfGRpbmh8YmFvIHRhbmd8ZGkgdGljaHxsZSBob2l8dGhhbmggZGlhfHBodSBoaWVufG5oYSBjb3xuaGEgdGhvfGxhbmcgbmdoZXx0dW9uZyBkYWkvLnRlc3Qobm9ybWFsaXplZCkpIHR5cGVzLnB1c2goXCJWxINuIGjDs2FcIik7XG4gIGlmICh0eXBlcy5sZW5ndGggPT09IDApIHR5cGVzLnB1c2goXCLEkMO0IHRo4buLXCIpO1xuICByZXR1cm4gWy4uLm5ldyBTZXQodHlwZXMpXTtcbn07XG5cbmNvbnN0IG9mZmljaWFsRGVzdGluYXRpb25zOiBEZXN0aW5hdGlvbltdID0gb2ZmaWNpYWxEZXN0aW5hdGlvblJlY29yZHMubWFwKChyZWNvcmQpID0+IHtcbiAgY29uc3QgaWQgPSBgdm50LSR7bm9ybWFsaXplVmlldG5hbWVzZShyZWNvcmQubmFtZSkucmVwbGFjZSgvW15hLXowLTldKy9nLCBcIi1cIikucmVwbGFjZSgvXi18LSQvZywgXCJcIil9YDtcbiAgY29uc3QgbWFjcm9SZWdpb24gPSBtYWNyb1JlZ2lvbkZvcihyZWNvcmQucHJvdmluY2UpO1xuICByZXR1cm4ge1xuICAgIGlkLFxuICAgIHNsdWc6IG5vcm1hbGl6ZVZpZXRuYW1lc2UocmVjb3JkLm5hbWUpLnJlcGxhY2UoL1teYS16MC05XSsvZywgXCItXCIpLnJlcGxhY2UoL14tfC0kL2csIFwiXCIpLFxuICAgIG5hbWU6IHJlY29yZC5uYW1lLFxuICAgIG5vcm1hbGl6ZWROYW1lOiBub3JtYWxpemVWaWV0bmFtZXNlKHJlY29yZC5uYW1lKSxcbiAgICBwcm92aW5jZTogcmVjb3JkLnByb3ZpbmNlLFxuICAgIG1hY3JvUmVnaW9uLFxuICAgIHJlZ2lvbjogbWFjcm9SZWdpb24sXG4gICAgdHlwZXM6IGluZmVycmVkVHlwZXMocmVjb3JkLm5hbWUpLFxuICAgIGRlc2NyaXB0aW9uOiBcIlTDqm4gxJHhu4thIMSRaeG7g20gdsOgIMSR4buLYSBwaMawxqFuZyDEkcaw4bujYyBnaGkgdHJvbmcgQ8ahIHPhu58gZOG7ryBsaeG7h3UgbmfDoG5oIER1IGzhu4tjaCBWaeG7h3QgTmFtLlwiLFxuICAgIGdhbGxlcnk6IFtdLFxuICAgIGNvb3JkaW5hdGVzOiBudWxsLFxuICAgIHNvdXJjZXM6IFtgaHR0cHM6Ly9jc2RsLnZpZXRuYW10b3VyaXNtLmdvdi52bi9kZXN0P3BhZ2U9JHtyZWNvcmQucGFnZX1gXSxcbiAgICB2ZXJpZmljYXRpb246IFwib2ZmaWNpYWwtc291cmNlXCIsXG4gIH07XG59KTtcblxuZXhwb3J0IGZ1bmN0aW9uIG5vcm1hbGl6ZVZpZXRuYW1lc2UodmFsdWU6IHN0cmluZyk6IHN0cmluZyB7XG4gIHJldHVybiB2YWx1ZS5ub3JtYWxpemUoXCJORkRcIikucmVwbGFjZSgvW1xcdTAzMDAtXFx1MDM2Zl0vZywgXCJcIikucmVwbGFjZSgvxJEvZywgXCJkXCIpLnJlcGxhY2UoL8SQL2csIFwiRFwiKS50b0xvY2FsZUxvd2VyQ2FzZShcInZpLVZOXCIpLnRyaW0oKTtcbn1cblxuY29uc3QgY3VyYXRlZERlc3RpbmF0aW9uczogRGVzdGluYXRpb25bXSA9IFtcbiAgZGVzdGluYXRpb24oeyBpZDogXCJoYS1sb25nXCIsIG5hbWU6IFwiVuG7i25oIEjhuqEgTG9uZ1wiLCBwcm92aW5jZTogXCJRdeG6o25nIE5pbmhcIiwgbWFjcm9SZWdpb246IFwiTWnhu4FuIELhuq9jXCIsIHJlZ2lvbjogXCLEkOG7k25nIGLhurFuZyBzw7RuZyBI4buTbmdcIiwgdHlwZXM6IFtcIkJp4buDblwiLCBcIlRoacOqbiBuaGnDqm5cIiwgXCJEaSBz4bqjblwiXSwgZGVzY3JpcHRpb246IFwiVuG7i25oIGJp4buDbiB24bubaSBuaOG7r25nIMSR4bqjbyDEkcOhIHbDtGkgdsOgIGPhuqNuaCBxdWFuIMSRxrDhu6NjIFVORVNDTyBnaGkgZGFuaC5cIiwgY292ZXI6IGhhTG9uZyB9KSxcbiAgZGVzdGluYXRpb24oeyBpZDogXCJwaHUtcXVvY1wiLCBuYW1lOiBcIlBow7ogUXXhu5FjXCIsIHByb3ZpbmNlOiBcIkFuIEdpYW5nXCIsIG1hY3JvUmVnaW9uOiBcIk1p4buBbiBOYW1cIiwgcmVnaW9uOiBcIsSQ4buTbmcgYuG6sW5nIHPDtG5nIEPhu611IExvbmdcIiwgdHlwZXM6IFtcIkJp4buDblwiLCBcIsSQ4bqjb1wiLCBcIk5naOG7iSBkxrDhu6FuZ1wiXSwgZGVzY3JpcHRpb246IFwixJDhuqNvIHbhu5tpIGLDo2kgYmnhu4NuIGPDoXQgdHLhuq9uZyB2w6AgaOG7hyBzaW5oIHRow6FpIMSRxrDhu6NjIGLhuqNvIHThu5NuLlwiLCBjb3ZlcjogcGh1UXVvYyB9KSxcbiAgZGVzdGluYXRpb24oeyBpZDogXCJzYS1wYVwiLCBuYW1lOiBcIlNhIFBhXCIsIHByb3ZpbmNlOiBcIkzDoG8gQ2FpXCIsIG1hY3JvUmVnaW9uOiBcIk1p4buBbiBC4bqvY1wiLCByZWdpb246IFwiVHJ1bmcgZHUgJiBNaeG7gW4gbsO6aSBC4bqvYyBC4buZXCIsIHR5cGVzOiBbXCJOw7ppXCIsIFwiVGhpw6puIG5oacOqblwiLCBcIlbEg24gaMOzYVwiXSwgZGVzY3JpcHRpb246IFwiVGh1bmcgbMWpbmcsIHJ14buZbmcgYuG6rWMgdGhhbmcgdsOgIGPDoWMgdHV54bq/biDEkWkgYuG7mSBtaeG7gW4gbsO6aS5cIiwgY292ZXI6IHNhUGEgfSksXG4gIGRlc3RpbmF0aW9uKHsgaWQ6IFwiaG9pLWFuXCIsIG5hbWU6IFwiSOG7mWkgQW5cIiwgcHJvdmluY2U6IFwixJDDoCBO4bq1bmdcIiwgbWFjcm9SZWdpb246IFwiTWnhu4FuIFRydW5nXCIsIHJlZ2lvbjogXCJOYW0gVHJ1bmcgQuG7mSAmIFTDonkgTmd1ecOqblwiLCB0eXBlczogW1wiRGkgc+G6o25cIiwgXCJWxINuIGjDs2FcIiwgXCJCaeG7g25cIl0sIGRlc2NyaXB0aW9uOiBcIlBo4buRIGPhu5UgdmVuIHPDtG5nLCBkaSBz4bqjbiBraeG6v24gdHLDumMgdsOgIGLDo2kgYmnhu4NuIGzDom4gY+G6rW4uXCIsIGNvdmVyOiBob2lBbiB9KSxcbiAgZGVzdGluYXRpb24oeyBpZDogXCJkYS1sYXRcIiwgbmFtZTogXCLEkMOgIEzhuqF0XCIsIHByb3ZpbmNlOiBcIkzDom0gxJDhu5NuZ1wiLCBtYWNyb1JlZ2lvbjogXCJNaeG7gW4gVHJ1bmdcIiwgcmVnaW9uOiBcIk5hbSBUcnVuZyBC4buZICYgVMOieSBOZ3V5w6puXCIsIHR5cGVzOiBbXCJDYW8gbmd1ecOqblwiLCBcIlRoacOqbiBuaGnDqm5cIiwgXCJWxINuIGjDs2FcIl0sIGRlc2NyaXB0aW9uOiBcIlRow6BuaCBwaOG7kSBjYW8gbmd1ecOqbiB24bubaSBo4buTLCDEkeG7k2kgbsO6aSB2w6AgaG/huqF0IMSR4buZbmcgbmdvw6BpIHRy4budaS5cIiB9KSxcbiAgZGVzdGluYXRpb24oeyBpZDogXCJoYS1ub2lcIiwgbmFtZTogXCJIw6AgTuG7mWlcIiwgcHJvdmluY2U6IFwiSMOgIE7hu5lpXCIsIG1hY3JvUmVnaW9uOiBcIk1p4buBbiBC4bqvY1wiLCByZWdpb246IFwixJDhu5NuZyBi4bqxbmcgc8O0bmcgSOG7k25nXCIsIHR5cGVzOiBbXCLEkMO0IHRo4buLXCIsIFwiVsSDbiBow7NhXCIsIFwi4bqobSB0aOG7sWNcIl0sIGRlc2NyaXB0aW9uOiBcIlRo4bunIMSRw7QgduG7m2kga2h1IHBo4buRIGPhu5UsIGjhu5MsIGRpIHTDrWNoIGzhu4tjaCBz4butIHbDoCDhuqltIHRo4buxYy5cIiB9KSxcbiAgZGVzdGluYXRpb24oeyBpZDogXCJodWVcIiwgbmFtZTogXCJIdeG6v1wiLCBwcm92aW5jZTogXCJIdeG6v1wiLCBtYWNyb1JlZ2lvbjogXCJNaeG7gW4gVHJ1bmdcIiwgcmVnaW9uOiBcIkLhuq9jIFRydW5nIELhu5lcIiwgdHlwZXM6IFtcIkRpIHPhuqNuXCIsIFwiVsSDbiBow7NhXCIsIFwi4bqobSB0aOG7sWNcIl0sIGRlc2NyaXB0aW9uOiBcIkPhu5EgxJHDtCB24bubaSBkaSBz4bqjbiB0cmnhu4F1IE5ndXnhu4VuIHbDoCBj4bqjbmggcXVhbiBzw7RuZyBIxrDGoW5nLlwiIH0pLFxuICBkZXN0aW5hdGlvbih7IGlkOiBcImRhLW5hbmdcIiwgbmFtZTogXCLEkMOgIE7hurVuZ1wiLCBwcm92aW5jZTogXCLEkMOgIE7hurVuZ1wiLCBtYWNyb1JlZ2lvbjogXCJNaeG7gW4gVHJ1bmdcIiwgcmVnaW9uOiBcIk5hbSBUcnVuZyBC4buZICYgVMOieSBOZ3V5w6puXCIsIHR5cGVzOiBbXCJCaeG7g25cIiwgXCLEkMO0IHRo4buLXCIsIFwiVGhpw6puIG5oacOqblwiXSwgZGVzY3JpcHRpb246IFwiVGjDoG5oIHBo4buRIGJp4buDbiwgYsOhbiDEkeG6o28gU8ahbiBUcsOgIHbDoCBjw6FjIGN1bmcgxJHGsOG7nW5nIHZlbiBiaeG7g24uXCIgfSksXG4gIGRlc3RpbmF0aW9uKHsgaWQ6IFwibmluaC1iaW5oXCIsIG5hbWU6IFwiTmluaCBCw6xuaFwiLCBwcm92aW5jZTogXCJOaW5oIELDrG5oXCIsIG1hY3JvUmVnaW9uOiBcIk1p4buBbiBC4bqvY1wiLCByZWdpb246IFwixJDhu5NuZyBi4bqxbmcgc8O0bmcgSOG7k25nXCIsIHR5cGVzOiBbXCJUaGnDqm4gbmhpw6puXCIsIFwiRGkgc+G6o25cIiwgXCJTw7RuZyBuxrDhu5tjXCJdLCBkZXNjcmlwdGlvbjogXCJEw6N5IG7DumkgxJHDoSB2w7RpLCBzw7RuZyBuxrDhu5tjIHbDoCBkaSBz4bqjbiBIb2EgTMawLlwiIH0pLFxuICBkZXN0aW5hdGlvbih7IGlkOiBcImhhLWdpYW5nXCIsIG5hbWU6IFwiSMOgIEdpYW5nXCIsIHByb3ZpbmNlOiBcIlR1ecOqbiBRdWFuZ1wiLCBtYWNyb1JlZ2lvbjogXCJNaeG7gW4gQuG6r2NcIiwgcmVnaW9uOiBcIlRydW5nIGR1ICYgTWnhu4FuIG7DumkgQuG6r2MgQuG7mVwiLCB0eXBlczogW1wiTsO6aVwiLCBcIlRoacOqbiBuaGnDqm5cIiwgXCJQaGnDqnUgbMawdVwiXSwgZGVzY3JpcHRpb246IFwiQ2FvIG5ndXnDqm4gxJHDoSwgY3VuZyDEkcaw4budbmcgbWnhu4FuIG7DumkgdsOgIGTDsm5nIE5obyBRdeG6vy5cIiB9KSxcbl07XG5cbmV4cG9ydCBjb25zdCBkZXN0aW5hdGlvbkNhdGFsb2c6IERlc3RpbmF0aW9uW10gPSBbLi4uY3VyYXRlZERlc3RpbmF0aW9ucywgLi4ub2ZmaWNpYWxEZXN0aW5hdGlvbnNdLmZpbHRlcigocGxhY2UsIGluZGV4LCBlbnRyaWVzKSA9PiBlbnRyaWVzLmZpbmRJbmRleCgoaXRlbSkgPT4gaXRlbS5ub3JtYWxpemVkTmFtZSA9PT0gcGxhY2Uubm9ybWFsaXplZE5hbWUpID09PSBpbmRleCk7XG5cbmV4cG9ydCBjb25zdCBkZXN0aW5hdGlvblJlZ2lvbnMgPSBbXCJNaeG7gW4gQuG6r2NcIiwgXCJNaeG7gW4gVHJ1bmdcIiwgXCJNaeG7gW4gTmFtXCJdO1xuZXhwb3J0IGNvbnN0IGRlc3RpbmF0aW9uVHlwZXMgPSBbXCJCaeG7g25cIiwgXCJOw7ppXCIsIFwixJDDtCB0aOG7i1wiLCBcIlbEg24gaMOzYVwiLCBcIuG6qG0gdGjhu7FjXCIsIFwiVGhpw6puIG5oacOqblwiLCAuLi5uZXcgU2V0KGRlc3RpbmF0aW9uQ2F0YWxvZy5mbGF0TWFwKChwbGFjZSkgPT4gcGxhY2UudHlwZXMpKV0uZmlsdGVyKCh0eXBlLCBpbmRleCwgYWxsKSA9PiBhbGwuaW5kZXhPZih0eXBlKSA9PT0gaW5kZXgpO1xuXG5leHBvcnQgZnVuY3Rpb24gc2VhcmNoRGVzdGluYXRpb25zKHF1ZXJ5OiBzdHJpbmcsIHJlZ2lvbiA9IFwiVOG6pXQgY+G6o1wiLCB0eXBlID0gXCJU4bqldCBj4bqjXCIpOiBEZXN0aW5hdGlvbltdIHtcbiAgY29uc3QgdGVybSA9IG5vcm1hbGl6ZVZpZXRuYW1lc2UocXVlcnkpO1xuICByZXR1cm4gZGVzdGluYXRpb25DYXRhbG9nLmZpbHRlcigocGxhY2UpID0+IHtcbiAgICBjb25zdCBtYXRjaGVzVGV4dCA9ICF0ZXJtIHx8IG5vcm1hbGl6ZVZpZXRuYW1lc2UoYCR7cGxhY2UubmFtZX0gJHtwbGFjZS5wcm92aW5jZX0gJHtwbGFjZS5yZWdpb259ICR7cGxhY2UudHlwZXMuam9pbihcIiBcIil9ICR7cGxhY2UuZGVzY3JpcHRpb259YCkuaW5jbHVkZXModGVybSk7XG4gICAgcmV0dXJuIG1hdGNoZXNUZXh0ICYmIChyZWdpb24gPT09IFwiVOG6pXQgY+G6o1wiIHx8IHBsYWNlLm1hY3JvUmVnaW9uID09PSByZWdpb24gfHwgcGxhY2UucmVnaW9uID09PSByZWdpb24pICYmICh0eXBlID09PSBcIlThuqV0IGPhuqNcIiB8fCBwbGFjZS50eXBlcy5pbmNsdWRlcyh0eXBlKSk7XG4gIH0pO1xufVxuIl19

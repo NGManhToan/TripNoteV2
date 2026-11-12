@@ -1,0 +1,11 @@
+{
+  "video": "D:\\Project\\TripNoteV2\\artifacts\\qa\\welcome-animation-transition-390x844.mp4",
+  "frames": 180,
+  "clickedCTA": true,
+  "finalRoute": "/home",
+  "media": {
+    "duration": "00:00:15.00",
+    "dimensions": "390x844",
+    "fps": "12"
+  }
+}

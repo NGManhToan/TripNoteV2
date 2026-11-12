@@ -1,0 +1,55 @@
+{
+  "daySelection": {
+    "activityCards": 3,
+    "daySections": 3,
+    "allDaysVisible": true,
+    "text": "Đà Lạt\n\n10/12/2026 – 12/12/2026\n·\n3 ngày\n\n0%\n3.410.000 đ\nCòn lại trong ngân sách\n3.410.000 đ\nĐã chi\n0 đ\nTất cả các ngày\nToàn bộ lịch trình\n3 hoạt động\nThứ Năm, 10/12\n• Dự kiến: 0 đ\nNgày 1 chưa có hoạt động. Thêm hoạt động để bắt đầu lên kế hoạch.\nThứ Sáu, 11/12\n• Dự kiến: 550.000 đ\nSăn mây Đồi Chè Cầu Đất\nUống cà phê container\n06:00\n•\nTham quan\n200.000 đ\nDự kiến\nCơm lam gà nướng\nThung lũng ngàn hoa\n12:00\n•\nĂn trưa\n350.000 đ\nĐã lên kế hoạch\nThứ Bảy, 12/12\n• Dự kiến: 420.000 đ\nDạo quanh hồ Xuân Hư"
+  },
+  "customTypeSaved": [],
+  "savedActivity": {
+    "activities": [
+      {
+        "name": "Săn mây Đồi Chè Cầu Đất",
+        "category": "Tham quan"
+      },
+      {
+        "name": "Cơm lam gà nướng",
+        "category": "Ăn trưa"
+      },
+      {
+        "name": "Dạo quanh hồ Xuân Hương",
+        "category": "Tham quan"
+      }
+    ],
+    "pageHasNew": false
+  },
+  "workbookResult": {
+    "sheets": [
+      "Tổng hợp",
+      "DS quán",
+      "DS Mua sắm"
+    ],
+    "activityCount": 3,
+    "totalFormula": "SUM(F2:F23)",
+    "styledHeader": true,
+    "formulaOrValue": "SUM(F2:F23)",
+    "bytes": 1224971,
+    "generated": {
+      "sheets": [
+        "Tổng hợp",
+        "DS quán",
+        "DS Mua sắm"
+      ],
+      "activityCount": 3,
+      "formula": "SUM(F2:F23)",
+      "stylesPresent": true,
+      "fileBytes": 1224971,
+      "importRoundtrip": {
+        "name": "TripNote-roundtrip",
+        "activityCount": 3,
+        "sheets": true,
+        "dayCount": 3
+      }
+    }
+  }
+}

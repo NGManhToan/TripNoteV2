@@ -1,0 +1,1 @@
+.card { border:1px solid var(--ui-stroke);border-radius:var(--ui-radius-card);background:var(--ui-surface);box-shadow:var(--ui-shadow-depth);backdrop-filter:blur(var(--ui-blur-card));-webkit-backdrop-filter:blur(var(--ui-blur-card)); }

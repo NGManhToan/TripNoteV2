@@ -1,0 +1,40 @@
+{
+  "mobile": {
+    "width": 414,
+    "scrollWidth": 414,
+    "legendItems": 3,
+    "total": "470.000 đ",
+    "slices": 3,
+    "chartRect": {
+      "x": 132,
+      "y": 415.2409973144531,
+      "width": 150,
+      "height": 150.00003051757812
+    },
+    "legendRect": {
+      "x": 144.15625,
+      "y": 577.2410278320312,
+      "width": 125.671875,
+      "height": 108
+    }
+  },
+  "tablet": {
+    "width": 768,
+    "scrollWidth": 768,
+    "legendItems": 3,
+    "chartRect": {
+      "x": 208,
+      "y": 421.59674072265625,
+      "width": 150,
+      "height": 150
+    },
+    "legendRect": {
+      "x": 394.15625,
+      "y": 429.09674072265625,
+      "width": 151.671875,
+      "height": 135
+    }
+  },
+  "mobileStacked": true,
+  "tabletSideBySide": true
+}

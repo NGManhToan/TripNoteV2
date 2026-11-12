@@ -1,0 +1,548 @@
+/** Names and administrative locations transcribed from the Vietnam National
+* Tourism Administration destination directory. The directory does not
+* provide verified coordinates or reusable image licenses for these entries.
+*/
+export const officialDestinationRecords = [
+	{
+		name: "Thác Phú Cường",
+		province: "Gia Lai",
+		page: 1
+	},
+	{
+		name: "Thác Lệ Kim",
+		province: "Gia Lai",
+		page: 1
+	},
+	{
+		name: "Thác Chín Tầng",
+		province: "Gia Lai",
+		page: 1
+	},
+	{
+		name: "Thác Bàu Cạn",
+		province: "Gia Lai",
+		page: 1
+	},
+	{
+		name: "Núi Hàm Rồng",
+		province: "Gia Lai",
+		page: 1
+	},
+	{
+		name: "Thánh địa La Vang",
+		province: "Quảng Trị",
+		page: 1
+	},
+	{
+		name: "Thác Tà Puồng",
+		province: "Quảng Trị",
+		page: 1
+	},
+	{
+		name: "Thác Chênh Vênh",
+		province: "Quảng Trị",
+		page: 1
+	},
+	{
+		name: "Mũi Trèo",
+		province: "Quảng Trị",
+		page: 1
+	},
+	{
+		name: "Làng cổ Bích La",
+		province: "Quảng Trị",
+		page: 1
+	},
+	{
+		name: "Hang động Brai",
+		province: "Quảng Trị",
+		page: 1
+	},
+	{
+		name: "Đảo Cồn Cỏ",
+		province: "Quảng Trị",
+		page: 1
+	},
+	{
+		name: "Điểm du lịch cộng đồng Bản Báng",
+		province: "Thanh Hóa",
+		page: 5
+	},
+	{
+		name: "Di tích lịch sử văn hóa Chùa Tậu",
+		province: "Thanh Hóa",
+		page: 5
+	},
+	{
+		name: "Đền thờ các vua thời Lê Trung Hưng",
+		province: "Thanh Hóa",
+		page: 5
+	},
+	{
+		name: "Làng nghề bánh gai Tứ Trụ",
+		province: "Thanh Hóa",
+		page: 5
+	},
+	{
+		name: "Phố Đầm",
+		province: "Thanh Hóa",
+		page: 5
+	},
+	{
+		name: "Di tích Phủ Cẩm",
+		province: "Thanh Hóa",
+		page: 5
+	},
+	{
+		name: "Điện Thừa Hoa và Từ đường Phúc Quang",
+		province: "Thanh Hóa",
+		page: 5
+	},
+	{
+		name: "Thác Mây",
+		province: "Thanh Hóa",
+		page: 5
+	},
+	{
+		name: "Chiến khu Ngọc Trạo",
+		province: "Thanh Hóa",
+		page: 5
+	},
+	{
+		name: "Đền Sòng Sơn",
+		province: "Thanh Hóa",
+		page: 5
+	},
+	{
+		name: "Chùa Khánh Quang",
+		province: "Thanh Hóa",
+		page: 5
+	},
+	{
+		name: "Đền Hàn Sơn",
+		province: "Thanh Hóa",
+		page: 5
+	},
+	{
+		name: "Khu du lịch Cồn Đen",
+		province: "Thái Bình",
+		page: 15
+	},
+	{
+		name: "Lễ hội Đình Sàn",
+		province: "Bắc Giang",
+		page: 15
+	},
+	{
+		name: "Thác Háng Tề Chơ",
+		province: "Lào Cai",
+		page: 15
+	},
+	{
+		name: "Thác Pú Nhu",
+		province: "Lào Cai",
+		page: 15
+	},
+	{
+		name: "Suối Giàng",
+		province: "Lào Cai",
+		page: 15
+	},
+	{
+		name: "Thác Pa Sỹ",
+		province: "Kon Tum",
+		page: 15
+	},
+	{
+		name: "Núi Chư Hreng",
+		province: "Kon Tum",
+		page: 15
+	},
+	{
+		name: "Khu du lịch Đầm Vạc",
+		province: "Vĩnh Phúc",
+		page: 15
+	},
+	{
+		name: "Hồ Đăk Ke",
+		province: "Kon Tum",
+		page: 15
+	},
+	{
+		name: "Cầu treo Kon Klor",
+		province: "Kon Tum",
+		page: 15
+	},
+	{
+		name: "Bảo tàng Kon Tum",
+		province: "Kon Tum",
+		page: 15
+	},
+	{
+		name: "Hồ Xạ Hương",
+		province: "Vĩnh Phúc",
+		page: 15
+	},
+	{
+		name: "Núi Bạch Mã",
+		province: "Huế",
+		page: 22
+	},
+	{
+		name: "Khu du lịch Sinh thái Lái Thiêu",
+		province: "Đà Nẵng",
+		page: 22
+	},
+	{
+		name: "Đình làng Hải Châu",
+		province: "Đà Nẵng",
+		page: 22
+	},
+	{
+		name: "Công viên Châu Á",
+		province: "Đà Nẵng",
+		page: 22
+	},
+	{
+		name: "Chùa Linh Ứng Sơn Trà",
+		province: "Đà Nẵng",
+		page: 22
+	},
+	{
+		name: "Bảo tàng văn hóa Phật giáo",
+		province: "Đà Nẵng",
+		page: 22
+	},
+	{
+		name: "Bảo tàng Mỹ thuật Đà Nẵng",
+		province: "Đà Nẵng",
+		page: 22
+	},
+	{
+		name: "Thác Ồ Ồ",
+		province: "Quảng Nam",
+		page: 22
+	},
+	{
+		name: "Rừng dừa Bảy Mẫu",
+		province: "Quảng Nam",
+		page: 22
+	},
+	{
+		name: "Tượng đài Mẹ Việt Nam anh hùng",
+		province: "Quảng Nam",
+		page: 22
+	},
+	{
+		name: "Nhà lưu niệm Huỳnh Thúc Kháng",
+		province: "Quảng Nam",
+		page: 22
+	},
+	{
+		name: "Biển Rạng",
+		province: "Quảng Nam",
+		page: 22
+	},
+	{
+		name: "Sông Hương",
+		province: "Huế",
+		page: 40
+	},
+	{
+		name: "Động Thiên Đường",
+		province: "Quảng Trị",
+		page: 40
+	},
+	{
+		name: "Hang Sơn Đoòng",
+		province: "Quảng Trị",
+		page: 40
+	},
+	{
+		name: "Hang Én",
+		province: "Quảng Trị",
+		page: 40
+	},
+	{
+		name: "Biển Cổ Thạch",
+		province: "Bình Thuận",
+		page: 40
+	},
+	{
+		name: "Đồi cát Nam Cương",
+		province: "Ninh Thuận",
+		page: 40
+	},
+	{
+		name: "Hang Rái",
+		province: "Ninh Thuận",
+		page: 40
+	},
+	{
+		name: "Vịnh Vĩnh Hy",
+		province: "Ninh Thuận",
+		page: 40
+	},
+	{
+		name: "Vườn Quốc gia Cát Bà",
+		province: "Hải Phòng",
+		page: 40
+	},
+	{
+		name: "Vịnh Lan Hạ",
+		province: "Hải Phòng",
+		page: 40
+	},
+	{
+		name: "Quán Hoa",
+		province: "Hải Phòng",
+		page: 40
+	},
+	{
+		name: "Quần đảo Cát Bà",
+		province: "Hải Phòng",
+		page: 40
+	},
+	{
+		name: "Đèo Hải Vân",
+		province: "Đà Nẵng",
+		page: 45
+	},
+	{
+		name: "Khu bảo tồn thiên nhiên Sơn Trà",
+		province: "Đà Nẵng",
+		page: 45
+	},
+	{
+		name: "Lễ hội Cá Ông",
+		province: "Đà Nẵng",
+		page: 45
+	},
+	{
+		name: "Bảo tàng Hồ Chí Minh Đà Nẵng",
+		province: "Đà Nẵng",
+		page: 45
+	},
+	{
+		name: "Bến Ninh Kiều",
+		province: "Cần Thơ",
+		page: 45
+	},
+	{
+		name: "Thiền viện Trúc Lâm Phương Nam",
+		province: "Cần Thơ",
+		page: 45
+	},
+	{
+		name: "Chùa Nam Nhã",
+		province: "Cần Thơ",
+		page: 45
+	},
+	{
+		name: "Du lịch vườn Cần Thơ",
+		province: "Cần Thơ",
+		page: 45
+	},
+	{
+		name: "Đình Bình Thủy",
+		province: "Cần Thơ",
+		page: 45
+	},
+	{
+		name: "Chợ nổi Cái Răng",
+		province: "Cần Thơ",
+		page: 45
+	},
+	{
+		name: "Nhà cổ Bình Thủy",
+		province: "Cần Thơ",
+		page: 45
+	},
+	{
+		name: "Chùa Ông Cần Thơ",
+		province: "Cần Thơ",
+		page: 45
+	},
+	{
+		name: "Khu phố cổ Hà Nội",
+		province: "Hà Nội",
+		page: 50
+	},
+	{
+		name: "Đình Tây Đằng",
+		province: "Hà Nội",
+		page: 50
+	},
+	{
+		name: "Trung tâm Hội nghị Quốc gia",
+		province: "Hà Nội",
+		page: 50
+	},
+	{
+		name: "Khu du lịch rừng tự nhiên Bằng Tạ",
+		province: "Hà Nội",
+		page: 50
+	},
+	{
+		name: "Công viên Thống Nhất",
+		province: "Hà Nội",
+		page: 50
+	},
+	{
+		name: "Chùa Vạn Niên",
+		province: "Hà Nội",
+		page: 50
+	},
+	{
+		name: "Làng nghề mỹ nghệ Sơn Đồng",
+		province: "Hà Nội",
+		page: 50
+	},
+	{
+		name: "Khu du lịch Đồng Mô",
+		province: "Hà Nội",
+		page: 50
+	},
+	{
+		name: "Quảng trường Ba Đình",
+		province: "Hà Nội",
+		page: 50
+	},
+	{
+		name: "Sân golf Đồng Mô",
+		province: "Hà Nội",
+		page: 50
+	},
+	{
+		name: "Bảo tàng Hồ Chí Minh Hà Nội",
+		province: "Hà Nội",
+		page: 50
+	},
+	{
+		name: "Hậu Lâu",
+		province: "Hà Nội",
+		page: 50
+	},
+	{
+		name: "Khu du lịch sinh thái biển Bãi Lữ",
+		province: "Nghệ An",
+		page: 55
+	},
+	{
+		name: "Thắng cảnh Thạch Động",
+		province: "An Giang",
+		page: 55
+	},
+	{
+		name: "Nhà tù Phú Quốc",
+		province: "An Giang",
+		page: 55
+	},
+	{
+		name: "Thắng cảnh Hà Tiên",
+		province: "An Giang",
+		page: 55
+	},
+	{
+		name: "Vườn Quốc gia Phú Quốc",
+		province: "An Giang",
+		page: 55
+	},
+	{
+		name: "Vườn Quốc gia U Minh Thượng",
+		province: "An Giang",
+		page: 55
+	},
+	{
+		name: "Công viên Vinpearl Safari Phú Quốc",
+		province: "An Giang",
+		page: 55
+	},
+	{
+		name: "Vườn Quốc gia Cúc Phương",
+		province: "Ninh Bình",
+		page: 55
+	},
+	{
+		name: "Khu du lịch sinh thái vườn chim Thung Nham",
+		province: "Ninh Bình",
+		page: 55
+	},
+	{
+		name: "Suối nước nóng Kênh Gà",
+		province: "Ninh Bình",
+		page: 55
+	},
+	{
+		name: "Nhà thờ Phát Diệm",
+		province: "Ninh Bình",
+		page: 55
+	},
+	{
+		name: "Khu bảo tồn đất ngập nước Vân Long",
+		province: "Ninh Bình",
+		page: 55
+	},
+	{
+		name: "Tháp Pôrômê",
+		province: "Ninh Thuận",
+		page: 57
+	},
+	{
+		name: "Làng du lịch Cà Ná",
+		province: "Ninh Thuận",
+		page: 57
+	},
+	{
+		name: "Phố Hiến",
+		province: "Hưng Yên",
+		page: 57
+	},
+	{
+		name: "Đền Chử Đồng Tử",
+		province: "Hưng Yên",
+		page: 57
+	},
+	{
+		name: "Chùa Hiến",
+		province: "Hưng Yên",
+		page: 57
+	},
+	{
+		name: "Đền Đậu An",
+		province: "Hưng Yên",
+		page: 57
+	},
+	{
+		name: "Chùa Nễ Châu",
+		province: "Hưng Yên",
+		page: 57
+	},
+	{
+		name: "Đền Mẫu Hưng Yên",
+		province: "Hưng Yên",
+		page: 57
+	},
+	{
+		name: "Đền Ghênh",
+		province: "Hưng Yên",
+		page: 57
+	},
+	{
+		name: "Suối nước nóng Kim Bôi",
+		province: "Hòa Bình",
+		page: 57
+	},
+	{
+		name: "Hang Mỏ Luông",
+		province: "Hòa Bình",
+		page: 57
+	},
+	{
+		name: "Thủy điện Hòa Bình",
+		province: "Hòa Bình",
+		page: 57
+	}
+];
+
+//# sourceMappingURL=data:application/json;base64,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b3Jkcy50cyJdLCJ2ZXJzaW9uIjozLCJzb3VyY2VzQ29udGVudCI6WyIvKiogTmFtZXMgYW5kIGFkbWluaXN0cmF0aXZlIGxvY2F0aW9ucyB0cmFuc2NyaWJlZCBmcm9tIHRoZSBWaWV0bmFtIE5hdGlvbmFsXG4gKiBUb3VyaXNtIEFkbWluaXN0cmF0aW9uIGRlc3RpbmF0aW9uIGRpcmVjdG9yeS4gVGhlIGRpcmVjdG9yeSBkb2VzIG5vdFxuICogcHJvdmlkZSB2ZXJpZmllZCBjb29yZGluYXRlcyBvciByZXVzYWJsZSBpbWFnZSBsaWNlbnNlcyBmb3IgdGhlc2UgZW50cmllcy5cbiAqL1xuZXhwb3J0IGNvbnN0IG9mZmljaWFsRGVzdGluYXRpb25SZWNvcmRzOiBBcnJheTx7IG5hbWU6IHN0cmluZzsgcHJvdmluY2U6IHN0cmluZzsgcGFnZTogbnVtYmVyIH0+ID0gW1xuICB7IG5hbWU6IFwiVGjDoWMgUGjDuiBDxrDhu51uZ1wiLCBwcm92aW5jZTogXCJHaWEgTGFpXCIsIHBhZ2U6IDEgfSwgeyBuYW1lOiBcIlRow6FjIEzhu4cgS2ltXCIsIHByb3ZpbmNlOiBcIkdpYSBMYWlcIiwgcGFnZTogMSB9LCB7IG5hbWU6IFwiVGjDoWMgQ2jDrW4gVOG6p25nXCIsIHByb3ZpbmNlOiBcIkdpYSBMYWlcIiwgcGFnZTogMSB9LCB7IG5hbWU6IFwiVGjDoWMgQsOgdSBD4bqhblwiLCBwcm92aW5jZTogXCJHaWEgTGFpXCIsIHBhZ2U6IDEgfSwgeyBuYW1lOiBcIk7DumkgSMOgbSBS4buTbmdcIiwgcHJvdmluY2U6IFwiR2lhIExhaVwiLCBwYWdlOiAxIH0sIHsgbmFtZTogXCJUaMOhbmggxJHhu4thIExhIFZhbmdcIiwgcHJvdmluY2U6IFwiUXXhuqNuZyBUcuG7i1wiLCBwYWdlOiAxIH0sIHsgbmFtZTogXCJUaMOhYyBUw6AgUHXhu5NuZ1wiLCBwcm92aW5jZTogXCJRdeG6o25nIFRy4buLXCIsIHBhZ2U6IDEgfSwgeyBuYW1lOiBcIlRow6FjIENow6puaCBWw6puaFwiLCBwcm92aW5jZTogXCJRdeG6o25nIFRy4buLXCIsIHBhZ2U6IDEgfSwgeyBuYW1lOiBcIk3FqWkgVHLDqG9cIiwgcHJvdmluY2U6IFwiUXXhuqNuZyBUcuG7i1wiLCBwYWdlOiAxIH0sIHsgbmFtZTogXCJMw6BuZyBj4buVIELDrWNoIExhXCIsIHByb3ZpbmNlOiBcIlF14bqjbmcgVHLhu4tcIiwgcGFnZTogMSB9LCB7IG5hbWU6IFwiSGFuZyDEkeG7mW5nIEJyYWlcIiwgcHJvdmluY2U6IFwiUXXhuqNuZyBUcuG7i1wiLCBwYWdlOiAxIH0sIHsgbmFtZTogXCLEkOG6o28gQ+G7k24gQ+G7j1wiLCBwcm92aW5jZTogXCJRdeG6o25nIFRy4buLXCIsIHBhZ2U6IDEgfSxcbiAgeyBuYW1lOiBcIsSQaeG7g20gZHUgbOG7i2NoIGPhu5luZyDEkeG7k25nIELhuqNuIELDoW5nXCIsIHByb3ZpbmNlOiBcIlRoYW5oIEjDs2FcIiwgcGFnZTogNSB9LCB7IG5hbWU6IFwiRGkgdMOtY2ggbOG7i2NoIHPhu60gdsSDbiBow7NhIENow7lhIFThuq11XCIsIHByb3ZpbmNlOiBcIlRoYW5oIEjDs2FcIiwgcGFnZTogNSB9LCB7IG5hbWU6IFwixJDhu4FuIHRo4budIGPDoWMgdnVhIHRo4budaSBMw6ogVHJ1bmcgSMawbmdcIiwgcHJvdmluY2U6IFwiVGhhbmggSMOzYVwiLCBwYWdlOiA1IH0sIHsgbmFtZTogXCJMw6BuZyBuZ2jhu4EgYsOhbmggZ2FpIFThu6kgVHLhu6VcIiwgcHJvdmluY2U6IFwiVGhhbmggSMOzYVwiLCBwYWdlOiA1IH0sIHsgbmFtZTogXCJQaOG7kSDEkOG6p21cIiwgcHJvdmluY2U6IFwiVGhhbmggSMOzYVwiLCBwYWdlOiA1IH0sIHsgbmFtZTogXCJEaSB0w61jaCBQaOG7pyBD4bqpbVwiLCBwcm92aW5jZTogXCJUaGFuaCBIw7NhXCIsIHBhZ2U6IDUgfSwgeyBuYW1lOiBcIsSQaeG7h24gVGjhu6thIEhvYSB2w6AgVOG7qyDEkcaw4budbmcgUGjDumMgUXVhbmdcIiwgcHJvdmluY2U6IFwiVGhhbmggSMOzYVwiLCBwYWdlOiA1IH0sIHsgbmFtZTogXCJUaMOhYyBNw6J5XCIsIHByb3ZpbmNlOiBcIlRoYW5oIEjDs2FcIiwgcGFnZTogNSB9LCB7IG5hbWU6IFwiQ2hp4bq/biBraHUgTmfhu41jIFRy4bqhb1wiLCBwcm92aW5jZTogXCJUaGFuaCBIw7NhXCIsIHBhZ2U6IDUgfSwgeyBuYW1lOiBcIsSQ4buBbiBTw7JuZyBTxqFuXCIsIHByb3ZpbmNlOiBcIlRoYW5oIEjDs2FcIiwgcGFnZTogNSB9LCB7IG5hbWU6IFwiQ2jDuWEgS2jDoW5oIFF1YW5nXCIsIHByb3ZpbmNlOiBcIlRoYW5oIEjDs2FcIiwgcGFnZTogNSB9LCB7IG5hbWU6IFwixJDhu4FuIEjDoG4gU8ahblwiLCBwcm92aW5jZTogXCJUaGFuaCBIw7NhXCIsIHBhZ2U6IDUgfSxcbiAgeyBuYW1lOiBcIktodSBkdSBs4buLY2ggQ+G7k24gxJBlblwiLCBwcm92aW5jZTogXCJUaMOhaSBCw6xuaFwiLCBwYWdlOiAxNSB9LCB7IG5hbWU6IFwiTOG7hSBo4buZaSDEkMOsbmggU8OgblwiLCBwcm92aW5jZTogXCJC4bqvYyBHaWFuZ1wiLCBwYWdlOiAxNSB9LCB7IG5hbWU6IFwiVGjDoWMgSMOhbmcgVOG7gSBDaMahXCIsIHByb3ZpbmNlOiBcIkzDoG8gQ2FpXCIsIHBhZ2U6IDE1IH0sIHsgbmFtZTogXCJUaMOhYyBQw7ogTmh1XCIsIHByb3ZpbmNlOiBcIkzDoG8gQ2FpXCIsIHBhZ2U6IDE1IH0sIHsgbmFtZTogXCJTdeG7kWkgR2nDoG5nXCIsIHByb3ZpbmNlOiBcIkzDoG8gQ2FpXCIsIHBhZ2U6IDE1IH0sIHsgbmFtZTogXCJUaMOhYyBQYSBT4bu5XCIsIHByb3ZpbmNlOiBcIktvbiBUdW1cIiwgcGFnZTogMTUgfSwgeyBuYW1lOiBcIk7DumkgQ2jGsCBIcmVuZ1wiLCBwcm92aW5jZTogXCJLb24gVHVtXCIsIHBhZ2U6IDE1IH0sIHsgbmFtZTogXCJLaHUgZHUgbOG7i2NoIMSQ4bqnbSBW4bqhY1wiLCBwcm92aW5jZTogXCJWxKluaCBQaMO6Y1wiLCBwYWdlOiAxNSB9LCB7IG5hbWU6IFwiSOG7kyDEkMSDayBLZVwiLCBwcm92aW5jZTogXCJLb24gVHVtXCIsIHBhZ2U6IDE1IH0sIHsgbmFtZTogXCJD4bqndSB0cmVvIEtvbiBLbG9yXCIsIHByb3ZpbmNlOiBcIktvbiBUdW1cIiwgcGFnZTogMTUgfSwgeyBuYW1lOiBcIkLhuqNvIHTDoG5nIEtvbiBUdW1cIiwgcHJvdmluY2U6IFwiS29uIFR1bVwiLCBwYWdlOiAxNSB9LCB7IG5hbWU6IFwiSOG7kyBY4bqhIEjGsMahbmdcIiwgcHJvdmluY2U6IFwiVsSpbmggUGjDumNcIiwgcGFnZTogMTUgfSxcbiAgeyBuYW1lOiBcIk7DumkgQuG6oWNoIE3Do1wiLCBwcm92aW5jZTogXCJIdeG6v1wiLCBwYWdlOiAyMiB9LCB7IG5hbWU6IFwiS2h1IGR1IGzhu4tjaCBTaW5oIHRow6FpIEzDoWkgVGhpw6p1XCIsIHByb3ZpbmNlOiBcIsSQw6AgTuG6tW5nXCIsIHBhZ2U6IDIyIH0sIHsgbmFtZTogXCLEkMOsbmggbMOgbmcgSOG6o2kgQ2jDonVcIiwgcHJvdmluY2U6IFwixJDDoCBO4bq1bmdcIiwgcGFnZTogMjIgfSwgeyBuYW1lOiBcIkPDtG5nIHZpw6puIENow6J1IMOBXCIsIHByb3ZpbmNlOiBcIsSQw6AgTuG6tW5nXCIsIHBhZ2U6IDIyIH0sIHsgbmFtZTogXCJDaMO5YSBMaW5oIOG7qG5nIFPGoW4gVHLDoFwiLCBwcm92aW5jZTogXCLEkMOgIE7hurVuZ1wiLCBwYWdlOiAyMiB9LCB7IG5hbWU6IFwiQuG6o28gdMOgbmcgdsSDbiBow7NhIFBo4bqtdCBnacOhb1wiLCBwcm92aW5jZTogXCLEkMOgIE7hurVuZ1wiLCBwYWdlOiAyMiB9LCB7IG5hbWU6IFwiQuG6o28gdMOgbmcgTeG7uSB0aHXhuq10IMSQw6AgTuG6tW5nXCIsIHByb3ZpbmNlOiBcIsSQw6AgTuG6tW5nXCIsIHBhZ2U6IDIyIH0sIHsgbmFtZTogXCJUaMOhYyDhu5Ig4buSXCIsIHByb3ZpbmNlOiBcIlF14bqjbmcgTmFtXCIsIHBhZ2U6IDIyIH0sIHsgbmFtZTogXCJS4burbmcgZOG7q2EgQuG6o3kgTeG6q3VcIiwgcHJvdmluY2U6IFwiUXXhuqNuZyBOYW1cIiwgcGFnZTogMjIgfSwgeyBuYW1lOiBcIlTGsOG7o25nIMSRw6BpIE3hurkgVmnhu4d0IE5hbSBhbmggaMO5bmdcIiwgcHJvdmluY2U6IFwiUXXhuqNuZyBOYW1cIiwgcGFnZTogMjIgfSwgeyBuYW1lOiBcIk5ow6AgbMawdSBuaeG7h20gSHXhu7NuaCBUaMO6YyBLaMOhbmdcIiwgcHJvdmluY2U6IFwiUXXhuqNuZyBOYW1cIiwgcGFnZTogMjIgfSwgeyBuYW1lOiBcIkJp4buDbiBS4bqhbmdcIiwgcHJvdmluY2U6IFwiUXXhuqNuZyBOYW1cIiwgcGFnZTogMjIgfSxcbiAgeyBuYW1lOiBcIlPDtG5nIEjGsMahbmdcIiwgcHJvdmluY2U6IFwiSHXhur9cIiwgcGFnZTogNDAgfSwgeyBuYW1lOiBcIsSQ4buZbmcgVGhpw6puIMSQxrDhu51uZ1wiLCBwcm92aW5jZTogXCJRdeG6o25nIFRy4buLXCIsIHBhZ2U6IDQwIH0sIHsgbmFtZTogXCJIYW5nIFPGoW4gxJBvw7JuZ1wiLCBwcm92aW5jZTogXCJRdeG6o25nIFRy4buLXCIsIHBhZ2U6IDQwIH0sIHsgbmFtZTogXCJIYW5nIMOJblwiLCBwcm92aW5jZTogXCJRdeG6o25nIFRy4buLXCIsIHBhZ2U6IDQwIH0sIHsgbmFtZTogXCJCaeG7g24gQ+G7lSBUaOG6oWNoXCIsIHByb3ZpbmNlOiBcIkLDrG5oIFRodeG6rW5cIiwgcGFnZTogNDAgfSwgeyBuYW1lOiBcIsSQ4buTaSBjw6F0IE5hbSBDxrDGoW5nXCIsIHByb3ZpbmNlOiBcIk5pbmggVGh14bqtblwiLCBwYWdlOiA0MCB9LCB7IG5hbWU6IFwiSGFuZyBSw6FpXCIsIHByb3ZpbmNlOiBcIk5pbmggVGh14bqtblwiLCBwYWdlOiA0MCB9LCB7IG5hbWU6IFwiVuG7i25oIFbEqW5oIEh5XCIsIHByb3ZpbmNlOiBcIk5pbmggVGh14bqtblwiLCBwYWdlOiA0MCB9LCB7IG5hbWU6IFwiVsaw4budbiBRdeG7kWMgZ2lhIEPDoXQgQsOgXCIsIHByb3ZpbmNlOiBcIkjhuqNpIFBow7JuZ1wiLCBwYWdlOiA0MCB9LCB7IG5hbWU6IFwiVuG7i25oIExhbiBI4bqhXCIsIHByb3ZpbmNlOiBcIkjhuqNpIFBow7JuZ1wiLCBwYWdlOiA0MCB9LCB7IG5hbWU6IFwiUXXDoW4gSG9hXCIsIHByb3ZpbmNlOiBcIkjhuqNpIFBow7JuZ1wiLCBwYWdlOiA0MCB9LCB7IG5hbWU6IFwiUXXhuqduIMSR4bqjbyBDw6F0IELDoFwiLCBwcm92aW5jZTogXCJI4bqjaSBQaMOybmdcIiwgcGFnZTogNDAgfSxcbiAgeyBuYW1lOiBcIsSQw6hvIEjhuqNpIFbDom5cIiwgcHJvdmluY2U6IFwixJDDoCBO4bq1bmdcIiwgcGFnZTogNDUgfSwgeyBuYW1lOiBcIktodSBi4bqjbyB04buTbiB0aGnDqm4gbmhpw6puIFPGoW4gVHLDoFwiLCBwcm92aW5jZTogXCLEkMOgIE7hurVuZ1wiLCBwYWdlOiA0NSB9LCB7IG5hbWU6IFwiTOG7hSBo4buZaSBDw6Egw5RuZ1wiLCBwcm92aW5jZTogXCLEkMOgIE7hurVuZ1wiLCBwYWdlOiA0NSB9LCB7IG5hbWU6IFwiQuG6o28gdMOgbmcgSOG7kyBDaMOtIE1pbmggxJDDoCBO4bq1bmdcIiwgcHJvdmluY2U6IFwixJDDoCBO4bq1bmdcIiwgcGFnZTogNDUgfSwgeyBuYW1lOiBcIkLhur9uIE5pbmggS2nhu4F1XCIsIHByb3ZpbmNlOiBcIkPhuqduIFRoxqFcIiwgcGFnZTogNDUgfSwgeyBuYW1lOiBcIlRoaeG7gW4gdmnhu4duIFRyw7pjIEzDom0gUGjGsMahbmcgTmFtXCIsIHByb3ZpbmNlOiBcIkPhuqduIFRoxqFcIiwgcGFnZTogNDUgfSwgeyBuYW1lOiBcIkNow7lhIE5hbSBOaMOjXCIsIHByb3ZpbmNlOiBcIkPhuqduIFRoxqFcIiwgcGFnZTogNDUgfSwgeyBuYW1lOiBcIkR1IGzhu4tjaCB2xrDhu51uIEPhuqduIFRoxqFcIiwgcHJvdmluY2U6IFwiQ+G6p24gVGjGoVwiLCBwYWdlOiA0NSB9LCB7IG5hbWU6IFwixJDDrG5oIELDrG5oIFRo4buneVwiLCBwcm92aW5jZTogXCJD4bqnbiBUaMahXCIsIHBhZ2U6IDQ1IH0sIHsgbmFtZTogXCJDaOG7oyBu4buVaSBDw6FpIFLEg25nXCIsIHByb3ZpbmNlOiBcIkPhuqduIFRoxqFcIiwgcGFnZTogNDUgfSwgeyBuYW1lOiBcIk5ow6AgY+G7lSBCw6xuaCBUaOG7p3lcIiwgcHJvdmluY2U6IFwiQ+G6p24gVGjGoVwiLCBwYWdlOiA0NSB9LCB7IG5hbWU6IFwiQ2jDuWEgw5RuZyBD4bqnbiBUaMahXCIsIHByb3ZpbmNlOiBcIkPhuqduIFRoxqFcIiwgcGFnZTogNDUgfSxcbiAgeyBuYW1lOiBcIktodSBwaOG7kSBj4buVIEjDoCBO4buZaVwiLCBwcm92aW5jZTogXCJIw6AgTuG7mWlcIiwgcGFnZTogNTAgfSwgeyBuYW1lOiBcIsSQw6xuaCBUw6J5IMSQ4bqxbmdcIiwgcHJvdmluY2U6IFwiSMOgIE7hu5lpXCIsIHBhZ2U6IDUwIH0sIHsgbmFtZTogXCJUcnVuZyB0w6JtIEjhu5lpIG5naOG7iyBRdeG7kWMgZ2lhXCIsIHByb3ZpbmNlOiBcIkjDoCBO4buZaVwiLCBwYWdlOiA1MCB9LCB7IG5hbWU6IFwiS2h1IGR1IGzhu4tjaCBy4burbmcgdOG7sSBuaGnDqm4gQuG6sW5nIFThuqFcIiwgcHJvdmluY2U6IFwiSMOgIE7hu5lpXCIsIHBhZ2U6IDUwIH0sIHsgbmFtZTogXCJDw7RuZyB2acOqbiBUaOG7kW5nIE5o4bqldFwiLCBwcm92aW5jZTogXCJIw6AgTuG7mWlcIiwgcGFnZTogNTAgfSwgeyBuYW1lOiBcIkNow7lhIFbhuqFuIE5pw6puXCIsIHByb3ZpbmNlOiBcIkjDoCBO4buZaVwiLCBwYWdlOiA1MCB9LCB7IG5hbWU6IFwiTMOgbmcgbmdo4buBIG3hu7kgbmdo4buHIFPGoW4gxJDhu5NuZ1wiLCBwcm92aW5jZTogXCJIw6AgTuG7mWlcIiwgcGFnZTogNTAgfSwgeyBuYW1lOiBcIktodSBkdSBs4buLY2ggxJDhu5NuZyBNw7RcIiwgcHJvdmluY2U6IFwiSMOgIE7hu5lpXCIsIHBhZ2U6IDUwIH0sIHsgbmFtZTogXCJRdeG6o25nIHRyxrDhu51uZyBCYSDEkMOsbmhcIiwgcHJvdmluY2U6IFwiSMOgIE7hu5lpXCIsIHBhZ2U6IDUwIH0sIHsgbmFtZTogXCJTw6JuIGdvbGYgxJDhu5NuZyBNw7RcIiwgcHJvdmluY2U6IFwiSMOgIE7hu5lpXCIsIHBhZ2U6IDUwIH0sIHsgbmFtZTogXCJC4bqjbyB0w6BuZyBI4buTIENow60gTWluaCBIw6AgTuG7mWlcIiwgcHJvdmluY2U6IFwiSMOgIE7hu5lpXCIsIHBhZ2U6IDUwIH0sIHsgbmFtZTogXCJI4bqtdSBMw6J1XCIsIHByb3ZpbmNlOiBcIkjDoCBO4buZaVwiLCBwYWdlOiA1MCB9LFxuICB7IG5hbWU6IFwiS2h1IGR1IGzhu4tjaCBzaW5oIHRow6FpIGJp4buDbiBCw6NpIEzhu69cIiwgcHJvdmluY2U6IFwiTmdo4buHIEFuXCIsIHBhZ2U6IDU1IH0sIHsgbmFtZTogXCJUaOG6r25nIGPhuqNuaCBUaOG6oWNoIMSQ4buZbmdcIiwgcHJvdmluY2U6IFwiQW4gR2lhbmdcIiwgcGFnZTogNTUgfSwgeyBuYW1lOiBcIk5ow6AgdMO5IFBow7ogUXXhu5FjXCIsIHByb3ZpbmNlOiBcIkFuIEdpYW5nXCIsIHBhZ2U6IDU1IH0sIHsgbmFtZTogXCJUaOG6r25nIGPhuqNuaCBIw6AgVGnDqm5cIiwgcHJvdmluY2U6IFwiQW4gR2lhbmdcIiwgcGFnZTogNTUgfSwgeyBuYW1lOiBcIlbGsOG7nW4gUXXhu5FjIGdpYSBQaMO6IFF14buRY1wiLCBwcm92aW5jZTogXCJBbiBHaWFuZ1wiLCBwYWdlOiA1NSB9LCB7IG5hbWU6IFwiVsaw4budbiBRdeG7kWMgZ2lhIFUgTWluaCBUaMaw4bujbmdcIiwgcHJvdmluY2U6IFwiQW4gR2lhbmdcIiwgcGFnZTogNTUgfSwgeyBuYW1lOiBcIkPDtG5nIHZpw6puIFZpbnBlYXJsIFNhZmFyaSBQaMO6IFF14buRY1wiLCBwcm92aW5jZTogXCJBbiBHaWFuZ1wiLCBwYWdlOiA1NSB9LCB7IG5hbWU6IFwiVsaw4budbiBRdeG7kWMgZ2lhIEPDumMgUGjGsMahbmdcIiwgcHJvdmluY2U6IFwiTmluaCBCw6xuaFwiLCBwYWdlOiA1NSB9LCB7IG5hbWU6IFwiS2h1IGR1IGzhu4tjaCBzaW5oIHRow6FpIHbGsOG7nW4gY2hpbSBUaHVuZyBOaGFtXCIsIHByb3ZpbmNlOiBcIk5pbmggQsOsbmhcIiwgcGFnZTogNTUgfSwgeyBuYW1lOiBcIlN14buRaSBuxrDhu5tjIG7Ds25nIEvDqm5oIEfDoFwiLCBwcm92aW5jZTogXCJOaW5oIELDrG5oXCIsIHBhZ2U6IDU1IH0sIHsgbmFtZTogXCJOaMOgIHRo4budIFBow6F0IERp4buHbVwiLCBwcm92aW5jZTogXCJOaW5oIELDrG5oXCIsIHBhZ2U6IDU1IH0sIHsgbmFtZTogXCJLaHUgYuG6o28gdOG7k24gxJHhuqV0IG5n4bqtcCBuxrDhu5tjIFbDom4gTG9uZ1wiLCBwcm92aW5jZTogXCJOaW5oIELDrG5oXCIsIHBhZ2U6IDU1IH0sXG4gIHsgbmFtZTogXCJUaMOhcCBQw7Ryw7Rtw6pcIiwgcHJvdmluY2U6IFwiTmluaCBUaHXhuq1uXCIsIHBhZ2U6IDU3IH0sIHsgbmFtZTogXCJMw6BuZyBkdSBs4buLY2ggQ8OgIE7DoVwiLCBwcm92aW5jZTogXCJOaW5oIFRodeG6rW5cIiwgcGFnZTogNTcgfSwgeyBuYW1lOiBcIlBo4buRIEhp4bq/blwiLCBwcm92aW5jZTogXCJIxrBuZyBZw6puXCIsIHBhZ2U6IDU3IH0sIHsgbmFtZTogXCLEkOG7gW4gQ2jhu60gxJDhu5NuZyBU4butXCIsIHByb3ZpbmNlOiBcIkjGsG5nIFnDqm5cIiwgcGFnZTogNTcgfSwgeyBuYW1lOiBcIkNow7lhIEhp4bq/blwiLCBwcm92aW5jZTogXCJIxrBuZyBZw6puXCIsIHBhZ2U6IDU3IH0sIHsgbmFtZTogXCLEkOG7gW4gxJDhuq11IEFuXCIsIHByb3ZpbmNlOiBcIkjGsG5nIFnDqm5cIiwgcGFnZTogNTcgfSwgeyBuYW1lOiBcIkNow7lhIE7hu4UgQ2jDonVcIiwgcHJvdmluY2U6IFwiSMawbmcgWcOqblwiLCBwYWdlOiA1NyB9LCB7IG5hbWU6IFwixJDhu4FuIE3huqt1IEjGsG5nIFnDqm5cIiwgcHJvdmluY2U6IFwiSMawbmcgWcOqblwiLCBwYWdlOiA1NyB9LCB7IG5hbWU6IFwixJDhu4FuIEdow6puaFwiLCBwcm92aW5jZTogXCJIxrBuZyBZw6puXCIsIHBhZ2U6IDU3IH0sIHsgbmFtZTogXCJTdeG7kWkgbsaw4bubYyBuw7NuZyBLaW0gQsO0aVwiLCBwcm92aW5jZTogXCJIw7JhIELDrG5oXCIsIHBhZ2U6IDU3IH0sIHsgbmFtZTogXCJIYW5nIE3hu48gTHXDtG5nXCIsIHByb3ZpbmNlOiBcIkjDsmEgQsOsbmhcIiwgcGFnZTogNTcgfSwgeyBuYW1lOiBcIlRo4buneSDEkWnhu4duIEjDsmEgQsOsbmhcIiwgcHJvdmluY2U6IFwiSMOyYSBCw6xuaFwiLCBwYWdlOiA1NyB9LFxuXTtcbiJdfQ==

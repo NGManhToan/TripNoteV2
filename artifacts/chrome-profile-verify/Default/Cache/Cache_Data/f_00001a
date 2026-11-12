@@ -1,0 +1,90 @@
+import { createHotContext as __vite__createHotContext } from "/@vite/client";import.meta.hot = __vite__createHotContext("/src/features/dashboard/DashboardExperience.module.css");import { updateStyle as __vite__updateStyle, removeStyle as __vite__removeStyle } from "/@vite/client"
+const __vite__id = "D:/Project/TripNoteV2/src/features/dashboard/DashboardExperience.module.css"
+const __vite__css = "._page_1hoj1_1 { --page-gutter:clamp(30px,13vw,52px);--section-gap:clamp(10px,1.6vh,14px);position:relative;isolation:isolate;display:flex;width:100%;max-width:430px;min-height:100dvh;flex-direction:column;gap:var(--section-gap);margin-inline:auto;padding:calc(7px + env(safe-area-inset-top)) var(--page-gutter) calc(105px + env(safe-area-inset-bottom));overflow:hidden;color:var(--ui-text);background:radial-gradient(ellipse at 50% 34%,rgba(50,106,145,.24),transparent 48%),radial-gradient(ellipse at 84% 5%,rgba(52,129,157,.15),transparent 30%),radial-gradient(ellipse at 5% 64%,rgba(28,91,120,.13),transparent 38%),linear-gradient(160deg,#091827,#0a1927 52%,#07111c); }\n._page_1hoj1_1::after { position:fixed;z-index:32;bottom:calc(5px + env(safe-area-inset-bottom));left:50%;width:108px;height:4px;border-radius:5px;background:rgba(241,248,252,.82);transform:translateX(-50%);content:\"\";pointer-events:none; }\n._ambient_1hoj1_3 { position:absolute;z-index:-1;top:26%;right:-40%;width:78%;height:36%;border-radius:50%;background:rgba(70,146,169,.1);filter:blur(70px);pointer-events:none; }\n._environment_1hoj1_4 { position:absolute;z-index:0;inset:0;overflow:hidden;pointer-events:none; }\n._starField_1hoj1_5 { position:absolute;inset:0;opacity:.6;background-image:radial-gradient(circle at 8% 12%,rgba(233,245,255,.8) 0 1px,transparent 1.6px),radial-gradient(circle at 87% 18%,rgba(218,238,252,.72) 0 1px,transparent 1.6px),radial-gradient(circle at 26% 27%,rgba(220,239,255,.58) 0 1px,transparent 1.5px),radial-gradient(circle at 72% 39%,rgba(220,239,255,.5) 0 1px,transparent 1.5px),radial-gradient(circle at 14% 58%,rgba(220,239,255,.5) 0 1px,transparent 1.6px),radial-gradient(circle at 91% 71%,rgba(220,239,255,.6) 0 1px,transparent 1.6px);mask-image:linear-gradient(180deg,#000 0%,rgba(0,0,0,.8) 46%,transparent 82%); }\n._environmentEarth_1hoj1_6 { position:absolute;top:25%;left:calc(50% - 27%);width:54%;height:auto;opacity:.25;filter:drop-shadow(0 0 38px rgba(77,160,210,.3));mask-image:linear-gradient(180deg,#000 12%,rgba(0,0,0,.78) 70%,transparent 100%); }\n._flightTrail_1hoj1_7 { position:absolute;top:22%;right:-11%;width:67%;height:25%;border-top:1px solid rgba(138,211,236,.3);border-radius:50%;transform:rotate(-23deg);filter:drop-shadow(0 0 8px rgba(93,202,231,.38)); }\n._environmentPlane_1hoj1_8 { position:absolute;z-index:1;top:29%;right:6%;width:24%;height:auto;opacity:.88;filter:drop-shadow(0 5px 12px rgba(108,196,235,.4)); }\n._header_1hoj1_9,._greeting_1hoj1_9,._categoryRail_1hoj1_9,._destinations_1hoj1_9,._tripList_1hoj1_9,._profile_1hoj1_9,._statusBar_1hoj1_9 { position:relative;z-index:2; }\n._statusBar_1hoj1_9 { display:flex;height:20px;align-items:center;justify-content:space-between;padding-inline:2px;color:#f3f7fa;font-size:.75rem;font-weight:650;letter-spacing:.01em; }\n._statusBar_1hoj1_9>span { display:flex;align-items:center;gap:4px; }\n._statusBar_1hoj1_9 svg { width:15px;height:15px;stroke-width:2.5; }\n._statusBar_1hoj1_9 svg:last-child { width:20px;height:15px; }\n._header_1hoj1_9 { display:flex;min-height:42px;align-items:center;justify-content:space-between;gap:8px;margin-top:calc(-1 * var(--section-gap));border-bottom:1px solid rgba(222,238,247,.08); }\n._brand_1hoj1_15 { position:absolute;left:50%;display:flex;align-items:center;transform:translate(-50%,6px);color:var(--ui-text);text-decoration:none; }\n._brand_1hoj1_15 strong { font-family:Georgia,\"Times New Roman\",serif;font-size:1.1rem;font-weight:500;letter-spacing:.01em; }\n._headerActions_1hoj1_17 { display:flex;align-items:center;gap:7px;margin-left:auto; }\n._newTrip_1hoj1_18 { min-height:36px!important;padding:0 10px!important;font-size:.68rem!important; }\n._newTrip_1hoj1_18 span { font-size:1.1rem;line-height:1; }\n._menuButton_1hoj1_20,._avatar_1hoj1_20 { display:grid;width:39px;height:39px;flex:0 0 auto;place-items:center;border:1px solid var(--ui-stroke);border-radius:50%;color:#e8f2f7;background:rgba(255,255,255,.07);backdrop-filter:blur(14px); }\n._menuButton_1hoj1_20 svg,._avatar_1hoj1_20 svg { width:17px;height:17px; }\n._avatar_1hoj1_20 { position:relative;width:36px;height:36px;border-color:rgba(217,238,247,.25);color:#cfe5ee;background:linear-gradient(150deg,rgba(133,187,211,.32),rgba(38,83,110,.54)); }\n._avatar_1hoj1_20::after { position:absolute;top:4px;right:4px;width:7px;height:7px;border-radius:50%;background:#ef8b9b;box-shadow:0 0 8px rgba(239,139,155,.65);content:\"\"; }\n._menu_1hoj1_20 { position:absolute;z-index:10;top:calc(100% + 8px);right:0;display:grid;width:min(220px,80vw);gap:4px;padding:8px;border:1px solid var(--ui-stroke);border-radius:17px;background:rgba(9,22,37,.97);box-shadow:0 18px 45px rgba(0,0,0,.4);backdrop-filter:blur(20px); }\n._menu_1hoj1_20 button { display:flex;min-height:42px;align-items:center;gap:9px;padding:0 10px;border:0;border-radius:11px;color:#dceaf2;background:transparent;font:inherit;font-size:.78rem;text-align:left; }\n._menu_1hoj1_20 button:active { background:rgba(255,255,255,.08); }\n._menu_1hoj1_20 svg { width:17px;height:17px;color:#8edfd6; }\n._greeting_1hoj1_9 { display:grid;gap:4px;margin-top:0;padding-top:6px; }\n._greeting_1hoj1_9>p { color:#a6bdc9;font-size:.82rem;font-weight:500; }\n._greeting_1hoj1_9 h1,._sectionHeading_1hoj1_30 h1 { color:#f6f9fb;font-family:Georgia,\"Times New Roman\",serif;font-size:clamp(1.32rem,5.1vw,1.55rem);font-weight:700;letter-spacing:-.04em;line-height:1.12; }\n._search_1hoj1_31 { display:flex;min-height:42px;align-items:center;gap:10px;margin-top:4px;padding:0 12px;border:1px solid rgba(221,239,250,.18);border-radius:14px;color:#9bb2c1;background:rgba(205,223,235,.12);box-shadow:inset 0 1px rgba(255,255,255,.07);backdrop-filter:blur(16px); }\n._search_1hoj1_31 svg { width:17px;height:17px;flex:0 0 auto;color:#8bcbd3; }\n._search_1hoj1_31 input { width:100%;min-width:0;border:0;outline:0;color:#f1f7fa;background:transparent;font:inherit;font-size:.8rem; }\n._search_1hoj1_31 input::placeholder { color:#839baa; }\n._filters_1hoj1_35 { display:flex;gap:7px;overflow:auto;padding-bottom:2px;scrollbar-width:none; }\n._filters_1hoj1_35 select,._filters_1hoj1_35 button { min-height:34px;flex:0 0 auto;padding:0 10px;border:1px solid rgba(221,239,250,.15);border-radius:11px;color:#d8e7ed;background:rgba(205,223,235,.1);font:inherit;font-size:.64rem; }\n._filters_1hoj1_35 select { max-width:48%; }\n._filters_1hoj1_35 option { color:#17384c;background:#f4fbfc; }\n._filters_1hoj1_35 button { border-color:rgba(121,221,208,.27);color:#9be7da; }\n._suggestions_1hoj1_40 { display:grid;gap:2px;padding:5px;border:1px solid rgba(221,239,250,.14);border-radius:13px;background:rgba(9,22,37,.96); }\n._suggestions_1hoj1_40 button { display:flex;min-height:37px;align-items:center;justify-content:space-between;gap:9px;padding:0 8px;border:0;border-radius:8px;color:#edf6f8;background:transparent;font:inherit;font-size:.72rem;text-align:left; }\n._suggestions_1hoj1_40 small,._resultCount_1hoj1_42 { color:#92aab8;font-size:.61rem; }\n._categoryRail_1hoj1_9 { display:flex;gap:7px;margin:-5px calc(var(--page-gutter) - 8vw) -2px 0;padding:0 8vw 4px 0;overflow:auto;scrollbar-width:none;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch; }\n._categoryRail_1hoj1_9::-webkit-scrollbar,._rail_1hoj1_44::-webkit-scrollbar { display:none; }\n._category_1hoj1_9,._categoryActive_1hoj1_45 { display:grid;min-width:clamp(61px,19vw,74px);min-height:62px;flex:0 0 auto;align-content:center;justify-items:center;gap:5px;padding:7px 7px;border:1px solid rgba(202,229,241,.12);border-radius:15px;color:#a4b7c5;background:rgba(190,212,227,.11);scroll-snap-align:start;font:inherit;font-size:.61rem;font-weight:650; }\n._category_1hoj1_9 svg,._categoryActive_1hoj1_45 svg { width:19px;height:19px; }\n._categoryActive_1hoj1_45 { border-color:rgba(242,211,144,.62);color:#f4e4bc;background:linear-gradient(145deg,rgba(211,173,104,.22),rgba(151,121,82,.1));box-shadow:0 0 20px rgba(231,196,128,.13); }\n._destinations_1hoj1_9,._tripList_1hoj1_9 { display:grid;gap:12px; }\n._sectionHeading_1hoj1_30 { display:flex;align-items:end;justify-content:space-between;gap:10px; }\n._sectionHeading_1hoj1_30 small,._profile_1hoj1_9>span { display:block;margin-bottom:4px;color:#7bc9cf;font-size:.58rem;font-weight:800;letter-spacing:.11em; }\n._sectionHeading_1hoj1_30 h2,._sectionHeading_1hoj1_30 h1 { color:#edf4f7;font-family:Georgia,\"Times New Roman\",serif;font-size:1rem;font-weight:600;letter-spacing:-.025em; }\n._textAction_1hoj1_52 { display:flex;min-height:32px;align-items:center;gap:3px;border:0;color:#9acbd0;background:transparent;font:inherit;font-size:.68rem;font-weight:700;white-space:nowrap; }\n._textAction_1hoj1_52 svg { width:14px;height:14px; }\n._tripListCard_1hoj1_54>img { position:absolute;inset:0;width:100%;height:100%;object-fit:cover; }\n._tripShade_1hoj1_55 { position:absolute;inset:0;background:linear-gradient(0deg,rgba(3,13,23,.9),rgba(5,17,28,.03) 75%),linear-gradient(90deg,rgba(5,15,25,.25),transparent); }\n._tripListCopy_1hoj1_56 small { color:#c7d6de;font-size:.63rem;font-weight:650; }\n._rail_1hoj1_44 { display:flex;gap:9px;margin:0 calc(var(--page-gutter) - 8vw) 0 0;padding:0 8vw 5px 0;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch; }\n._featuredDestinations_1hoj1_58 { gap:0;margin-top:-5px;margin-bottom:-3px; }\n._destinationCard_1hoj1_59 { position:relative;isolation:isolate;width:min(37vw,150px);height:clamp(124px,39vw,144px);flex:0 0 auto;overflow:hidden;border:1px solid rgba(218,237,246,.18);border-radius:16px;background:#10263a;box-shadow:0 12px 30px rgba(0,0,0,.3);scroll-snap-align:start;cursor:pointer; }\n._cardOpen_1hoj1_60 { position:absolute;z-index:0;inset:0;display:block;width:100%;height:100%;padding:0;border:0;border-radius:inherit;color:inherit;background:linear-gradient(145deg,#235d75,#123047 60%,#0a1d2a);text-align:left;font:inherit; }\n._cardOpen_1hoj1_60>img { position:absolute;z-index:-2;inset:0;width:100%;height:100%;object-fit:cover; }\n._cardOpen_1hoj1_60:focus-visible { outline:2px solid #f4e4bc;outline-offset:-3px; }\n._destinationShade_1hoj1_63 { position:absolute;z-index:-1;inset:0;background:linear-gradient(0deg,rgba(3,13,22,.88),transparent 65%),linear-gradient(150deg,rgba(4,17,27,.05),rgba(4,17,27,.14)); }\n._destinationRating_1hoj1_64 { position:absolute;top:10px;right:10px;display:flex;align-items:center;gap:4px;padding:5px 8px;border:1px solid rgba(255,255,255,.18);border-radius:999px;color:white;background:rgba(6,18,31,.58);backdrop-filter:blur(10px);font-size:.61rem;font-weight:750; }\n._destinationRating_1hoj1_64 svg { width:12px;height:12px;fill:#f3cf80;color:#f3cf80; }\n._favorite_1hoj1_66 { position:absolute;top:9px;right:9px;display:grid;width:34px;height:34px;place-items:center;border:1px solid rgba(255,255,255,.18);border-radius:50%;color:white;background:rgba(6,18,31,.55);backdrop-filter:blur(10px); }\n._favorite_1hoj1_66 svg { width:16px;height:16px; }\n._destinationCopy_1hoj1_68 { position:absolute;right:8px;bottom:13px;left:11px; }\n._destinationCopy_1hoj1_68 small { color:#bad0da;font-size:.62rem;font-weight:600; }\n._destinationCopy_1hoj1_68 strong { display:block;margin-top:3px;color:#fff;font-family:Georgia,\"Times New Roman\",serif;font-size:.9rem;font-weight:600;letter-spacing:-.02em; }\n._destinationCopy_1hoj1_68>span { display:block;overflow:hidden;margin-top:2px;color:#cfdee5;font-size:.63rem;text-overflow:ellipsis;white-space:nowrap; }\n._empty_1hoj1_72 { min-width:260px;padding:18px;border:1px solid var(--ui-stroke);border-radius:16px;color:#9fb5c4;background:rgba(255,255,255,.04);font-size:.76rem;line-height:1.45; }\n._visuallyHidden_1hoj1_73 { position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0; }\n._tripList_1hoj1_9 { padding-bottom:8px; }\n._tripList_1hoj1_9 ._sectionHeading_1hoj1_30 { align-items:center; }\n._tripListCard_1hoj1_54 { position:relative;display:flex;width:100%;height:142px;align-items:end;overflow:hidden;border:1px solid var(--ui-stroke);border-radius:20px;color:white;background:#10273b;text-align:left; }\n._tripListCopy_1hoj1_56 { position:relative;z-index:1;display:grid;gap:4px;padding:14px; }\n._tripListCopy_1hoj1_56 strong { font-family:var(--font-heading);font-size:1.12rem; }\n._tripListCopy_1hoj1_56>span { color:#d3e2e8;font-size:.66rem; }\n._tripListCard_1hoj1_54>svg { position:absolute;right:13px;bottom:19px;width:18px;height:18px; }\n._profile_1hoj1_9 { display:grid;gap:9px;align-content:start;padding:20px;border:1px solid var(--ui-stroke);border-radius:23px;background:var(--ui-surface);box-shadow:var(--ui-shadow-depth); }\n._profile_1hoj1_9 h1 { font-family:var(--font-heading);font-size:1.3rem;letter-spacing:-.04em; }\n._profile_1hoj1_9 p { margin-bottom:7px;color:var(--ui-muted);font-size:.8rem;line-height:1.5; }\n@media (min-width:600px) { ._page_1hoj1_1 { min-height:100dvh;box-shadow:0 0 90px rgba(30,108,143,.1); } }\n@media (max-width:370px) { ._page_1hoj1_1 { --page-gutter:clamp(28px,12.5vw,44px); }._destinationCard_1hoj1_59 { width:min(37vw,136px);height:clamp(124px,38vw,140px); } }\n@media (prefers-reduced-motion:reduce) { ._page_1hoj1_1 { scroll-behavior:auto; } }\n"
+__vite__updateStyle(__vite__id, __vite__css)
+export const page = "_page_1hoj1_1";
+export const ambient = "_ambient_1hoj1_3";
+export const environment = "_environment_1hoj1_4";
+export const starField = "_starField_1hoj1_5";
+export const environmentEarth = "_environmentEarth_1hoj1_6";
+export const flightTrail = "_flightTrail_1hoj1_7";
+export const environmentPlane = "_environmentPlane_1hoj1_8";
+export const header = "_header_1hoj1_9";
+export const greeting = "_greeting_1hoj1_9";
+export const categoryRail = "_categoryRail_1hoj1_9";
+export const destinations = "_destinations_1hoj1_9";
+export const tripList = "_tripList_1hoj1_9";
+export const profile = "_profile_1hoj1_9";
+export const statusBar = "_statusBar_1hoj1_9";
+export const brand = "_brand_1hoj1_15";
+export const headerActions = "_headerActions_1hoj1_17";
+export const newTrip = "_newTrip_1hoj1_18";
+export const menuButton = "_menuButton_1hoj1_20";
+export const avatar = "_avatar_1hoj1_20";
+export const menu = "_menu_1hoj1_20";
+export const sectionHeading = "_sectionHeading_1hoj1_30";
+export const search = "_search_1hoj1_31";
+export const filters = "_filters_1hoj1_35";
+export const suggestions = "_suggestions_1hoj1_40";
+export const resultCount = "_resultCount_1hoj1_42";
+export const rail = "_rail_1hoj1_44";
+export const category = "_category_1hoj1_9";
+export const categoryActive = "_categoryActive_1hoj1_45";
+export const textAction = "_textAction_1hoj1_52";
+export const tripListCard = "_tripListCard_1hoj1_54";
+export const tripShade = "_tripShade_1hoj1_55";
+export const tripListCopy = "_tripListCopy_1hoj1_56";
+export const featuredDestinations = "_featuredDestinations_1hoj1_58";
+export const destinationCard = "_destinationCard_1hoj1_59";
+export const cardOpen = "_cardOpen_1hoj1_60";
+export const destinationShade = "_destinationShade_1hoj1_63";
+export const destinationRating = "_destinationRating_1hoj1_64";
+export const favorite = "_favorite_1hoj1_66";
+export const destinationCopy = "_destinationCopy_1hoj1_68";
+export const empty = "_empty_1hoj1_72";
+export const visuallyHidden = "_visuallyHidden_1hoj1_73";
+export default {
+	page: page,
+	ambient: ambient,
+	environment: environment,
+	starField: starField,
+	environmentEarth: environmentEarth,
+	flightTrail: flightTrail,
+	environmentPlane: environmentPlane,
+	header: header,
+	greeting: greeting,
+	categoryRail: categoryRail,
+	destinations: destinations,
+	tripList: tripList,
+	profile: profile,
+	statusBar: statusBar,
+	brand: brand,
+	headerActions: headerActions,
+	newTrip: newTrip,
+	menuButton: menuButton,
+	avatar: avatar,
+	menu: menu,
+	sectionHeading: sectionHeading,
+	search: search,
+	filters: filters,
+	suggestions: suggestions,
+	resultCount: resultCount,
+	rail: rail,
+	category: category,
+	categoryActive: categoryActive,
+	textAction: textAction,
+	tripListCard: tripListCard,
+	tripShade: tripShade,
+	tripListCopy: tripListCopy,
+	featuredDestinations: featuredDestinations,
+	destinationCard: destinationCard,
+	cardOpen: cardOpen,
+	destinationShade: destinationShade,
+	destinationRating: destinationRating,
+	favorite: favorite,
+	destinationCopy: destinationCopy,
+	empty: empty,
+	visuallyHidden: visuallyHidden
+};
+
+import.meta.hot.prune(() => __vite__removeStyle(__vite__id))

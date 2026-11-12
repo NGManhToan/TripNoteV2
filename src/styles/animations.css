@@ -1,0 +1,12 @@
+@keyframes gradient-drift { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+@keyframes float { 0%, 100% { transform: translate3d(0, 0, 0); } 50% { transform: translate3d(0, -14px, 0); } }
+@keyframes orbit { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes twinkle { 0%, 100% { opacity: 0.35; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1.15); } }
+
+.motion-float { animation: float 6s ease-in-out infinite; }
+.motion-orbit { animation: orbit 18s linear infinite; }
+.motion-twinkle { animation: twinkle 2.6s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}
