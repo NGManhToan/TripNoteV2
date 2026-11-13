@@ -12,5 +12,5 @@
 .dock { border-color:rgba(40,98,92,.18);background:rgba(255,255,255,.72);box-shadow:0 8px 24px rgba(25,75,69,.09),inset 0 1px rgba(255,255,255,.82); }
 .compact { background:rgba(255,255,255,.82); }
 .dock button { color:#718784; }
-.dock .active { color:#168e82;background:#e7f6f1; }
-.dock .active::after { background:#31b5a5; }
+.dock button[data-active="true"] { color:#168e82;background:#e7f6f1; }
+.dock button[data-active="true"]::after { position:absolute;bottom:3px;width:12px;height:2px;border-radius:5px;background:#31b5a5;content:""; }

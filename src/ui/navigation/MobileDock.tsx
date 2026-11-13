@@ -31,6 +31,6 @@ export default function MobileDock({ active, visible = true, favoriteCount = 0, 
   return createPortal(<nav ref={dockRef} className={styles.dock} aria-label="Điều hướng chính">{items.map(({ label, Icon }) => {
     const count = label === "Yêu thích" ? favoriteCount : label === "Chuyến đi" ? tripCount : 0;
     const countLabel = label === "Yêu thích" ? "địa điểm yêu thích" : "chuyến đi";
-    return <button className={active === label ? styles.active : styles.item} key={label} type="button" aria-label={count > 0 ? `${label}, ${count} ${countLabel}` : label} aria-current={active === label ? "page" : undefined} onClick={() => onChange(label)}><Icon aria-hidden="true" />{count > 0 && <span className={label === "Chuyến đi" ? styles.tripCount : styles.favoriteCount} aria-hidden="true">{count > 99 ? "99+" : count}</span>}<span>{label}</span></button>;
+    return <button className={styles.item} data-section-key={label} data-active={active === label} key={label} type="button" aria-label={count > 0 ? `${label}, ${count} ${countLabel}` : label} aria-current={active === label ? "page" : undefined} onClick={() => onChange(label)}><Icon aria-hidden="true" />{count > 0 && <span className={label === "Chuyến đi" ? styles.tripCount : styles.favoriteCount} aria-hidden="true">{count > 99 ? "99+" : count}</span>}<span>{label}</span></button>;
   })}</nav>, document.body);
 }
