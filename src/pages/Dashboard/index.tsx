@@ -50,7 +50,7 @@ export default function DashboardPage() {
   const location = useLocation();
   const navigate = useNavigate();
   const navigationState = location.state as { from?: string; section?: DashboardSection } | null;
-  const initialDashboardSection = navigationState?.from && navigationState.section ? navigationState.section : "Khám phá";
+  const initialDashboardSection = navigationState?.section ?? "Khám phá";
   const [trips, setTrips] = useState(loadTrips);
   const syncStatus = useTripSync(trips, setTrips);
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -293,9 +293,9 @@ export default function DashboardPage() {
   if (showingTripDetail) {
     if (!routeTrip) return <main className={styles.notFound}><p>Không tìm thấy chuyến đi này.</p><button type="button" onClick={() => navigate("/home")}>Về trang chủ</button></main>;
     if (!displayTrip) return null;
-    if (tripSubpage === "prep" || tripSubpage === "map") return <><TripPreparationPage trip={displayTrip} onBack={() => navigate(`/home/trip/${encodeURIComponent(displayTrip.id)}`)} onHome={() => navigate(navigationState?.from ?? "/home", { state: { section: navigationState?.section ?? "Chuyến đi" } })} onReport={() => navigate(`/home/trip/${encodeURIComponent(displayTrip.id)}/report`)} onSave={updatePreparation} onNotify={notify} /><ToastViewport message={toastMessage} /></>;
-    if (tripSubpage === "report") return <TripReportPage trip={displayTrip} onBack={() => navigate(`/home/trip/${encodeURIComponent(displayTrip.id)}`)} onHome={() => navigate(navigationState?.from ?? "/home", { state: { section: navigationState?.section ?? "Chuyến đi" } })} onPreparation={() => navigate(`/home/trip/${encodeURIComponent(displayTrip.id)}/prep`)} />;
-    return <><TripDetailExperience key={displayTrip.id} trip={displayTrip} onBack={() => navigate(navigationState?.from ?? "/home", { state: { section: navigationState?.section ?? "Khám phá" } })} onPhotoSelected={pickPhoto} onSaveActivity={addActivity} onDeleteActivity={deleteActivity} onRenameActivityCategory={renameActivityCategory} onExportTrip={() => exportTrip(displayTrip)} onDeleteTrip={() => { deleteTrip(displayTrip); navigate(navigationState?.from ?? "/home", { state: { section: navigationState?.section ?? "Chuyến đi" } }); }} onOpenPreparation={() => navigate(`/home/trip/${encodeURIComponent(displayTrip.id)}/prep`)} onOpenReport={() => navigate(`/home/trip/${encodeURIComponent(displayTrip.id)}/report`)} onNotify={notify} />{exportErrorSheet}<ToastViewport message={toastMessage} /></>;
+    if (tripSubpage === "prep" || tripSubpage === "map") return <><TripPreparationPage trip={displayTrip} onBack={() => navigate(`/home/trip/${encodeURIComponent(displayTrip.id)}`)} onHome={() => navigate("/home", { state: { section: "Chuyến đi" } })} onReport={() => navigate(`/home/trip/${encodeURIComponent(displayTrip.id)}/report`)} onSave={updatePreparation} onNotify={notify} /><ToastViewport message={toastMessage} /></>;
+    if (tripSubpage === "report") return <TripReportPage trip={displayTrip} onBack={() => navigate(`/home/trip/${encodeURIComponent(displayTrip.id)}`)} onHome={() => navigate("/home", { state: { section: "Chuyến đi" } })} onPreparation={() => navigate(`/home/trip/${encodeURIComponent(displayTrip.id)}/prep`)} />;
+    return <><TripDetailExperience key={displayTrip.id} trip={displayTrip} onBack={() => navigate("/home", { state: { section: "Chuyến đi" } })} onPhotoSelected={pickPhoto} onSaveActivity={addActivity} onDeleteActivity={deleteActivity} onRenameActivityCategory={renameActivityCategory} onExportTrip={() => exportTrip(displayTrip)} onDeleteTrip={() => { deleteTrip(displayTrip); navigate("/home", { state: { section: "Chuyến đi" } }); }} onOpenPreparation={() => navigate(`/home/trip/${encodeURIComponent(displayTrip.id)}/prep`)} onOpenReport={() => navigate(`/home/trip/${encodeURIComponent(displayTrip.id)}/report`)} onNotify={notify} />{exportErrorSheet}<ToastViewport message={toastMessage} /></>;
   }
   return <>
       <input ref={importInputRef} className={styles.hiddenInput} type="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" aria-label="Chọn sổ lịch trình Excel" onChange={readWorkbook} />

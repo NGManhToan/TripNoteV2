@@ -914,4 +914,8 @@
   .tripListCopy>small,.tripListCopy>span:not(.tripBadges) { font-size:.78rem;line-height:1.25; }
   .tripListCopy>b { font-size:.9rem; }
   .tripBadges i { font-size:.72rem; }
+  .discoverMode .editorialDescription,.favoritesMode .favoriteCardDescription { font-size:.86rem; }
+  .discoverMode .editorialMeta small,.favoritesMode .favoriteCardLocation { font-size:.76rem; }
+  .discoverMode .editorialMeta>.editorialBudget,.favoritesMode .favoriteCardBudget { font-size:.76rem; }
+  .discoverMode .tripIntro p { font-size:.94rem; }
 }

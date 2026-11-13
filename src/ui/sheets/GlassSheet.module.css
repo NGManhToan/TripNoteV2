@@ -38,3 +38,9 @@
 .sheet .dialogHeader>button { border-color:rgba(44,100,94,.12);color:#607d78;background:#eff6f3; }
 .handle { background:#c9d9d5; }
 .sheet .dialogHeader { border-color:rgba(44,100,94,.12); }
+@media (max-width:767px) {
+  .backdrop,.sheetBackdrop,.dialog,.sheet { backdrop-filter:none!important;-webkit-backdrop-filter:none!important; }
+  .backdrop { background:rgba(18,45,43,.28); }
+  .sheetBackdrop { background:rgba(18,45,43,.24); }
+  .dialog,.sheet { box-shadow:0 12px 36px rgba(18,44,62,.18),inset 0 1px rgba(255,255,255,.8); }
+}

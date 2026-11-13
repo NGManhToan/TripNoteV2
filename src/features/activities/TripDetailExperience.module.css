@@ -89,7 +89,7 @@
 .editMoreFields>div { display:grid;gap:12px;margin-top:12px; }
 .editFooter { position:sticky;bottom:0;z-index:2;margin:0 -20px;padding:10px 20px 0;border-top:1px solid #f0f3f8;background:#fff; }
 .editFooter :global(button) { width:100%;min-height:49px!important;border:0!important;border-radius:15px!important;background:linear-gradient(105deg,#12b7a5,#058bc9)!important;box-shadow:0 8px 16px rgba(0,150,177,.2);font-size:.78rem;font-weight:800; }
-.activityViewSheet>.activityDetail { min-height:0;gap:10px;overflow:auto;padding:14px 20px 0;overscroll-behavior:contain; }
+.activityViewSheet>.activityDetail { min-height:0;gap:10px;overflow:auto;padding:14px 20px 0;overscroll-behavior:contain;-webkit-overflow-scrolling:touch; }
 .activityViewSheet .detailMetric { display:grid;grid-template-columns:34px auto minmax(0,1fr);min-height:63px;align-items:center;gap:9px;padding:10px 12px;border:1px solid #eef2f7;border-radius:16px;background:#f8fafc; }
 .activityViewSheet .detailMetric>span { display:grid;width:32px;height:32px;place-items:center;border:1px solid #e2eaf3;border-radius:11px;color:#009f93;background:white; }
 .activityViewSheet .detailMetric>small { color:#72839c;font-size:.68rem; }
@@ -107,6 +107,19 @@
 .activityViewSheet .detailActions { position:sticky;bottom:-1px;gap:8px;margin:0 -20px;padding:12px 20px 0;border-top:1px solid #f0f3f8;background:#fff; }
 .activityViewSheet .detailActions>button:first-child { width:100%;min-height:48px;border:0;border-radius:14px;background:linear-gradient(105deg,#12b7a5,#058bc9);box-shadow:0 7px 16px rgba(0,150,177,.2);font-size:.76rem;font-weight:800; }
 .activityViewSheet .detailActions>button:last-child { min-height:43px;border-radius:14px;font-size:.73rem; }
+@media (max-width:767px) {
+  .activityViewSheet.activityViewSheet>header h2,.activityEditSheet.activityEditSheet>header h2 { font-size:1.15rem; }
+  .activityViewSheet.activityViewSheet>header p,.activityEditSheet.activityEditSheet>header p { font-size:.82rem; }
+  .activityViewSheet .detailMetric>small,.activityViewSheet .detailCostCard>header>span { font-size:.86rem; }
+  .activityViewSheet .detailMetric>strong { font-size:.95rem; }
+  .activityViewSheet .detailCostValues small { font-size:.8rem; }
+  .activityViewSheet .detailCostValues strong { font-size:1rem; }
+  .activityViewSheet .detailCostExpected em { font-size:.78rem; }
+  .activityViewSheet .detailActions>button:first-child,.activityViewSheet .detailActions>button:last-child { font-size:.9rem; }
+  .editField,.editCategoryField legend { font-size:.84rem; }
+  .editCategoryField>div>button { font-size:.8rem; }
+  .editCostStatus,.editCostStatus>small,.editCostStatus>strong { font-size:.72rem; }
+}
 @media (min-width:600px) { .activityEditSheet,.activityViewSheet { border-radius:27px; }.activityEditForm { padding-inline:22px; }.editFooter,.activityViewSheet .detailActions { margin-inline:-22px;padding-inline:22px; } }
 @media (min-width:600px) { .page { min-height:100dvh;box-shadow:0 8px 36px rgba(34,75,100,.13); }.bottomNav { position:fixed; }.addButton { position:fixed; } }
 @media (max-width:370px) { .hero { min-height:208px;flex-basis:208px; }.budget { grid-template-columns:48px minmax(0,1fr) minmax(108px,.85fr);gap:6px;padding:9px; }.budgetRing { width:46px;height:46px; }.budgetSpent { grid-template-columns:minmax(0,1fr) 25px;column-gap:4px;padding-left:7px; }.budgetSpent button { width:25px;height:25px; }.itinerary { padding-inline:10px; }.activity { grid-template-columns:34px minmax(0,1fr) auto;gap:6px;padding:8px; }.categoryIcon { width:33px;height:33px; }.activityCost>strong { font-size:.61rem; }.activityInfo>strong { font-size:.67rem; } }

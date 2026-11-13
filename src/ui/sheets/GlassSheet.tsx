@@ -8,6 +8,7 @@ type GlassSheetProps = { title: string; subtitle?: string; icon?: ReactNode; var
 
 export function GlassSheet({ title, subtitle, icon, variant = "dialog", dense = false, showClose = true, hideHeader = false, className = "", onClose, children }: GlassSheetProps) {
   const reduceMotion = useReducedMotion();
+  const isMobile = typeof window !== "undefined" && window.matchMedia("(max-width: 767px)").matches;
   const sheetRef = useRef<HTMLElement | null>(null);
   const onCloseRef = useRef(onClose);
   const dragControls = useDragControls();
@@ -52,7 +53,7 @@ export function GlassSheet({ title, subtitle, icon, variant = "dialog", dense = 
   return (
     <AnimatePresence>
       <motion.div className={`${styles.backdrop} ${variant === "sheet" ? styles.sheetBackdrop : ""}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: reduceMotion ? 0.1 : 0.2 }} onPointerDown={(event) => { if (event.target === event.currentTarget) event.stopPropagation(); }} onClick={(event) => { if (event.target !== event.currentTarget) return; event.preventDefault(); event.stopPropagation(); onCloseRef.current(); }}>
-        <motion.section ref={sheetRef} className={`${styles.dialog} ${variant === "sheet" ? styles.sheet : ""} ${dense ? styles.denseSheet : ""} ${className}`} role="dialog" aria-modal="true" aria-label={title} tabIndex={-1} drag={variant === "sheet" && !reduceMotion ? "y" : false} dragControls={dragControls} dragListener={false} dragDirectionLock dragConstraints={{ top: 0, bottom: 0 }} dragElastic={{ top: 0, bottom: .55 }} onDragEnd={dismissOnDrag} initial={reduceMotion ? { opacity: 0 } : variant === "sheet" ? { opacity: 0, y: "100%" } : { opacity: 0, y: 22, scale: .98 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={reduceMotion ? { opacity: 0 } : variant === "sheet" ? { opacity: 0, y: "100%" } : { opacity: 0, y: 14 }} transition={reduceMotion ? { duration: .12 } : variant === "sheet" ? { type: "spring", stiffness: 290, damping: 30 } : { duration: .22 }}>
+        <motion.section ref={sheetRef} className={`${styles.dialog} ${variant === "sheet" ? styles.sheet : ""} ${dense ? styles.denseSheet : ""} ${className}`} role="dialog" aria-modal="true" aria-label={title} tabIndex={-1} drag={variant === "sheet" && !reduceMotion ? "y" : false} dragControls={dragControls} dragListener={false} dragDirectionLock dragConstraints={{ top: 0, bottom: 0 }} dragElastic={{ top: 0, bottom: .55 }} onDragEnd={dismissOnDrag} initial={reduceMotion ? { opacity: 0 } : variant === "sheet" ? { opacity: 0, y: "100%" } : { opacity: 0, y: 22, scale: .98 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={reduceMotion ? { opacity: 0 } : variant === "sheet" ? { opacity: 0, y: "100%" } : { opacity: 0, y: 14 }} transition={reduceMotion ? { duration: .12 } : isMobile ? { type: "tween", duration: .22, ease: [.22, 1, .36, 1] } : variant === "sheet" ? { type: "spring", stiffness: 290, damping: 30 } : { duration: .22 }}>
           {variant === "sheet" && <span className={styles.handle} onPointerDown={(event) => dragControls.start(event)} aria-hidden="true" />}
           {!hideHeader && <header className={styles.dialogHeader}>
             <div className={styles.headingGroup}>{icon && <span className={styles.dialogIcon}>{icon}</span>}<div><h2>{title}</h2>{subtitle && <p>{subtitle}</p>}</div></div>
