@@ -12,13 +12,15 @@ import { fetchOpenStreetMapClassification, type FeaturedPlaceRating } from "../d
 import { fetchOnlineDestinationInfo } from "../destinations/onlineDestinationInfo";
 import type { DashboardSection } from "../../ui/navigation/types";
 import MobileDock from "../../ui/navigation/MobileDock";
+import type { TripSyncState } from "../firebase/useTripSync";
+import { useFavoritesSync } from "../firebase/useFavoritesSync";
 import { GlassSheet } from "../../ui/sheets/GlassSheet";
 import DestinationDetailSheet from "../destinations/DestinationDetailSheet";
 import styles from "./DashboardExperience.module.css";
 
 const favoritesKey = "tripnote-v2-favorite-destinations";
 const themeKey = "tripnote-v2-dark-navy";
-type Props = { trips: Trip[]; onSelectTrip: (index: number) => void; onOpenTrip: (trip: Trip) => void; onCreateTrip: () => void; onDeleteTrip: (trip: Trip) => void; onChooseDestination: (destination: Destination) => void; onImport: () => void; onExport: (trip: Trip) => void; active: DashboardSection; onChange: (section: DashboardSection) => void; query: string; onQueryChange: (value: string) => void; dockVisible?: boolean };
+type Props = { trips: Trip[]; onSelectTrip: (index: number) => void; onOpenTrip: (trip: Trip) => void; onCreateTrip: () => void; onDeleteTrip: (trip: Trip) => void; onChooseDestination: (destination: Destination) => void; onImport: () => void; onExport: (trip: Trip) => void; active: DashboardSection; onChange: (section: DashboardSection) => void; query: string; onQueryChange: (value: string) => void; dockVisible?: boolean; syncStatus?: TripSyncState };
 
 type FeaturedDestination = { destination: Destination; rating: FeaturedPlaceRating };
 
@@ -107,7 +109,7 @@ const DestinationCard = memo(function DestinationCard({ place, favorite, reduced
   </article>;
 });
 
-export default function DashboardExperience({ trips, onSelectTrip, onOpenTrip, onCreateTrip, onDeleteTrip, onChooseDestination, onImport, onExport, active, onChange, query, onQueryChange, dockVisible = true }: Props) {
+export default function DashboardExperience({ trips, onSelectTrip, onOpenTrip, onCreateTrip, onDeleteTrip, onChooseDestination, onImport, onExport, active, onChange, query, onQueryChange, dockVisible = true, syncStatus = "local" }: Props) {
   const reduced = useReducedMotion();
   const [regions, setRegions] = useState<string[]>([]);
   const [destinationTypesSelected, setDestinationTypesSelected] = useState<string[]>([]);
@@ -134,6 +136,7 @@ export default function DashboardExperience({ trips, onSelectTrip, onOpenTrip, o
   const destinationSentinelRef = useRef<HTMLDivElement>(null);
   const toastTimerRef = useRef<number | null>(null);
   const requestedRatingIdsRef = useRef(new Set<string>());
+  useFavoritesSync(favorites, setFavorites);
   useEffect(() => { try { localStorage.setItem(favoritesKey, JSON.stringify(favorites)); } catch { /* local preferences are optional */ } }, [favorites]);
   useEffect(() => { try { localStorage.setItem(themeKey, String(darkNavy)); } catch { /* local preferences are optional */ } }, [darkNavy]);
   useEffect(() => () => { if (toastTimerRef.current !== null) window.clearTimeout(toastTimerRef.current); }, []);
@@ -273,11 +276,14 @@ export default function DashboardExperience({ trips, onSelectTrip, onOpenTrip, o
     </header> : active === "Cá nhân" ? <header className={`${styles.header} ${styles.profileHeader}`}><strong>Hồ sơ cá nhân</strong></header> : <header className={`${styles.header} ${showDiscover ? styles.discoverHeader : ""}`}><div className={styles.brand}>{showDiscover && <span className={styles.brandMark}><Send /></span>}<span className={showDiscover ? styles.brandCopy : ""}><strong>{showDiscover ? <>Trip<span>Vibe</span></> : "Trip Note"}</strong>{showDiscover && <small>Khám phá Việt Nam</small>}</span></div><div className={styles.headerActions}>{showDiscover ? <span className={styles.discoverCount}>{matchingDestinations.length} điểm đến</span> : <button type="button" className={styles.avatar} aria-label="Hồ sơ cá nhân" onClick={() => onChange("Cá nhân")}><UserRound /></button>}</div></header>}
 
     {active === "Cá nhân" ? <section className={styles.profile}>
-      <div className={styles.profileIdentity}><div className={styles.profileAvatar} aria-hidden="true">TN</div><div className={styles.profileIdentityCopy}><strong>Nhà khám phá</strong><span>Hồ sơ TripNote · Lưu trên thiết bị này</span><small><i /> Không gian cá nhân</small></div></div>
+      <div className={styles.profileIdentity}><div className={styles.profileAvatar} aria-hidden="true">TN</div><div className={styles.profileIdentityCopy}><strong>TripNote</strong><span>Không gian dùng chung qua link</span><small><i /> {syncStatus === "synced" ? "Đồng bộ trên các thiết bị" : syncStatus === "connecting" ? "Đang kết nối dữ liệu" : syncStatus === "offline" ? "Đang chờ kết nối mạng" : "Lưu trên thiết bị này"}</small></div></div>
       <div className={styles.profileStats}><div><strong>{trips.length}</strong><span>Chuyến đi</span></div><div><strong>{new Set(trips.flatMap((trip) => trip.destinations?.map((stop) => stop.name) ?? [trip.destination || trip.name])).size}</strong><span>Địa điểm</span></div><div><strong>{favorites.length}</strong><span>Yêu thích</span></div></div>
       <section className={styles.profileSettings}><h2>TÙY CHỈNH ỨNG DỤNG</h2>
         <div className={styles.settingRow}><span className={styles.settingIcon}><Moon /></span><span className={styles.settingCopy}><strong>Giao diện Dark Navy</strong><small>Tối ưu hiển thị ban đêm</small></span><button type="button" role="switch" aria-checked={darkNavy} className={`${styles.themeSwitch} ${darkNavy ? styles.themeSwitchOn : ""}`} onClick={() => setDarkNavy((value) => !value)} aria-label="Bật hoặc tắt giao diện Dark Navy"><i /></button></div>
         <div className={styles.settingRow}><span className={styles.settingIcon}><Coins /></span><span className={styles.settingCopy}><strong>Đơn vị tiền tệ</strong><small>Đơn vị ngân sách chuyến đi</small></span><span className={styles.currencyPill}>VND (đ)</span></div>
+      </section>
+      <section className={styles.profileSettings}><h2>TÀI KHOẢN & ĐỒNG BỘ</h2>
+        <div className={styles.settingRow}><span className={styles.settingIcon}><UserRound /></span><span className={styles.settingCopy}><strong>Không gian TripNote</strong><small>Dữ liệu chia sẻ cho mọi thiết bị mở cùng link</small></span><span className={`${styles.syncState} ${syncStatus === "synced" ? styles.syncOnline : ""}`}><i />{syncStatus === "synced" ? "Đã đồng bộ" : syncStatus === "connecting" ? "Đang kết nối" : syncStatus === "offline" ? "Đang chờ mạng" : "Cục bộ"}</span></div>
       </section>
     </section> : <>
       {showDiscover && <div className={styles.stickySearch}>
@@ -333,7 +339,7 @@ export default function DashboardExperience({ trips, onSelectTrip, onOpenTrip, o
         </div></section>
       </>}
     </>}
-    <MobileDock active={active} visible={dockVisible && !modalOpen} onChange={onChange} />
+    <MobileDock active={active} visible={dockVisible && !modalOpen} favoriteCount={favorites.length} onChange={onChange} />
     {filterSheet}
     {exportSheet}
     {deleteTripSheet}

@@ -176,6 +176,11 @@
 .settingCopy { display:grid;min-width:0;gap:3px; }
 .settingCopy strong { overflow:hidden;color:#ecf4f8;font-size:.69rem;font-weight:800;text-overflow:ellipsis;white-space:nowrap; }
 .settingCopy small { overflow:hidden;color:#91a6b5;font-size:.58rem;text-overflow:ellipsis;white-space:nowrap; }
+.syncState { display:inline-flex;max-width:94px;align-items:center;gap:5px;padding:6px 8px;border:1px solid rgba(215,234,244,.12);border-radius:999px;color:#b2c4cf;background:rgba(255,255,255,.05);font-size:.56rem;font-weight:750;white-space:nowrap; }
+.syncState i { width:6px;height:6px;flex:0 0 auto;border-radius:50%;background:#f3bc55; }
+.syncOnline { border-color:rgba(32,190,145,.2);color:#11866e;background:#e9faf4; }
+.syncOnline i { background:#18af82; }
+.signOutButton { min-height:39px;justify-self:stretch!important;margin-top:8px;padding-inline:12px;border:1px solid rgba(219,91,91,.18);border-radius:12px;color:#b33f49;background:#fff5f4;font:inherit;font-size:.69rem;font-weight:750; }
 .themeSwitch { display:flex;width:44px;height:25px;align-items:center;padding:3px;border:0;border-radius:999px;background:#334759;transition:background .2s ease; }
 .themeSwitch i { width:19px;height:19px;border-radius:50%;background:#d9e5eb;transition:transform .2s ease; }
 .themeSwitchOn { background:#37dec9; }
@@ -187,6 +192,8 @@
 .lightProfile .profileIdentityCopy>span,.lightProfile .settingCopy small,.lightProfile .profileStats span,.lightProfile .profileSettings>h2 { color:#617b8d; }
 .lightProfile .profileStats>div:nth-child(2) strong { color:#17364c; }
 .lightProfile .settingRow { border-color:rgba(34,76,101,.1); }
+.lightProfile .syncState { border-color:rgba(34,76,101,.12);color:#6d7c86;background:#f3f6f6; }
+.lightProfile .syncOnline { border-color:rgba(32,190,145,.2);color:#11866e;background:#e9faf4; }
 @media (min-width:600px) { .page { min-height:100dvh;box-shadow:0 0 90px rgba(30,108,143,.1); } }
 @media (max-width:370px) { .page { --page-gutter:16px; }.destinationGrid { gap:8px; }.destinationCard { height:clamp(132px,39vw,146px); }.tripDeleteButton { width:76px; }.tripListCard { grid-template-columns:66px minmax(0,1fr) 11px;gap:8px;padding-inline:8px; }.tripCover { width:66px;height:66px; } }
 @media (prefers-reduced-motion:reduce) { .page { scroll-behavior:auto; } }

@@ -5,8 +5,8 @@ import type { DashboardSection } from "./types";
 import styles from "./MobileDock.module.css";
 
 const items = [{ label: "Khám phá", Icon: Compass }, { label: "Yêu thích", Icon: Heart }, { label: "Chuyến đi", Icon: BriefcaseBusiness }, { label: "Cá nhân", Icon: UserRound }] as const;
-type Props = { active: DashboardSection; compact?: boolean; visible?: boolean; onChange: (section: DashboardSection) => void };
-export default function MobileDock({ active, visible = true, onChange }: Props) {
+type Props = { active: DashboardSection; compact?: boolean; visible?: boolean; favoriteCount?: number; onChange: (section: DashboardSection) => void };
+export default function MobileDock({ active, visible = true, favoriteCount = 0, onChange }: Props) {
   const dockRef = useRef<HTMLElement>(null);
   useEffect(() => {
     const scrollContainer = document.getElementById("dashboard-scroll-container");
@@ -27,5 +27,5 @@ export default function MobileDock({ active, visible = true, onChange }: Props) 
   }, [visible]);
 
   if (!visible) return null;
-  return createPortal(<nav ref={dockRef} className={styles.dock} aria-label="Điều hướng chính">{items.map(({ label, Icon }) => <button className={active === label ? styles.active : styles.item} key={label} type="button" aria-label={label} aria-current={active === label ? "page" : undefined} onClick={() => onChange(label)}><Icon aria-hidden="true" /><span>{label}</span></button>)}</nav>, document.body);
+  return createPortal(<nav ref={dockRef} className={styles.dock} aria-label="Điều hướng chính">{items.map(({ label, Icon }) => <button className={active === label ? styles.active : styles.item} key={label} type="button" aria-label={label === "Yêu thích" && favoriteCount > 0 ? `${label}, ${favoriteCount} địa điểm` : label} aria-current={active === label ? "page" : undefined} onClick={() => onChange(label)}><Icon aria-hidden="true" />{label === "Yêu thích" && favoriteCount > 0 && <span className={styles.favoriteCount} aria-hidden="true">{favoriteCount > 99 ? "99+" : favoriteCount}</span>}<span>{label}</span></button>)}</nav>, document.body);
 }

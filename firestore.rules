@@ -1,0 +1,14 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // This app intentionally opens directly from its public link without login.
+    // All visitors therefore use one shared trip collection.
+    match /sharedWorkspaces/tripnote-public/trips/{tripId} {
+      allow read, write: if true;
+    }
+    // Favorites are shared across devices for the same public, no-login app link.
+    match /sharedWorkspaces/tripnote-public/preferences/favorites {
+      allow read, write: if true;
+    }
+  }
+}

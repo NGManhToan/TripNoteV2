@@ -3,6 +3,49 @@ import { inferImportedDestination } from "../excel/workbook";
 
 const STORAGE_KEY = "tripnote-v2-trips";
 const MULTI_STOP_PREVIEW_KEY = "tripnote-v2-multi-stop-preview-added";
+const LEGACY_MIGRATION_KEY = "tripnote-v2-legacy-account-migrated";
+
+function userStorageKey(userId: string) {
+  return `${STORAGE_KEY}:${userId}`;
+}
+
+export function loadTripsForUser(userId: string): Trip[] | null {
+  try {
+    const stored = window.localStorage.getItem(userStorageKey(userId));
+    if (!stored) return null;
+    const parsed: unknown = JSON.parse(stored);
+    return Array.isArray(parsed) ? parsed as Trip[] : null;
+  } catch {
+    return null;
+  }
+}
+
+export function saveTripsForUser(userId: string, trips: Trip[]) {
+  try {
+    window.localStorage.setItem(userStorageKey(userId), JSON.stringify(trips));
+  } catch {
+    // Firestore remains the source of truth when local storage is unavailable.
+  }
+}
+
+export function claimLegacyTripsForMigration(): Trip[] {
+  try {
+    const existingOwner = window.localStorage.getItem(LEGACY_MIGRATION_KEY);
+    if (existingOwner) return [];
+    const legacyTrips = loadTrips().filter((trip) => !trip.isDemo);
+    return legacyTrips;
+  } catch {
+    return [];
+  }
+}
+
+export function completeLegacyTripsMigration(userId: string) {
+  try {
+    window.localStorage.setItem(LEGACY_MIGRATION_KEY, userId);
+  } catch {
+    // Migration may be retried from Firestore on the next session.
+  }
+}
 
 function addDevelopmentPreview(trips: Trip[]): Trip[] {
   if (!import.meta.env.DEV) return trips;
