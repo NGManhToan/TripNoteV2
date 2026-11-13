@@ -6,7 +6,7 @@ TripNote opens directly from its link. It does not require Firebase Authenticati
 
 1. In Firebase Console, create/enable Cloud Firestore for the `trip-note-2ab10` project.
 2. Open **Firestore → Rules**, paste the contents of [`firestore.rules`](./firestore.rules), and publish them. The rules allow public read/write access only to the shared TripNote trips and favorites data.
-3. Put the Firebase Web app values in the local `.env.local` file. Do not commit that file.
+3. The shared `trip-note-2ab10` Web app configuration is included as a public client config fallback, so a Netlify build can connect without environment variables. You may override it with `.env.local` for a different local/staging project. Do not commit `.env.local`.
 
 ```dotenv
 VITE_FIREBASE_API_KEY=...
@@ -21,7 +21,7 @@ Restart `npm run dev` after changing environment variables.
 
 ## Configure Netlify
 
-In Netlify, add the same six `VITE_FIREBASE_*` values under **Site configuration → Environment variables**, then trigger a fresh deploy. Environment variables are embedded at build time, so the local `.env.local` values do not automatically reach Netlify.
+If you override the Firebase config locally, add the same six `VITE_FIREBASE_*` values under **Site configuration → Environment variables** in Netlify and trigger a fresh deploy. The default config targets `trip-note-2ab10` and works without Netlify variables. Environment variables are embedded at build time, so local `.env.local` values do not automatically reach Netlify.
 
 ## Existing data and privacy
 
@@ -29,4 +29,4 @@ When the shared trips collection is empty, the first browser that connects seeds
 
 Because this deployment has no login, anyone who can open the link can view, add, edit, and delete the shared trips and favorites. Do not store sensitive information there. Trip images and attachments remain in each browser's IndexedDB and do not sync in this implementation.
 
-Without the Firebase environment values, the app still opens and stores trips locally in that browser only.
+If Firestore Rules are not published or Firestore is unavailable, the app still opens and stores trips locally in that browser only. A phone containing trips only in local storage must open the updated deployment and successfully connect while the shared trips collection is empty to seed those trips for other devices.
