@@ -903,6 +903,10 @@
 }
 
 @media (max-width: 600px) {
+  .ambient { display:none; }
+  .environmentEarth { filter:none; mask-image:none; }
+  .environmentPlane,.flightTrail { filter:none; }
+  .discoverMode .header,.discoverMode .stickySearch { backdrop-filter:none; -webkit-backdrop-filter:none; }
   .tripIntro p { font-size:.88rem; }
   .tripListCopy>strong { display:-webkit-box;overflow:hidden;font-size:.94rem;line-height:1.22;white-space:normal;-webkit-box-orient:vertical;-webkit-line-clamp:2; }
   .tripListCopy>small,.tripListCopy>span:not(.tripBadges) { font-size:.78rem;line-height:1.25; }
