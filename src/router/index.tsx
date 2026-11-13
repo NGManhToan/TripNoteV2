@@ -1,21 +1,16 @@
-import { createBrowserRouter } from "react-router-dom";
+import { lazy, Suspense } from "react";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import RouteFallback from "./RouteFallback";
+
+const DashboardPage = lazy(() => import("../pages/Dashboard"));
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    HydrateFallback: RouteFallback,
-    lazy: async () => {
-      const { default: WelcomePage } = await import("../pages/Welcome");
-      return { Component: WelcomePage };
-    },
+    element: <Navigate to="/home" replace />,
   },
   {
     path: "/home/*",
-    HydrateFallback: RouteFallback,
-    lazy: async () => {
-      const { default: DashboardPage } = await import("../pages/Dashboard");
-      return { Component: DashboardPage };
-    },
+    element: <Suspense fallback={<RouteFallback />}><DashboardPage /></Suspense>,
   },
 ]);

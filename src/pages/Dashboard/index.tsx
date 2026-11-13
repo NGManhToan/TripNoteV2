@@ -49,8 +49,7 @@ function buildTripDays(startDate: string, endDate: string): TripDay[] {
 export default function DashboardPage() {
   const location = useLocation();
   const navigate = useNavigate();
-  const navigationState = location.state as { from?: string; section?: DashboardSection; welcomeArrival?: boolean } | null;
-  const [welcomeArrival, setWelcomeArrival] = useState(Boolean(navigationState?.welcomeArrival));
+  const navigationState = location.state as { from?: string; section?: DashboardSection } | null;
   const [trips, setTrips] = useState(loadTrips);
   const syncStatus = useTripSync(trips, setTrips);
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -104,11 +103,6 @@ export default function DashboardPage() {
     } else if (datePickerTarget === "end") setDraftEndDate(value);
     setDatePickerTarget(null);
   };
-  const finishWelcomeArrival = () => {
-    setWelcomeArrival(false);
-    navigate(location.pathname, { replace: true, state: { section: activeSection } });
-  };
-
   useEffect(() => {
     if (restoredCoversRef.current) return;
     restoredCoversRef.current = true;
@@ -302,7 +296,7 @@ export default function DashboardPage() {
   }
   return <>
       <input ref={importInputRef} className={styles.hiddenInput} type="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" aria-label="Chọn sổ lịch trình Excel" onChange={readWorkbook} />
-      <DashboardExperience trips={trips.map((item) => ({ ...item, image: photoOverrides[item.id] ?? item.image }))} onSelectTrip={setSelectedIndex} onOpenTrip={(item) => navigate(`/home/trip/${encodeURIComponent(item.id)}`, { state: { from: location.pathname, section: activeSection } })} onCreateTrip={openCreateTrip} onDeleteTrip={deleteTrip} onChooseDestination={chooseDestination} onImport={openImport} onExport={exportTrip} active={activeSection} onChange={setActiveSection} query={searchQuery} onQueryChange={setSearchQuery} dockVisible={!dialog && !importOpen && !importedTrip && !welcomeArrival} syncStatus={syncStatus} />
+      <DashboardExperience trips={trips.map((item) => ({ ...item, image: photoOverrides[item.id] ?? item.image }))} onSelectTrip={setSelectedIndex} onOpenTrip={(item) => navigate(`/home/trip/${encodeURIComponent(item.id)}`, { state: { from: location.pathname, section: activeSection } })} onCreateTrip={openCreateTrip} onDeleteTrip={deleteTrip} onChooseDestination={chooseDestination} onImport={openImport} onExport={exportTrip} active={activeSection} onChange={setActiveSection} query={searchQuery} onQueryChange={setSearchQuery} dockVisible={!dialog && !importOpen && !importedTrip} syncStatus={syncStatus} />
       {dialog === "new" && <GlassSheet title="Tạo chuyến đi mới" variant="sheet" className={styles.createTripSheet} onClose={closeDialog}><form className={styles.createForm} onSubmit={createTrip}>
         <label className={styles.coverPicker}><ImagePlus aria-hidden="true" /><span>{draftCover ? draftCover.name : "Thêm ảnh bìa"}</span><b>{draftCover ? "Đã chọn" : "Chọn ảnh"}</b><input type="file" accept="image/*" aria-label="Chọn ảnh bìa" onChange={(event) => { const file = event.currentTarget.files?.[0]; if (!file) return; if (draftCoverPreview) URL.revokeObjectURL(draftCoverPreview); setDraftCover(file); setDraftCoverPreview(URL.createObjectURL(file)); setDraftCoverPreviewFailed(false); event.currentTarget.value = ""; }} /></label>
         {draftCover && (draftCoverPreview && !draftCoverPreviewFailed ? <img className={styles.createPreview} src={draftCoverPreview} alt="Ảnh bìa chuyến đi" onError={() => setDraftCoverPreviewFailed(true)} /> : <div className={styles.createPreviewFallback}><ImagePlus aria-hidden="true" /><span>Không thể xem trước định dạng ảnh này</span></div>)}
@@ -321,6 +315,5 @@ export default function DashboardPage() {
       {exportErrorSheet}
       <ToastViewport message={toastMessage} />
       {importedTrip && <GlassSheet title="Đọc dữ liệu thành công" subtitle="Chuyến đi đã được lưu trên thiết bị này." icon={<Check aria-hidden="true" />} onClose={() => setImportedTrip(null)}><div className={styles.importSuccess}><strong>{importedTrip.name}</strong><span>{importedTrip.itinerary?.flatMap((day) => day.activities).length ?? 0} hoạt động đã nhập</span><button type="button" onClick={() => { setImportedTrip(null); navigate(`/home/trip/${encodeURIComponent(importedTrip.id)}`); }}>Mở lịch trình</button></div></GlassSheet>}
-      {welcomeArrival && <div className={styles.welcomeArrival} onAnimationEnd={finishWelcomeArrival} aria-hidden="true" />}
     </>;
 }

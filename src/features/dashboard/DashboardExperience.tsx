@@ -1,7 +1,7 @@
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { ArrowLeft, BookOpen, Building2, CalendarDays, Check, CheckCircle2, ChevronRight, Coins, Ellipsis, FileSpreadsheet, Heart, MapPin, Moon, Mountain, Palmtree, Plus, Search, Send, SlidersHorizontal, Star, Trash2, UserRound, Waves, X } from "lucide-react";
+import { ArrowLeft, BookOpen, Building2, CalendarDays, Check, CheckCircle2, ChevronRight, Coins, Ellipsis, FileSpreadsheet, Heart, MapPin, Moon, Mountain, Palmtree, Plus, Search, Send, SlidersHorizontal, Smartphone, Star, Trash2, UserRound, Waves, X } from "lucide-react";
 import { createPortal } from "react-dom";
-import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useRef, useState, type ChangeEvent } from "react";
 import earth from "../../assets/images/welcome/earth.png";
 import plane from "../../assets/images/welcome/plane.png";
 import defaultTripCover from "../../assets/images/dashboard/mountain-valley.png";
@@ -20,6 +20,7 @@ import styles from "./DashboardExperience.module.css";
 
 const favoritesKey = "tripnote-v2-favorite-destinations";
 const themeKey = "tripnote-v2-dark-navy";
+const appIconKey = "tripnote-v2-custom-app-icon";
 type Props = { trips: Trip[]; onSelectTrip: (index: number) => void; onOpenTrip: (trip: Trip) => void; onCreateTrip: () => void; onDeleteTrip: (trip: Trip) => void; onChooseDestination: (destination: Destination) => void; onImport: () => void; onExport: (trip: Trip) => void; active: DashboardSection; onChange: (section: DashboardSection) => void; query: string; onQueryChange: (value: string) => void; dockVisible?: boolean; syncStatus?: TripSyncState };
 
 type FeaturedDestination = { destination: Destination; rating: FeaturedPlaceRating };
@@ -122,6 +123,7 @@ export default function DashboardExperience({ trips, onSelectTrip, onOpenTrip, o
   const [exportQuery, setExportQuery] = useState("");
   const [tripQuery, setTripQuery] = useState("");
   const [darkNavy, setDarkNavy] = useState(() => { try { return localStorage.getItem(themeKey) !== "false"; } catch { return true; } });
+  const [customAppIcon, setCustomAppIcon] = useState(() => { try { return localStorage.getItem(appIconKey) ?? ""; } catch { return ""; } });
   const [favorites, setFavorites] = useState<string[]>(() => { try { return JSON.parse(localStorage.getItem(favoritesKey) ?? "[]") as string[]; } catch { return []; } });
   const [menuOpen, setMenuOpen] = useState(false);
   const [deleteTripTarget, setDeleteTripTarget] = useState<Trip | null>(null);
@@ -135,6 +137,7 @@ export default function DashboardExperience({ trips, onSelectTrip, onOpenTrip, o
   const tripMenuRef = useRef<HTMLElement>(null);
   const destinationSentinelRef = useRef<HTMLDivElement>(null);
   const toastTimerRef = useRef<number | null>(null);
+  const appIconInputRef = useRef<HTMLInputElement>(null);
   const requestedRatingIdsRef = useRef(new Set<string>());
   useFavoritesSync(favorites, setFavorites);
   useEffect(() => { try { localStorage.setItem(favoritesKey, JSON.stringify(favorites)); } catch { /* local preferences are optional */ } }, [favorites]);
@@ -145,6 +148,42 @@ export default function DashboardExperience({ trips, onSelectTrip, onOpenTrip, o
     if (toastTimerRef.current !== null) window.clearTimeout(toastTimerRef.current);
     toastTimerRef.current = window.setTimeout(() => setToastMessage(""), 2400);
   }, []);
+  const chooseCustomAppIcon = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.currentTarget.files?.[0];
+    event.currentTarget.value = "";
+    if (!file) return;
+    if (!file.type.startsWith("image/") || file.size > 10 * 1024 * 1024) {
+      showToast("Chọn ảnh dưới 10 MB để tạo icon");
+      return;
+    }
+    const sourceUrl = URL.createObjectURL(file);
+    const image = new Image();
+    image.onload = () => {
+      const side = Math.min(image.naturalWidth, image.naturalHeight);
+      const canvas = document.createElement("canvas");
+      canvas.width = 512;
+      canvas.height = 512;
+      const context = canvas.getContext("2d");
+      if (!context) { URL.revokeObjectURL(sourceUrl); showToast("Không thể xử lý ảnh này"); return; }
+      context.drawImage(image, (image.naturalWidth - side) / 2, (image.naturalHeight - side) / 2, side, side, 0, 0, 512, 512);
+      URL.revokeObjectURL(sourceUrl);
+      const iconData = canvas.toDataURL("image/webp", .88);
+      try {
+        localStorage.setItem(appIconKey, iconData);
+        setCustomAppIcon(iconData);
+        showToast("Đã cập nhật icon Trip Note trên thiết bị này");
+      } catch {
+        showToast("Ảnh quá lớn để lưu. Hãy thử ảnh khác");
+      }
+    };
+    image.onerror = () => { URL.revokeObjectURL(sourceUrl); showToast("Không đọc được ảnh này"); };
+    image.src = sourceUrl;
+  };
+  useEffect(() => {
+    const iconLink = document.querySelector<HTMLLinkElement>('link[rel="icon"]');
+    if (!iconLink) return;
+    iconLink.href = customAppIcon || "/app-icon.svg";
+  }, [customAppIcon]);
   const requestDestinationRating = useCallback((destination: Destination) => {
     if (requestedRatingIdsRef.current.has(destination.id) || destinationRatings[destination.id]) return;
     requestedRatingIdsRef.current.add(destination.id);
@@ -263,7 +302,6 @@ export default function DashboardExperience({ trips, onSelectTrip, onOpenTrip, o
   </AnimatePresence>, document.body);
   const exportSheet = exportOpen && <GlassSheet title="Xuất dữ liệu" subtitle="Tìm và chọn chuyến đi cần xuất." icon={<FileSpreadsheet aria-hidden="true" />} variant="sheet" dense onClose={() => setExportOpen(false)}><div className={styles.exportChooser}><label className={styles.exportSearch}><Search aria-hidden="true" /><input value={exportQuery} onChange={(event) => setExportQuery(event.target.value)} placeholder="Tìm theo địa danh, tên hoặc ngày..." aria-label="Tìm chuyến đi để xuất" /></label>{exportableTrips.length > 4 && <p className={styles.exportScrollHint}>Cuộn danh sách để xem thêm · {exportableTrips.length} chuyến</p>}<div className={styles.exportTripList} role="listbox" aria-label="Danh sách chuyến đi">{exportableTrips.map((item) => { const selected = exportTripId === item.id; const destinationName = tripRouteLabel(item); const distinctName = item.name !== destinationName ? item.name : ""; return <button key={item.id} type="button" role="option" aria-selected={selected} className={`${styles.exportTripOption} ${selected ? styles.exportTripOptionSelected : ""}`} onClick={() => setExportTripId(item.id)}><span><strong>{destinationName}</strong><small>{[distinctName, item.dateRange].filter(Boolean).join(" · ")}</small></span><b>{item.estimate === null ? "Chưa có ngân sách" : `${item.estimate.toLocaleString("vi-VN")} đ`}</b></button>; })}{exportableTrips.length === 0 && <p className={styles.exportNoResults}>{trips.length ? "Không tìm thấy chuyến đi phù hợp." : "Chưa có chuyến đi để xuất."}</p>}</div><button type="button" className={styles.exportConfirm} disabled={!exportTrip} onClick={() => { if (!exportTrip) return; onExport(exportTrip); setExportOpen(false); }}><FileSpreadsheet aria-hidden="true" />{exportTrip ? `Xuất ${tripRouteLabel(exportTrip)} ra Excel` : "Chọn chuyến đi để tiếp tục"}</button></div></GlassSheet>;
   const deleteTripSheet = deleteTripTarget && <GlassSheet title="Xóa chuyến đi?" subtitle={`Bạn có chắc muốn xóa ${deleteTripTarget.destination || deleteTripTarget.name}?`} icon={<Trash2 aria-hidden="true" />} variant="sheet" onClose={() => setDeleteTripTarget(null)}><div className={styles.deleteTripActions}><button type="button" className={styles.deleteTripCancel} onClick={() => setDeleteTripTarget(null)}>Giữ chuyến đi</button><button type="button" className={styles.deleteTripConfirm} onClick={() => { onDeleteTrip(deleteTripTarget); setDeleteTripTarget(null); }}>Xóa chuyến đi</button></div></GlassSheet>;
-  const tripMenuDismiss = menuOpen ? createPortal(<button type="button" className={styles.menuDismiss} aria-label="Đóng menu tùy chọn" onPointerDown={(event) => { event.preventDefault(); setMenuOpen(false); }} />, document.body) : null;
   const modalOpen = filtersOpen || exportOpen || Boolean(deleteTripTarget) || Boolean(detailDestination) || Boolean(planningDestination);
   const tripFab = active === "Chuyến đi" && dockVisible && !modalOpen ? createPortal(<motion.button type="button" className={styles.tripFab} aria-label="Tạo chuyến đi mới" onClick={onCreateTrip} whileTap={reduced ? undefined : { scale: .92 }}><Plus /></motion.button>, document.body) : null;
   const toast = createPortal(<AnimatePresence>{toastMessage && <motion.div className={styles.successToast} role="status" aria-live="polite" initial={reduced ? false : { opacity: 0, y: 12, scale: .96 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 8, scale: .98 }} transition={{ duration: reduced ? 0 : .18 }}><CheckCircle2 aria-hidden="true" /><span>{toastMessage}</span></motion.div>}</AnimatePresence>, document.body);
@@ -273,14 +311,16 @@ export default function DashboardExperience({ trips, onSelectTrip, onOpenTrip, o
     <div className={`${styles.environment} ${active === "Chuyến đi" ? styles.tripEnvironment : ""} ${active === "Cá nhân" ? styles.profileEnvironment : ""} ${emptySearch ? styles.emptySearchEnvironment : ""}`} aria-hidden="true"><div className={styles.starField} /><motion.img className={styles.environmentEarth} src={earth} alt="" animate={reduced || showDiscover ? undefined : { rotate: [0, 2, 0, -2, 0], y: [0, -4, 0, 4, 0] }} transition={{ duration: 32, repeat: Infinity, ease: "linear" }} /><motion.img className={styles.environmentPlane} src={plane} alt="" animate={reduced || showDiscover ? undefined : { x: [0, -8, 0, 7, 0], y: [0, 5, 0, -4, 0], rotate: [-8, -5, -9, -11, -8] }} transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }} /><span className={styles.flightTrail} /></div>
     {active === "Chuyến đi" ? <header ref={tripMenuRef} className={`${styles.header} ${styles.tripManagerHeader} ${menuOpen ? styles.menuOpen : ""}`}><button type="button" className={styles.tripBack} aria-label="Quay lại khám phá" onClick={() => onChange("Khám phá")}><ArrowLeft /></button><strong>Quản lý chuyến đi</strong><div className={styles.tripHeaderActions}><button type="button" className={styles.menuButton} aria-label="Mở tùy chọn" aria-expanded={menuOpen} onClick={() => setMenuOpen((value) => !value)}><Ellipsis /></button></div>
       <AnimatePresence>{menuOpen && <motion.div className={styles.menu} initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -5 }}><button type="button" onClick={() => { setMenuOpen(false); onImport(); }}><FileSpreadsheet />Nhập từ Excel</button><button type="button" onClick={openExport}><BookOpen />Xuất dữ liệu</button></motion.div>}</AnimatePresence>
-    </header> : active === "Cá nhân" ? <header className={`${styles.header} ${styles.profileHeader}`}><strong>Hồ sơ cá nhân</strong></header> : <header className={`${styles.header} ${showDiscover ? styles.discoverHeader : ""}`}><div className={styles.brand}>{showDiscover && <span className={styles.brandMark}><Send /></span>}<span className={showDiscover ? styles.brandCopy : ""}><strong>{showDiscover ? <>Trip<span>Vibe</span></> : "Trip Note"}</strong>{showDiscover && <small>Khám phá Việt Nam</small>}</span></div><div className={styles.headerActions}>{showDiscover ? <span className={styles.discoverCount}>{matchingDestinations.length} điểm đến</span> : <button type="button" className={styles.avatar} aria-label="Hồ sơ cá nhân" onClick={() => onChange("Cá nhân")}><UserRound /></button>}</div></header>}
+    </header> : active === "Cá nhân" ? <header className={`${styles.header} ${styles.profileHeader}`}><strong>Hồ sơ cá nhân</strong></header> : <header className={`${styles.header} ${showDiscover ? styles.discoverHeader : ""}`}><div className={styles.brand}>{showDiscover && <span className={styles.brandMark}>{customAppIcon ? <img src={customAppIcon} alt="" /> : <Send />}</span>}<span className={showDiscover ? styles.brandCopy : ""}><strong>{showDiscover ? <>Trip<span>Vibe</span></> : "Trip Note"}</strong>{showDiscover && <small>Khám phá Việt Nam</small>}</span></div><div className={styles.headerActions}>{showDiscover ? <span className={styles.discoverCount}>{matchingDestinations.length} điểm đến</span> : <button type="button" className={styles.avatar} aria-label="Hồ sơ cá nhân" onClick={() => onChange("Cá nhân")}>{customAppIcon ? <img src={customAppIcon} alt="" /> : <UserRound />}</button>}</div></header>}
 
     {active === "Cá nhân" ? <section className={styles.profile}>
-      <div className={styles.profileIdentity}><div className={styles.profileAvatar} aria-hidden="true">TN</div><div className={styles.profileIdentityCopy}><strong>TripNote</strong><span>Không gian dùng chung qua link</span><small><i /> {syncStatus === "synced" ? "Đồng bộ trên các thiết bị" : syncStatus === "connecting" ? "Đang kết nối dữ liệu" : syncStatus === "offline" ? "Đang chờ kết nối mạng" : "Lưu trên thiết bị này"}</small></div></div>
+      <div className={styles.profileIdentity}><div className={styles.profileAvatar} aria-hidden="true">{customAppIcon ? <img src={customAppIcon} alt="" /> : "TN"}</div><div className={styles.profileIdentityCopy}><strong>TripNote</strong><span>Không gian dùng chung qua link</span><small><i /> {syncStatus === "synced" ? "Đồng bộ trên các thiết bị" : syncStatus === "connecting" ? "Đang kết nối dữ liệu" : syncStatus === "offline" ? "Đang chờ kết nối mạng" : "Lưu trên thiết bị này"}</small></div></div>
       <div className={styles.profileStats}><div><strong>{trips.length}</strong><span>Chuyến đi</span></div><div><strong>{new Set(trips.flatMap((trip) => trip.destinations?.map((stop) => stop.name) ?? [trip.destination || trip.name])).size}</strong><span>Địa điểm</span></div><div><strong>{favorites.length}</strong><span>Yêu thích</span></div></div>
       <section className={styles.profileSettings}><h2>TÙY CHỈNH ỨNG DỤNG</h2>
         <div className={styles.settingRow}><span className={styles.settingIcon}><Moon /></span><span className={styles.settingCopy}><strong>Giao diện Dark Navy</strong><small>Tối ưu hiển thị ban đêm</small></span><button type="button" role="switch" aria-checked={darkNavy} className={`${styles.themeSwitch} ${darkNavy ? styles.themeSwitchOn : ""}`} onClick={() => setDarkNavy((value) => !value)} aria-label="Bật hoặc tắt giao diện Dark Navy"><i /></button></div>
         <div className={styles.settingRow}><span className={styles.settingIcon}><Coins /></span><span className={styles.settingCopy}><strong>Đơn vị tiền tệ</strong><small>Đơn vị ngân sách chuyến đi</small></span><span className={styles.currencyPill}>VND (đ)</span></div>
+        <div className={styles.settingRow}><span className={styles.settingIcon}>{customAppIcon ? <img className={styles.settingIconImage} src={customAppIcon} alt="" /> : <Smartphone />}</span><span className={styles.settingCopy}><strong>Tạo icon từ ảnh</strong><small>Chọn ảnh và dùng làm icon trong Trip Note</small></span><span className={styles.settingActions}><button type="button" className={styles.settingAction} onClick={() => appIconInputRef.current?.click()}>{customAppIcon ? "Đổi ảnh" : "Chọn ảnh"}</button>{customAppIcon && <button type="button" className={styles.resetIcon} aria-label="Khôi phục icon mặc định" onClick={() => { localStorage.removeItem(appIconKey); setCustomAppIcon(""); showToast("Đã khôi phục icon mặc định"); }}>×</button>}</span></div>
+        <input ref={appIconInputRef} className={styles.hiddenIconInput} type="file" accept="image/*" aria-label="Chọn ảnh để tạo icon Trip Note" onChange={chooseCustomAppIcon} />
       </section>
       <section className={styles.profileSettings}><h2>TÀI KHOẢN & ĐỒNG BỘ</h2>
         <div className={styles.settingRow}><span className={styles.settingIcon}><UserRound /></span><span className={styles.settingCopy}><strong>Không gian TripNote</strong><small>Dữ liệu chia sẻ cho mọi thiết bị mở cùng link</small></span><span className={`${styles.syncState} ${syncStatus === "synced" ? styles.syncOnline : ""}`}><i />{syncStatus === "synced" ? "Đã đồng bộ" : syncStatus === "connecting" ? "Đang kết nối" : syncStatus === "offline" ? "Đang chờ mạng" : "Cục bộ"}</span></div>
@@ -339,13 +379,12 @@ export default function DashboardExperience({ trips, onSelectTrip, onOpenTrip, o
         </div></section>
       </>}
     </>}
-    <MobileDock active={active} visible={dockVisible && !modalOpen} favoriteCount={favorites.length} onChange={onChange} />
+    <MobileDock active={active} visible={dockVisible && !modalOpen} favoriteCount={favorites.length} tripCount={trips.length} onChange={onChange} />
     {filterSheet}
     {exportSheet}
     {deleteTripSheet}
     {detailDestination && <DestinationDetailSheet destination={detailDestination} rating={destinationRatings[detailDestination.id]} isFavorite={favorites.includes(detailDestination.id) || favorites.includes(detailDestination.name)} onToggleFavorite={() => toggleFavorite(detailDestination.id)} onClose={() => setDetailDestination(null)} onPlan={() => { setPlanningDestination(detailDestination); setDetailDestination(null); }} />}
     {planningDestination && <GlassSheet title="Thêm lên kế hoạch" subtitle={planningDestination.name} icon={<Plus aria-hidden="true" />} variant="sheet" dense className={styles.planChoiceSheet} onClose={() => setPlanningDestination(null)}><div className={styles.planChoiceList}><button type="button" onClick={() => { onChooseDestination(planningDestination); setPlanningDestination(null); }}><span className={styles.planChoiceIcon}><Plus /></span><span><strong>Tạo lịch thủ công</strong><small>Tự nhập ngày đi và các điểm dừng.</small></span><ChevronRight /></button><button type="button" onClick={() => { setPlanningDestination(null); onImport(); }}><span className={styles.planChoiceIcon}><FileSpreadsheet /></span><span><strong>Nhập lịch từ Excel</strong><small>Dùng lịch trình bạn đã có sẵn.</small></span><ChevronRight /></button></div></GlassSheet>}
-    {tripMenuDismiss}
     {tripFab}
     {toast}
   </motion.main>;
