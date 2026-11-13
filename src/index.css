@@ -23,3 +23,8 @@ img { max-width: 100%; }
 @media (prefers-reduced-motion:reduce) {
   button,a,[role="button"] { transition-duration:.01ms; }
 }
+
+/* Prevent iOS Safari from zooming the page when a small-text field receives focus. */
+@media (max-width:767px) {
+  input:not([type="checkbox"]):not([type="radio"]),textarea,select { font-size:16px !important; }
+}

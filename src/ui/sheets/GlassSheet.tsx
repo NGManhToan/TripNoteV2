@@ -14,6 +14,15 @@ export function GlassSheet({ title, subtitle, icon, variant = "dialog", dense = 
   const dismissOnDrag = (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => { if (variant === "sheet" && info.offset.y > 105 && Math.abs(info.offset.x) < 70) onClose(); };
   useEffect(() => { onCloseRef.current = onClose; }, [onClose]);
   useEffect(() => {
+    const body = document.body;
+    const previousOverflow = body.style.overflow;
+    const previousOverscroll = body.style.overscrollBehavior;
+    body.style.overflow = "hidden";
+    body.style.overscrollBehavior = "none";
+    const containTouch = (event: TouchEvent) => {
+      if (sheetRef.current && !sheetRef.current.contains(event.target as Node)) event.preventDefault();
+    };
+    document.addEventListener("touchmove", containTouch, { passive: false });
     const previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     const closeOnEscape = (event: KeyboardEvent) => {
       if (event.key === "Escape") { event.preventDefault(); onCloseRef.current(); }
@@ -31,7 +40,13 @@ export function GlassSheet({ title, subtitle, icon, variant = "dialog", dense = 
       initialFocus?.focus();
     });
     document.addEventListener("keydown", closeOnEscape);
-    return () => { document.removeEventListener("keydown", closeOnEscape); previousFocus?.focus(); };
+    return () => {
+      document.removeEventListener("keydown", closeOnEscape);
+      document.removeEventListener("touchmove", containTouch);
+      body.style.overflow = previousOverflow;
+      body.style.overscrollBehavior = previousOverscroll;
+      previousFocus?.focus();
+    };
   }, [showClose, variant]);
 
   return (

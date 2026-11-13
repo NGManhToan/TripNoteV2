@@ -9,7 +9,20 @@ export type TripSyncState = "local" | "connecting" | "synced" | "offline";
 const SHARED_WORKSPACE_ID = "tripnote-public";
 
 function sameTrip(a: Trip | undefined, b: Trip | undefined) {
-  return JSON.stringify(a) === JSON.stringify(b);
+  return JSON.stringify(stripUndefined(a)) === JSON.stringify(stripUndefined(b));
+}
+
+/** Firestore rejects undefined values, which can appear in optional trip/activity fields. */
+function stripUndefined<T>(value: T): T {
+  if (Array.isArray(value)) {
+    return value.map((item) => item === undefined ? null : stripUndefined(item)) as T;
+  }
+  if (value !== null && typeof value === "object" && Object.getPrototypeOf(value) === Object.prototype) {
+    return Object.fromEntries(
+      Object.entries(value).filter(([, item]) => item !== undefined).map(([key, item]) => [key, stripUndefined(item)]),
+    ) as T;
+  }
+  return value;
 }
 
 /** Syncs trips to one public Firestore workspace so the same app link shares data across devices. */
@@ -61,7 +74,7 @@ export function useTripSync(trips: Trip[], setTrips: Dispatch<SetStateAction<Tri
           try {
             for (const [order, trip] of localTrips.entries()) {
               await setDoc(doc(db, "sharedWorkspaces", SHARED_WORKSPACE_ID, "trips", trip.id), {
-                trip,
+                trip: stripUndefined(trip),
                 order,
                 updatedAt: serverTimestamp(),
               });
@@ -110,19 +123,27 @@ export function useTripSync(trips: Trip[], setTrips: Dispatch<SetStateAction<Tri
     const localMap = new Map(trips.map((trip) => [trip.id, trip]));
     for (const [order, [id, trip]] of [...localMap.entries()].entries()) {
       if (sameTrip(remote.get(id), trip) && cloudOrderRef.current.get(id) === order) continue;
-      remote.set(id, trip);
-      cloudOrderRef.current.set(id, order);
-      void setDoc(doc(db, "sharedWorkspaces", SHARED_WORKSPACE_ID, "trips", id), {
-        trip,
-        order,
-        updatedAt: serverTimestamp(),
-      }).then(() => setStatus("synced")).catch(setOffline);
+      void (async () => {
+        try {
+          await setDoc(doc(db, "sharedWorkspaces", SHARED_WORKSPACE_ID, "trips", id), {
+            trip: stripUndefined(trip),
+            order,
+            updatedAt: serverTimestamp(),
+          });
+          remote.set(id, trip);
+          cloudOrderRef.current.set(id, order);
+          setStatus("synced");
+        } catch {
+          setOffline();
+        }
+      })();
     }
     for (const id of remote.keys()) {
       if (localMap.has(id)) continue;
-      remote.delete(id);
-      cloudOrderRef.current.delete(id);
-      void deleteDoc(doc(db, "sharedWorkspaces", SHARED_WORKSPACE_ID, "trips", id)).catch(setOffline);
+      void deleteDoc(doc(db, "sharedWorkspaces", SHARED_WORKSPACE_ID, "trips", id)).then(() => {
+        remote.delete(id);
+        cloudOrderRef.current.delete(id);
+      }).catch(setOffline);
     }
   }, [trips, setOffline]);
 

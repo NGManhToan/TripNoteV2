@@ -1,5 +1,5 @@
-.backdrop { position:fixed;z-index:60;inset:0;display:grid;place-items:end center;padding:0;background:rgba(2,8,16,.68);backdrop-filter:blur(14px); }
-.dialog { width:min(100%,560px);max-height:min(88dvh,780px);overflow:auto;padding:21px;border:1px solid rgba(204,229,245,.17);border-radius:25px;color:#eaf3f9;background:linear-gradient(145deg,rgba(16,36,55,.97),rgba(7,19,32,.99));box-shadow:0 22px 70px rgba(0,0,0,.48),inset 0 1px rgba(255,255,255,.08);backdrop-filter:blur(28px); }
+.backdrop { position:fixed;z-index:60;inset:0;display:grid;place-items:end center;padding:0;overscroll-behavior:contain;touch-action:none;background:rgba(2,8,16,.68);backdrop-filter:blur(14px); }
+.dialog { width:min(100%,560px);max-height:min(88dvh,780px);overflow:auto;overscroll-behavior:contain;touch-action:pan-y;padding:21px;border:1px solid rgba(204,229,245,.17);border-radius:25px;color:#eaf3f9;background:linear-gradient(145deg,rgba(16,36,55,.97),rgba(7,19,32,.99));box-shadow:0 22px 70px rgba(0,0,0,.48),inset 0 1px rgba(255,255,255,.08);backdrop-filter:blur(28px); }
 .dialogHeader { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:16px; }
 .dialog h2 { margin:0;color:#f4f8fb;font-size:1.25rem;font-weight:800; }
 .dialogHeader > button { width:40px;height:40px;flex:0 0 auto;border:1px solid rgba(207,231,246,.16);border-radius:50%;color:#dcecf4;background:rgba(255,255,255,.08);font-size:1.55rem;line-height:1; }
