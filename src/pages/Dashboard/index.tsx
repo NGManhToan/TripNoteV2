@@ -87,6 +87,7 @@ export default function DashboardPage() {
   const routeTrip = decodedDetailId ? trips.find((item) => item.id === decodedDetailId) : null;
   const activeTrip = showingTripDetail ? routeTrip : trip;
   const displayTrip = useMemo(() => activeTrip ? { ...activeTrip, image: photoOverrides[activeTrip.id] ?? activeTrip.image } : null, [activeTrip, photoOverrides]);
+  const dashboardTrips = useMemo(() => trips.map((item) => ({ ...item, image: photoOverrides[item.id] ?? item.image })), [trips, photoOverrides]);
   const draftRouteStops = useMemo(() => draftDestinations.filter((stop) => stop.name.trim()), [draftDestinations]);
   const shownCalendarDays = useMemo(() => calendarGrid(calendarMonth), [calendarMonth]);
   const openDatePicker = (target: DatePickerTarget) => {
@@ -296,7 +297,7 @@ export default function DashboardPage() {
   }
   return <>
       <input ref={importInputRef} className={styles.hiddenInput} type="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" aria-label="Chọn sổ lịch trình Excel" onChange={readWorkbook} />
-      <DashboardExperience trips={trips.map((item) => ({ ...item, image: photoOverrides[item.id] ?? item.image }))} onSelectTrip={setSelectedIndex} onOpenTrip={(item) => navigate(`/home/trip/${encodeURIComponent(item.id)}`, { state: { from: location.pathname, section: activeSection } })} onCreateTrip={openCreateTrip} onDeleteTrip={deleteTrip} onChooseDestination={chooseDestination} onImport={openImport} onExport={exportTrip} active={activeSection} onChange={setActiveSection} query={searchQuery} onQueryChange={setSearchQuery} dockVisible={!dialog && !importOpen && !importedTrip} syncStatus={syncStatus} />
+      <DashboardExperience trips={dashboardTrips} onSelectTrip={setSelectedIndex} onOpenTrip={(item) => navigate(`/home/trip/${encodeURIComponent(item.id)}`, { state: { from: location.pathname, section: activeSection } })} onCreateTrip={openCreateTrip} onDeleteTrip={deleteTrip} onChooseDestination={chooseDestination} onImport={openImport} onExport={exportTrip} active={activeSection} onChange={setActiveSection} query={searchQuery} onQueryChange={setSearchQuery} dockVisible={!dialog && !importOpen && !importedTrip} syncStatus={syncStatus} />
       {dialog === "new" && <GlassSheet title="Tạo chuyến đi mới" variant="sheet" className={styles.createTripSheet} onClose={closeDialog}><form className={styles.createForm} onSubmit={createTrip}>
         <label className={styles.coverPicker}><ImagePlus aria-hidden="true" /><span>{draftCover ? draftCover.name : "Thêm ảnh bìa"}</span><b>{draftCover ? "Đã chọn" : "Chọn ảnh"}</b><input type="file" accept="image/*" aria-label="Chọn ảnh bìa" onChange={(event) => { const file = event.currentTarget.files?.[0]; if (!file) return; if (draftCoverPreview) URL.revokeObjectURL(draftCoverPreview); setDraftCover(file); setDraftCoverPreview(URL.createObjectURL(file)); setDraftCoverPreviewFailed(false); event.currentTarget.value = ""; }} /></label>
         {draftCover && (draftCoverPreview && !draftCoverPreviewFailed ? <img className={styles.createPreview} src={draftCoverPreview} alt="Ảnh bìa chuyến đi" onError={() => setDraftCoverPreviewFailed(true)} /> : <div className={styles.createPreviewFallback}><ImagePlus aria-hidden="true" /><span>Không thể xem trước định dạng ảnh này</span></div>)}
