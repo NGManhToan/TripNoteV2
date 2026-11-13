@@ -214,7 +214,7 @@ export default function TripDetailExperience({ trip, onBack, onOpenPreparation, 
     const dayBudget = day.expectedBudget ?? activities.reduce((sum, item) => sum + (item.plannedCost ?? item.cost ?? 0), 0);
     const daySpent = activities.reduce((sum, item) => sum + (item.actualCost ?? 0), 0);
     const dayHasOverspend = daySpent > dayBudget || activities.some((item) => activityCostSummary(item.plannedCost ?? item.cost, item.actualCost).over);
-    return <motion.section className={styles.daySection} key={day.date} initial={reduced ? false : { opacity: 0, y: 7 }} animate={{ opacity: 1, y: 0 }}>
+    return <motion.section className={styles.daySection} key={day.date} initial={false} animate={{ opacity: 1, y: 0 }}>
       <div className={styles.dateLine}><span><CalendarCheck2 /></span><strong>{dateLabel(day.date)}</strong>{day.destination && <em className={styles.dayDestination}><MapPin />{day.destination}</em>}<small className={dayHasOverspend ? styles.dayCostOver : ""}><span>• Dự kiến: {formatDong(dayBudget)}</span>{daySpent > 0 && <span>• Đã chi: {formatDong(daySpent)}</span>}</small></div>
       {activities.length ? <div className={styles.timeline}>{activities.map((activity) => <button type="button" className={styles.activity} key={activity.id} onClick={() => setSelected({ activity, date: day.date })}>
         <span className={`${styles.categoryIcon} ${activity.category.toLocaleLowerCase("vi").includes("ăn") ? styles.food : ""}`}>{activity.category.toLocaleLowerCase("vi").includes("ăn") ? <Utensils /> : activity.categoryGroup === "Mua sắm" ? <ShoppingBag /> : <MapPin />}</span>
@@ -267,7 +267,7 @@ export default function TripDetailExperience({ trip, onBack, onOpenPreparation, 
     <div className={styles.editFooter}><GlassButton type="submit" variant="primary" className={styles.save} disabled={saving}><Plus />{saving ? "Đang lưu…" : "Thêm vào lịch trình"}</GlassButton></div>
   </form>;
 
-  return <motion.main className={styles.page} initial={reduced ? false : { opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: reduced ? 0 : .2, ease: [.22, 1, .36, 1] }}>
+  return <motion.main className={styles.page} initial={false} animate={{ opacity: 1, y: 0 }} transition={{ duration: reduced ? 0 : .2, ease: [.22, 1, .36, 1] }}>
     <header className={styles.hero}>
       {trip.image && <img className={styles.cover} src={trip.image} alt="" />}<span className={styles.coverShade} />
       <button className={styles.back} type="button" aria-label="Quay lại" onClick={onBack}><ArrowLeft /></button><button className={styles.coverEdit} type="button" aria-label="Cập nhật ảnh chuyến đi" onClick={() => coverInput.current?.click()}><Camera /></button>

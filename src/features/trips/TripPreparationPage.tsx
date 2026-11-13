@@ -161,7 +161,7 @@ export default function TripPreparationPage({ trip, onBack, onHome, onReport, on
       </div>
     </header>
     <section className={styles.listRegion} aria-label="Các việc cần chuẩn bị">
-      {visibleTasks.length ? <ul className={styles.taskList}>{visibleTasks.map((task) => <motion.li className={styles.taskRow} key={task.id} layout={!reduceMotion} initial={reduceMotion ? false : { opacity: 0, y: 7 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, x: -12 }} transition={{ duration: reduceMotion ? 0 : .18 }}>
+      {visibleTasks.length ? <ul className={styles.taskList}>{visibleTasks.map((task) => <motion.li className={styles.taskRow} key={task.id} layout={!reduceMotion} initial={false} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, x: -12 }} transition={{ duration: reduceMotion ? 0 : .18 }}>
         <button className={styles.checkButton + (task.done ? " " + styles.checked : "")} type="button" aria-label={(task.done ? "Đánh dấu chưa xong: " : "Đánh dấu hoàn tất: ") + task.title} aria-pressed={task.done} onClick={() => toggleTask(task.id)}>{task.done && <Check />}</button>
         <div className={styles.taskCopy}>
           {editingId === task.id ? <input className={styles.inlineEdit} value={editDraft} maxLength={90} aria-label="Sửa việc cần chuẩn bị" onChange={(event) => setEditDraft(event.target.value)} onBlur={() => { if (cancelBlur.current) { cancelBlur.current = false; return; } saveEdit(task.id); }} onKeyDown={(event) => handleEditKey(event, task.id)} /> : <button className={styles.taskTitle + (task.done ? " " + styles.taskTitleDone : "")} type="button" onClick={() => { setEditingId(task.id); setEditDraft(task.title); }}>{task.title}</button>}

@@ -30,12 +30,12 @@ export default function TripReportPage({ trip, onBack, onHome, onPreparation }: 
     await navigator.share({ files: [exportedFile], title: `TripNote · ${trip.name}` });
   };
 
-  return <><motion.main className={styles.page} initial={reduceMotion ? false : { opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: reduceMotion ? 0 : .32 }}>
+  return <><motion.main className={styles.page} initial={false} animate={{ opacity: 1, y: 0 }} transition={{ duration: reduceMotion ? 0 : .32 }}>
     <header className={styles.header}><button type="button" onClick={onBack} aria-label="Quay lại chuyến đi"><ArrowLeft /></button><div><span>BÁO CÁO CHUYẾN ĐI</span><h1>{trip.name}</h1></div></header>
     <section className={styles.usage}><div><span>Ngân sách đã sử dụng</span><strong>{progress === null ? "Chưa có ngân sách" : `${progress}%`}</strong></div><div className={styles.track}><i style={{ width: `${progress ?? 0}%` }} /></div><div className={styles.usageNumbers}><span>Đã chi <b>{formatDong(actual)}</b></span><span>Ngân sách <b>{trip.estimate === null ? "Chưa nhập" : formatDong(trip.estimate)}</b></span></div></section>
     <div className={styles.report}><TripReport trip={trip} /></div>
     <section className={styles.daily} aria-label="Chi phí thực tế theo ngày"><h2>Chi phí theo ngày</h2><p>Đã chi thực tế · {dailyCosts.length} ngày</p>
-      {dailyCosts.length ? <div className={styles.bars}>{dailyCosts.map((day) => <div className={styles.barColumn} key={day.label}><strong>{day.value ? formatDong(day.value) : "—"}</strong><div className={styles.barTrack}><motion.i initial={reduceMotion ? false : { height: 0 }} animate={{ height: `${Math.max(day.value ? 8 : 2, day.value / maxDayCost * 100)}%` }} transition={{ duration: reduceMotion ? 0 : .5 }} /></div><span>{day.label}</span></div>)}</div> : <p className={styles.empty}>Chưa có ngày hoặc hoạt động trong lịch trình.</p>}
+      {dailyCosts.length ? <div className={styles.bars}>{dailyCosts.map((day) => <div className={styles.barColumn} key={day.label}><strong>{day.value ? formatDong(day.value) : "—"}</strong><div className={styles.barTrack}><motion.i initial={false} animate={{ height: `${Math.max(day.value ? 8 : 2, day.value / maxDayCost * 100)}%` }} transition={{ duration: reduceMotion ? 0 : .5 }} /></div><span>{day.label}</span></div>)}</div> : <p className={styles.empty}>Chưa có ngày hoặc hoạt động trong lịch trình.</p>}
     </section>
     <button className={styles.export} type="button" onClick={() => void exportWorkbook()} disabled={exporting}><Download />{exporting ? "Đang tạo tệp…" : "Xuất file .xlsx"}</button>
     {exportError && <p role="alert" className={styles.error}>{exportError}</p>}
