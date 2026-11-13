@@ -21,6 +21,7 @@ import styles from "./DashboardExperience.module.css";
 const favoritesKey = "tripnote-v2-favorite-destinations";
 const themeKey = "tripnote-v2-dark-navy";
 const appIconKey = "tripnote-v2-custom-app-icon";
+const destinationBatchSize = () => window.matchMedia("(max-width: 600px)").matches ? 12 : 36;
 type Props = { trips: Trip[]; onSelectTrip: (index: number) => void; onOpenTrip: (trip: Trip) => void; onCreateTrip: () => void; onDeleteTrip: (trip: Trip) => void; onChooseDestination: (destination: Destination) => void; onImport: () => void; onExport: (trip: Trip) => void; active: DashboardSection; onChange: (section: DashboardSection) => void; query: string; onQueryChange: (value: string) => void; dockVisible?: boolean; syncStatus?: TripSyncState };
 
 type FeaturedDestination = { destination: Destination; rating: FeaturedPlaceRating };
@@ -132,7 +133,7 @@ export default function DashboardExperience({ trips, onSelectTrip, onOpenTrip, o
   const [destinationRatings, setDestinationRatings] = useState<Record<string, FeaturedPlaceRating>>({});
   const [toastMessage, setToastMessage] = useState("");
   const [revealedDeleteId, setRevealedDeleteId] = useState<string | null>(null);
-  const [destinationWindow, setDestinationWindow] = useState({ key: "", count: 36 });
+  const [destinationWindow, setDestinationWindow] = useState(() => ({ key: "", count: destinationBatchSize() }));
   const suppressTripClickRef = useRef<{ tripId: string; until: number } | null>(null);
   const tripMenuRef = useRef<HTMLElement>(null);
   const destinationSentinelRef = useRef<HTMLDivElement>(null);
@@ -211,7 +212,8 @@ export default function DashboardExperience({ trips, onSelectTrip, onOpenTrip, o
   const draftDestinationCount = useMemo(() => searchDestinations(query).filter((place) => (!draftRegions.length || draftRegions.includes(place.macroRegion)) && (!draftTypes.length || place.types.some((type) => draftTypes.includes(type)))).length, [query, draftRegions, draftTypes]);
   const visibleDestinations = useMemo(() => active === "Yêu thích" ? matchingDestinations.filter((place) => favorites.includes(place.id) || favorites.includes(place.name)) : matchingDestinations, [active, favorites, matchingDestinations]);
   const destinationListKey = `${active}|${query}|${regions.join(",")}|${selectedTypes.join(",")}|${active === "Yêu thích" ? favorites.join(",") : ""}`;
-  const visibleDestinationCount = destinationWindow.key === destinationListKey ? destinationWindow.count : 36;
+  const firstDestinationBatch = destinationBatchSize();
+  const visibleDestinationCount = destinationWindow.key === destinationListKey ? destinationWindow.count : firstDestinationBatch;
   const renderedDestinations = useMemo(() => visibleDestinations.slice(0, visibleDestinationCount), [visibleDestinations, visibleDestinationCount]);
   const showDiscover = active === "Khám phá";
   const emptySearch = showDiscover && Boolean(query.trim()) && visibleDestinations.length === 0;
@@ -221,35 +223,11 @@ export default function DashboardExperience({ trips, onSelectTrip, onOpenTrip, o
     if (!sentinel || !scrollRoot || visibleDestinationCount >= visibleDestinations.length) return;
     const listKey = destinationListKey;
     const observer = new IntersectionObserver((entries) => {
-      if (entries.some((entry) => entry.isIntersecting)) setDestinationWindow((current) => ({ key: listKey, count: Math.min((current.key === listKey ? current.count : 36) + 24, visibleDestinations.length) }));
+      if (entries.some((entry) => entry.isIntersecting)) setDestinationWindow((current) => ({ key: listKey, count: Math.min((current.key === listKey ? current.count : firstDestinationBatch) + firstDestinationBatch, visibleDestinations.length) }));
     }, { root: scrollRoot, rootMargin: "900px 0px" });
     observer.observe(sentinel);
     return () => observer.disconnect();
-  }, [destinationListKey, visibleDestinationCount, visibleDestinations.length]);
-  useEffect(() => {
-    if (active !== "Chuyến đi") return;
-    const covers = [...new Set(matchingDestinations.slice(0, 24).flatMap((place) => place.cover ? [place.cover] : []))];
-    let cancelled = false;
-    const timers: number[] = [];
-    const warmCovers = () => {
-      covers.forEach((src, index) => {
-        timers.push(window.setTimeout(() => {
-          if (cancelled) return;
-          const image = new Image();
-          image.decoding = "async";
-          image.src = src;
-        }, index * 55));
-      });
-    };
-    const idleWindow = window as unknown as { requestIdleCallback?: (callback: () => void, options?: { timeout: number }) => number; cancelIdleCallback?: (id: number) => void };
-    const idleId = idleWindow.requestIdleCallback ? idleWindow.requestIdleCallback(warmCovers, { timeout: 800 }) : window.setTimeout(warmCovers, 180);
-    return () => {
-      cancelled = true;
-      timers.forEach(window.clearTimeout);
-      if (idleWindow.requestIdleCallback) idleWindow.cancelIdleCallback?.(idleId);
-      else window.clearTimeout(idleId);
-    };
-  }, [active, matchingDestinations]);
+  }, [destinationListKey, visibleDestinationCount, visibleDestinations.length, firstDestinationBatch]);
   const filteredTrips = trips.map((trip, index) => ({ trip, index })).filter(({ trip }) => normalizeVietnamese(`${tripRouteLabel(trip)} ${trip.name} ${trip.destinations?.map((stop) => stop.name).join(" ") ?? ""} ${trip.places?.map((place) => place.name).join(" ") ?? ""}`).includes(normalizeVietnamese(tripQuery)));
   const tripDayTotal = trips.reduce((total, trip) => total + (trip.itinerary?.length ?? 0), 0);
   const tripActionTotal = trips.reduce((total, trip) => total + (trip.itinerary?.reduce((count, day) => count + day.activities.length, 0) ?? 0) + (trip.places?.length ?? 0), 0);
@@ -373,7 +351,7 @@ export default function DashboardExperience({ trips, onSelectTrip, onOpenTrip, o
         }) : <p className={styles.tripListEmpty}>{tripQuery ? "Không tìm thấy chuyến đi phù hợp." : "Chưa có chuyến đi. Tạo chuyến đầu tiên để bắt đầu lên kế hoạch."}</p>}</div>
       </section> : <>
         <section className={styles.destinations} id="discover-destinations"><div className={styles.sectionHeading}><div><span className={styles.editorialEyebrow}>{active === "Yêu thích" ? "BỘ SƯU TẬP CỦA BẠN" : "KHÁM PHÁ VIỆT NAM"}</span><h2>{active === "Yêu thích" ? "Điểm đến yêu thích" : "Khám phá điểm đến"}</h2></div><span className={styles.editorialFeedMeta}>{visibleDestinations.length} địa điểm</span></div><div className={styles.destinationGrid}>
-          {renderedDestinations.map((place, index) => <DestinationCard key={place.id} place={place} favorite={favorites.includes(place.id) || favorites.includes(place.name)} reduced={Boolean(reduced)} loading={index < 4 ? "eager" : "lazy"} highPriority={index < 2} rating={destinationRatings[place.id]} onChoose={setDetailDestination} onPlan={setPlanningDestination} onToggleFavorite={toggleFavorite} onRequestRating={requestDestinationRating} compactFavorite={active === "Yêu thích"} />)}
+          {renderedDestinations.map((place, index) => <DestinationCard key={place.id} place={place} favorite={favorites.includes(place.id) || favorites.includes(place.name)} reduced={Boolean(reduced)} loading={index < (firstDestinationBatch === 12 ? 2 : 4) ? "eager" : "lazy"} highPriority={index < 2} rating={destinationRatings[place.id]} onChoose={setDetailDestination} onPlan={setPlanningDestination} onToggleFavorite={toggleFavorite} onRequestRating={requestDestinationRating} compactFavorite={active === "Yêu thích"} />)}
           {visibleDestinations.length === 0 && !(showDiscover && query.trim()) && <p className={styles.empty}>{active === "Yêu thích" ? "Chưa lưu điểm đến nào. Chạm trái tim trên một thẻ để lưu." : "Không tìm thấy điểm đến phù hợp."}</p>}
           {renderedDestinations.length < visibleDestinations.length && <div ref={destinationSentinelRef} className={styles.destinationSentinel} aria-hidden="true" />}
         </div></section>
