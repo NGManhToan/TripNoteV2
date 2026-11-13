@@ -22,7 +22,7 @@ const favoritesKey = "tripnote-v2-favorite-destinations";
 const themeKey = "tripnote-v2-dark-navy";
 const appIconKey = "tripnote-v2-custom-app-icon";
 const destinationBatchSize = () => window.matchMedia("(max-width: 600px)").matches ? 12 : 36;
-type Props = { trips: Trip[]; onSelectTrip: (index: number) => void; onOpenTrip: (trip: Trip) => void; onCreateTrip: () => void; onDeleteTrip: (trip: Trip) => void; onChooseDestination: (destination: Destination) => void; onImport: () => void; onExport: (trip: Trip) => void; active: DashboardSection; onChange: (section: DashboardSection) => void; query: string; onQueryChange: (value: string) => void; dockVisible?: boolean; syncStatus?: TripSyncState };
+type Props = { trips: Trip[]; onSelectTrip: (index: number) => void; onOpenTrip: (trip: Trip) => void; onCreateTrip: () => void; onDeleteTrip: (trip: Trip) => void; onChooseDestination: (destination: Destination) => void; onImport: () => void; onExport: (trip: Trip) => void; initialSection: DashboardSection; onRememberSection: (section: DashboardSection) => void; query: string; onQueryChange: (value: string) => void; dockVisible?: boolean; syncStatus?: TripSyncState };
 
 type FeaturedDestination = { destination: Destination; rating: FeaturedPlaceRating };
 
@@ -111,9 +111,10 @@ const DestinationCard = memo(function DestinationCard({ place, favorite, reduced
   </article>;
 });
 
-export default function DashboardExperience({ trips, onSelectTrip, onOpenTrip, onCreateTrip, onDeleteTrip, onChooseDestination, onImport, onExport, active, onChange, query, onQueryChange, dockVisible = true, syncStatus = "local" }: Props) {
+export default function DashboardExperience({ trips, onSelectTrip, onOpenTrip, onCreateTrip, onDeleteTrip, onChooseDestination, onImport, onExport, initialSection, onRememberSection, query, onQueryChange, dockVisible = true, syncStatus = "local" }: Props) {
   const reduced = useReducedMotion();
   const mobileViewport = window.matchMedia("(max-width: 600px)").matches;
+  const [active, setActive] = useState(initialSection);
   const [regions, setRegions] = useState<string[]>([]);
   const [destinationTypesSelected, setDestinationTypesSelected] = useState<string[]>([]);
   const [draftRegions, setDraftRegions] = useState<string[]>([]);
@@ -141,6 +142,10 @@ export default function DashboardExperience({ trips, onSelectTrip, onOpenTrip, o
   const toastTimerRef = useRef<number | null>(null);
   const appIconInputRef = useRef<HTMLInputElement>(null);
   const requestedRatingIdsRef = useRef(new Set<string>());
+  const changeSection = useCallback((section: DashboardSection) => {
+    setActive(section);
+    onRememberSection(section);
+  }, [onRememberSection]);
   useFavoritesSync(favorites, setFavorites);
   useEffect(() => { try { localStorage.setItem(favoritesKey, JSON.stringify(favorites)); } catch { /* local preferences are optional */ } }, [favorites]);
   useEffect(() => { try { localStorage.setItem(themeKey, String(darkNavy)); } catch { /* local preferences are optional */ } }, [darkNavy]);
@@ -290,9 +295,9 @@ export default function DashboardExperience({ trips, onSelectTrip, onOpenTrip, o
   return <motion.main id="dashboard-scroll-container" className={`${styles.page} ${showDiscover ? styles.discoverMode : ""} ${active === "Yêu thích" ? styles.favoritesMode : ""} ${active === "Chuyến đi" ? styles.tripMode : ""} ${active === "Cá nhân" ? styles.profileMode : ""} ${active === "Cá nhân" && !darkNavy ? styles.lightProfile : ""}`} initial={false} animate={{ opacity: 1, y: 0 }} transition={{ duration: reduced ? 0 : .18, ease: [.22, 1, .36, 1] }}>
     <div className={styles.ambient} aria-hidden="true" />
     <div className={`${styles.environment} ${active === "Chuyến đi" ? styles.tripEnvironment : ""} ${active === "Cá nhân" ? styles.profileEnvironment : ""} ${emptySearch ? styles.emptySearchEnvironment : ""}`} aria-hidden="true"><div className={styles.starField} /><motion.img className={styles.environmentEarth} src={earth} alt="" animate={reduced || showDiscover || mobileViewport ? undefined : { rotate: [0, 2, 0, -2, 0], y: [0, -4, 0, 4, 0] }} transition={{ duration: 32, repeat: Infinity, ease: "linear" }} /><motion.img className={styles.environmentPlane} src={plane} alt="" animate={reduced || showDiscover || mobileViewport ? undefined : { x: [0, -8, 0, 7, 0], y: [0, 5, 0, -4, 0], rotate: [-8, -5, -9, -11, -8] }} transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }} /><span className={styles.flightTrail} /></div>
-    {active === "Chuyến đi" ? <header ref={tripMenuRef} className={`${styles.header} ${styles.tripManagerHeader} ${menuOpen ? styles.menuOpen : ""}`}><button type="button" className={styles.tripBack} aria-label="Quay lại khám phá" onClick={() => onChange("Khám phá")}><ArrowLeft /></button><strong>Quản lý chuyến đi</strong><div className={styles.tripHeaderActions}><button type="button" className={styles.menuButton} aria-label="Mở tùy chọn" aria-expanded={menuOpen} onClick={() => setMenuOpen((value) => !value)}><Ellipsis /></button></div>
+    {active === "Chuyến đi" ? <header ref={tripMenuRef} className={`${styles.header} ${styles.tripManagerHeader} ${menuOpen ? styles.menuOpen : ""}`}><button type="button" className={styles.tripBack} aria-label="Quay lại khám phá" onClick={() => changeSection("Khám phá")}><ArrowLeft /></button><strong>Quản lý chuyến đi</strong><div className={styles.tripHeaderActions}><button type="button" className={styles.menuButton} aria-label="Mở tùy chọn" aria-expanded={menuOpen} onClick={() => setMenuOpen((value) => !value)}><Ellipsis /></button></div>
       <AnimatePresence>{menuOpen && <motion.div className={styles.menu} initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -5 }}><button type="button" onClick={() => { setMenuOpen(false); onImport(); }}><FileSpreadsheet />Nhập từ Excel</button><button type="button" onClick={openExport}><BookOpen />Xuất dữ liệu</button></motion.div>}</AnimatePresence>
-    </header> : active === "Cá nhân" ? <header className={`${styles.header} ${styles.profileHeader}`}><strong>Hồ sơ cá nhân</strong></header> : <header className={`${styles.header} ${showDiscover ? styles.discoverHeader : ""}`}><div className={styles.brand}>{showDiscover && <span className={styles.brandMark}>{customAppIcon ? <img src={customAppIcon} alt="" /> : <Send />}</span>}<span className={showDiscover ? styles.brandCopy : ""}><strong>{showDiscover ? <>Trip<span>Vibe</span></> : "Trip Note"}</strong>{showDiscover && <small>Khám phá Việt Nam</small>}</span></div><div className={styles.headerActions}>{showDiscover ? <span className={styles.discoverCount}>{matchingDestinations.length} điểm đến</span> : <button type="button" className={styles.avatar} aria-label="Hồ sơ cá nhân" onClick={() => onChange("Cá nhân")}>{customAppIcon ? <img src={customAppIcon} alt="" /> : <UserRound />}</button>}</div></header>}
+    </header> : active === "Cá nhân" ? <header className={`${styles.header} ${styles.profileHeader}`}><strong>Hồ sơ cá nhân</strong></header> : <header className={`${styles.header} ${showDiscover ? styles.discoverHeader : ""}`}><div className={styles.brand}>{showDiscover && <span className={styles.brandMark}>{customAppIcon ? <img src={customAppIcon} alt="" /> : <Send />}</span>}<span className={showDiscover ? styles.brandCopy : ""}><strong>{showDiscover ? <>Trip<span>Vibe</span></> : "Trip Note"}</strong>{showDiscover && <small>Khám phá Việt Nam</small>}</span></div><div className={styles.headerActions}>{showDiscover ? <span className={styles.discoverCount}>{matchingDestinations.length} điểm đến</span> : <button type="button" className={styles.avatar} aria-label="Hồ sơ cá nhân" onClick={() => changeSection("Cá nhân")}>{customAppIcon ? <img src={customAppIcon} alt="" /> : <UserRound />}</button>}</div></header>}
 
     {active === "Cá nhân" ? <section className={styles.profile}>
       <div className={styles.profileIdentity}><div className={styles.profileAvatar} aria-hidden="true">{customAppIcon ? <img src={customAppIcon} alt="" /> : "TN"}</div><div className={styles.profileIdentityCopy}><strong>TripNote</strong><span>Không gian dùng chung qua link</span><small><i /> {syncStatus === "synced" ? "Đồng bộ trên các thiết bị" : syncStatus === "connecting" ? "Đang kết nối dữ liệu" : syncStatus === "offline" ? "Đang chờ kết nối mạng" : "Lưu trên thiết bị này"}</small></div></div>
@@ -360,7 +365,7 @@ export default function DashboardExperience({ trips, onSelectTrip, onOpenTrip, o
         </div></section>
       </>}
     </>}
-    <MobileDock active={active} visible={dockVisible && !modalOpen} favoriteCount={favorites.length} tripCount={trips.length} onChange={onChange} />
+    <MobileDock active={active} visible={dockVisible && !modalOpen} favoriteCount={favorites.length} tripCount={trips.length} onChange={changeSection} />
     {filterSheet}
     {exportSheet}
     {deleteTripSheet}

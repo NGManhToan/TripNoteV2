@@ -50,10 +50,11 @@ export default function DashboardPage() {
   const location = useLocation();
   const navigate = useNavigate();
   const navigationState = location.state as { from?: string; section?: DashboardSection } | null;
+  const initialDashboardSection = navigationState?.from && navigationState.section ? navigationState.section : "Khám phá";
   const [trips, setTrips] = useState(loadTrips);
   const syncStatus = useTripSync(trips, setTrips);
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [activeSection, setActiveSection] = useState<DashboardSection>(() => navigationState?.from && navigationState.section ? navigationState.section : "Khám phá");
+  const dashboardSectionRef = useRef<DashboardSection>(initialDashboardSection);
   const [searchQuery, setSearchQuery] = useState("");
   const [dialog, setDialog] = useState<DialogState>(null);
   const [draftName, setDraftName] = useState("");
@@ -77,6 +78,7 @@ export default function DashboardPage() {
   const photoUrlsRef = useRef<Record<string, string>>({});
   const restoredCoversRef = useRef(false);
   const toastTimerRef = useRef<number | null>(null);
+  const rememberDashboardSection = useCallback((section: DashboardSection) => { dashboardSectionRef.current = section; }, []);
   const trip = trips[selectedIndex] ?? trips[0];
   const tripRoute = location.pathname.match(/^\/home\/trip\/([^/]+)(?:\/(prep|map|report))?$/);
   const showingTripDetail = Boolean(tripRoute);
@@ -170,7 +172,7 @@ export default function DashboardPage() {
     setDraftCoverPreview(null);
     setDialog(null);
     notify("Đã tạo chuyến đi");
-    navigate(`/home/trip/${encodeURIComponent(created.id)}`, { state: { from: location.pathname, section: activeSection } });
+    navigate(`/home/trip/${encodeURIComponent(created.id)}`, { state: { from: location.pathname, section: dashboardSectionRef.current } });
   };
   const updateDate = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -297,7 +299,7 @@ export default function DashboardPage() {
   }
   return <>
       <input ref={importInputRef} className={styles.hiddenInput} type="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" aria-label="Chọn sổ lịch trình Excel" onChange={readWorkbook} />
-      <DashboardExperience trips={dashboardTrips} onSelectTrip={setSelectedIndex} onOpenTrip={(item) => navigate(`/home/trip/${encodeURIComponent(item.id)}`, { state: { from: location.pathname, section: activeSection } })} onCreateTrip={openCreateTrip} onDeleteTrip={deleteTrip} onChooseDestination={chooseDestination} onImport={openImport} onExport={exportTrip} active={activeSection} onChange={setActiveSection} query={searchQuery} onQueryChange={setSearchQuery} dockVisible={!dialog && !importOpen && !importedTrip} syncStatus={syncStatus} />
+      <DashboardExperience trips={dashboardTrips} onSelectTrip={setSelectedIndex} onOpenTrip={(item) => navigate(`/home/trip/${encodeURIComponent(item.id)}`, { state: { from: location.pathname, section: dashboardSectionRef.current } })} onCreateTrip={openCreateTrip} onDeleteTrip={deleteTrip} onChooseDestination={chooseDestination} onImport={openImport} onExport={exportTrip} initialSection={initialDashboardSection} onRememberSection={rememberDashboardSection} query={searchQuery} onQueryChange={setSearchQuery} dockVisible={!dialog && !importOpen && !importedTrip} syncStatus={syncStatus} />
       {dialog === "new" && <GlassSheet title="Tạo chuyến đi mới" variant="sheet" className={styles.createTripSheet} onClose={closeDialog}><form className={styles.createForm} onSubmit={createTrip}>
         <label className={styles.coverPicker}><ImagePlus aria-hidden="true" /><span>{draftCover ? draftCover.name : "Thêm ảnh bìa"}</span><b>{draftCover ? "Đã chọn" : "Chọn ảnh"}</b><input type="file" accept="image/*" aria-label="Chọn ảnh bìa" onChange={(event) => { const file = event.currentTarget.files?.[0]; if (!file) return; if (draftCoverPreview) URL.revokeObjectURL(draftCoverPreview); setDraftCover(file); setDraftCoverPreview(URL.createObjectURL(file)); setDraftCoverPreviewFailed(false); event.currentTarget.value = ""; }} /></label>
         {draftCover && (draftCoverPreview && !draftCoverPreviewFailed ? <img className={styles.createPreview} src={draftCoverPreview} alt="Ảnh bìa chuyến đi" onError={() => setDraftCoverPreviewFailed(true)} /> : <div className={styles.createPreviewFallback}><ImagePlus aria-hidden="true" /><span>Không thể xem trước định dạng ảnh này</span></div>)}
