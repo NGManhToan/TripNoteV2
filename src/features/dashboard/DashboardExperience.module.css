@@ -900,3 +900,11 @@
   .favoritesMode .favoriteCardBudget { font-size: .61rem; }
   .favoritesMode .favoriteCardPlan { padding-inline: 6px; font-size: .56rem; }
 }
+
+@media (max-width: 600px) {
+  .tripIntro p { font-size:.88rem; }
+  .tripListCopy>strong { display:-webkit-box;overflow:hidden;font-size:.94rem;line-height:1.22;white-space:normal;-webkit-box-orient:vertical;-webkit-line-clamp:2; }
+  .tripListCopy>small,.tripListCopy>span:not(.tripBadges) { font-size:.78rem;line-height:1.25; }
+  .tripListCopy>b { font-size:.9rem; }
+  .tripBadges i { font-size:.72rem; }
+}

@@ -228,3 +228,22 @@
 @media (min-width:600px) { .activityCreateSheet { border-radius:27px; }.customTypePanel { padding-inline:22px; }.activityCreateForm { padding-inline:22px; }.activityCreateForm .editFooter { margin-inline:-22px;padding-inline:22px; } }
 
 @media (max-width:370px) { .editCostStatus { gap:4px;padding-inline:7px;font-size:.54rem; }.editCostStatus>small,.editCostStatus>strong { font-size:.52rem; }.editCostStatus>strong { gap:3px;padding-inline:5px; } }
+
+@media (max-width:600px) {
+  .heroCopy p { font-size:.84rem; }
+  .budgetRing { font-size:.68rem; }
+  .budgetPrimary strong { font-size:clamp(.9rem,4.2vw,1rem); }
+  .budgetPrimary small,.budgetSpent small { font-size:.72rem; }
+  .budgetPrimary>span { font-size:.76rem; }
+  .budgetSpent>strong { font-size:.84rem; }
+  .dayLabel,.dayDropdown>button { font-size:.84rem; }
+  .dayDropdown small { font-size:.7rem; }
+  .dateLine>strong { font-size:.86rem; }
+  .dateLine>small { font-size:.68rem; }
+  .dayDestination { font-size:.68rem; }
+  .activityInfo>strong { font-size:.9rem; }
+  .activityInfo>span,.activityInfo>small { font-size:.74rem; }
+  .activityCost>strong { font-size:.82rem; }
+  .activityCost>small { font-size:.62rem; }
+  .bottomNav button { font-size:.74rem; }
+}

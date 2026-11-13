@@ -1,6 +1,6 @@
 import { createPortal } from "react-dom";
 import { BriefcaseBusiness, Compass, Heart, UserRound } from "lucide-react";
-import { startTransition, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { DashboardSection } from "./types";
 import styles from "./MobileDock.module.css";
 
@@ -39,7 +39,7 @@ export default function MobileDock({ active, visible = true, favoriteCount = 0, 
     const countLabel = label === "Yêu thích" ? "địa điểm yêu thích" : "chuyến đi";
     return <button className={selectedSection === label ? styles.active : styles.item} key={label} type="button" aria-label={count > 0 ? `${label}, ${count} ${countLabel}` : label} aria-current={selectedSection === label ? "page" : undefined} onClick={() => {
       setPendingSection(label);
-      startTransition(() => onChange(label));
+      onChange(label);
     }}><Icon aria-hidden="true" />{count > 0 && <span className={label === "Chuyến đi" ? styles.tripCount : styles.favoriteCount} aria-hidden="true">{count > 99 ? "99+" : count}</span>}<span>{label}</span></button>;
   })}</nav>, document.body);
 }

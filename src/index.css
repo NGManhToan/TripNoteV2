@@ -7,7 +7,7 @@
 body,button,input,textarea,select { font-family:var(--font-body); }
 *, *::before, *::after { box-sizing: border-box; }
 * { margin: 0; }
-html, body, #root { min-width: 320px; min-height: 100%; }
+html, body, #root { min-width: 320px; min-height: 100%;touch-action:pan-x pan-y; }
 body { min-height: 100vh; background: #f5f8f7; }
 button, input, textarea, select { font: inherit; }
 button, a, [role="button"] { -webkit-tap-highlight-color: transparent;touch-action: manipulation;transition:scale 90ms cubic-bezier(.2,.75,.25,1); }
