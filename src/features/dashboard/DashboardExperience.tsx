@@ -115,6 +115,9 @@ export default function DashboardExperience({ trips, onSelectTrip, onOpenTrip, o
   const reduced = useReducedMotion();
   const mobileViewport = window.matchMedia("(max-width: 600px)").matches;
   const [active, setActive] = useState(initialSection);
+  const [destinationTab, setDestinationTab] = useState<"Khám phá" | "Yêu thích">(initialSection === "Yêu thích" ? "Yêu thích" : "Khám phá");
+  const [browseMounted, setBrowseMounted] = useState(initialSection === "Khám phá" || initialSection === "Yêu thích");
+  const [discoverMounted, setDiscoverMounted] = useState(initialSection === "Khám phá");
   const [regions, setRegions] = useState<string[]>([]);
   const [destinationTypesSelected, setDestinationTypesSelected] = useState<string[]>([]);
   const [draftRegions, setDraftRegions] = useState<string[]>([]);
@@ -144,6 +147,11 @@ export default function DashboardExperience({ trips, onSelectTrip, onOpenTrip, o
   const requestedRatingIdsRef = useRef(new Set<string>());
   const changeSection = useCallback((section: DashboardSection) => {
     setActive(section);
+    if (section === "Khám phá" || section === "Yêu thích") {
+      setDestinationTab(section);
+      setBrowseMounted(true);
+      if (section === "Khám phá") setDiscoverMounted(true);
+    }
     onRememberSection(section);
   }, [onRememberSection]);
   useFavoritesSync(favorites, setFavorites);
@@ -216,8 +224,8 @@ export default function DashboardExperience({ trips, onSelectTrip, onOpenTrip, o
   const selectedTypes = useMemo(() => [...new Set([...destinationTypesSelected, ...(categoryType ? [categoryType] : [])])], [categoryType, destinationTypesSelected]);
   const matchingDestinations = useMemo(() => searchDestinations(query).filter((place) => (!regions.length || regions.includes(place.macroRegion)) && (!selectedTypes.length || place.types.some((type) => selectedTypes.includes(type)))), [query, regions, selectedTypes]);
   const draftDestinationCount = useMemo(() => searchDestinations(query).filter((place) => (!draftRegions.length || draftRegions.includes(place.macroRegion)) && (!draftTypes.length || place.types.some((type) => draftTypes.includes(type)))).length, [query, draftRegions, draftTypes]);
-  const visibleDestinations = useMemo(() => active === "Yêu thích" ? matchingDestinations.filter((place) => favorites.includes(place.id) || favorites.includes(place.name)) : matchingDestinations, [active, favorites, matchingDestinations]);
-  const destinationListKey = `${active}|${query}|${regions.join(",")}|${selectedTypes.join(",")}|${active === "Yêu thích" ? favorites.join(",") : ""}`;
+  const visibleDestinations = useMemo(() => destinationTab === "Yêu thích" ? matchingDestinations.filter((place) => favorites.includes(place.id) || favorites.includes(place.name)) : matchingDestinations, [destinationTab, favorites, matchingDestinations]);
+  const destinationListKey = `${destinationTab}|${query}|${regions.join(",")}|${selectedTypes.join(",")}|${destinationTab === "Yêu thích" ? favorites.join(",") : ""}`;
   const firstDestinationBatch = destinationBatchSize();
   const visibleDestinationCount = destinationWindow.key === destinationListKey ? destinationWindow.count : firstDestinationBatch;
   const renderedDestinations = useMemo(() => visibleDestinations.slice(0, visibleDestinationCount), [visibleDestinations, visibleDestinationCount]);
@@ -299,7 +307,7 @@ export default function DashboardExperience({ trips, onSelectTrip, onOpenTrip, o
       <AnimatePresence>{menuOpen && <motion.div className={styles.menu} initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -5 }}><button type="button" onClick={() => { setMenuOpen(false); onImport(); }}><FileSpreadsheet />Nhập từ Excel</button><button type="button" onClick={openExport}><BookOpen />Xuất dữ liệu</button></motion.div>}</AnimatePresence>
     </header> : active === "Cá nhân" ? <header className={`${styles.header} ${styles.profileHeader}`}><strong>Hồ sơ cá nhân</strong></header> : <header className={`${styles.header} ${showDiscover ? styles.discoverHeader : ""}`}><div className={styles.brand}>{showDiscover && <span className={styles.brandMark}>{customAppIcon ? <img src={customAppIcon} alt="" /> : <Send />}</span>}<span className={showDiscover ? styles.brandCopy : ""}><strong>{showDiscover ? <>Trip<span>Vibe</span></> : "Trip Note"}</strong>{showDiscover && <small>Khám phá Việt Nam</small>}</span></div><div className={styles.headerActions}>{showDiscover ? <span className={styles.discoverCount}>{matchingDestinations.length} điểm đến</span> : <button type="button" className={styles.avatar} aria-label="Hồ sơ cá nhân" onClick={() => changeSection("Cá nhân")}>{customAppIcon ? <img src={customAppIcon} alt="" /> : <UserRound />}</button>}</div></header>}
 
-    {active === "Cá nhân" ? <section className={styles.profile}>
+    <section className={`${styles.profile} ${active === "Cá nhân" ? "" : styles.inactivePanel}`}>
       <div className={styles.profileIdentity}><div className={styles.profileAvatar} aria-hidden="true">{customAppIcon ? <img src={customAppIcon} alt="" /> : "TN"}</div><div className={styles.profileIdentityCopy}><strong>TripNote</strong><span>Không gian dùng chung qua link</span><small><i /> {syncStatus === "synced" ? "Đồng bộ trên các thiết bị" : syncStatus === "connecting" ? "Đang kết nối dữ liệu" : syncStatus === "offline" ? "Đang chờ kết nối mạng" : "Lưu trên thiết bị này"}</small></div></div>
       <div className={styles.profileStats}><div><strong>{trips.length}</strong><span>Chuyến đi</span></div><div><strong>{new Set(trips.flatMap((trip) => trip.destinations?.map((stop) => stop.name) ?? [trip.destination || trip.name])).size}</strong><span>Địa điểm</span></div><div><strong>{favorites.length}</strong><span>Yêu thích</span></div></div>
       <section className={styles.profileSettings}><h2>TÙY CHỈNH ỨNG DỤNG</h2>
@@ -311,27 +319,27 @@ export default function DashboardExperience({ trips, onSelectTrip, onOpenTrip, o
       <section className={styles.profileSettings}><h2>TÀI KHOẢN & ĐỒNG BỘ</h2>
         <div className={styles.settingRow}><span className={styles.settingIcon}><UserRound /></span><span className={styles.settingCopy}><strong>Không gian TripNote</strong><small>Dữ liệu chia sẻ cho mọi thiết bị mở cùng link</small></span><span className={`${styles.syncState} ${syncStatus === "synced" ? styles.syncOnline : ""}`}><i />{syncStatus === "synced" ? "Đã đồng bộ" : syncStatus === "connecting" ? "Đang kết nối" : syncStatus === "offline" ? "Đang chờ mạng" : "Cục bộ"}</span></div>
       </section>
-    </section> : <>
-      {showDiscover && <div className={styles.stickySearch}>
+    </section>
+      <div className={`${styles.stickySearch} ${showDiscover ? "" : styles.inactivePanel}`}>
         <div className={styles.search} role="search"><Search /><input value={query} onChange={(event) => onQueryChange(event.target.value)} placeholder="Tìm điểm đến, bãi biển, di sản..." aria-label="Tìm kiếm điểm đến" /><button className={styles.filterToggle} type="button" aria-label="Mở bộ lọc điểm đến" aria-expanded={filtersOpen} onClick={openFilters}><SlidersHorizontal /></button></div>
         {(regions.length > 0 || selectedTypes.length > 0) && <p className={styles.filterStatus}>Đang lọc · {[...regions, ...selectedTypes].join(" · ")}</p>}
         {query.trim() && visibleDestinations.length === 0 && <p className={styles.searchEmpty}>Không tìm thấy điểm đến phù hợp.</p>}
         {normalizeVietnamese(query).startsWith("ha nam") && visibleDestinations.length > 0 && <p className={styles.searchContext}>Hà Nam hiện thuộc tỉnh Ninh Bình. Đang hiển thị điểm đến của Ninh Bình.</p>}
         {normalizeVietnamese(query).startsWith("long an") && visibleDestinations.length > 0 && <p className={styles.searchContext}>Long An cũ nay thuộc tỉnh Tây Ninh. Đang hiển thị các điểm đến khu vực Long An cũ.</p>}
-      </div>}
+      </div>
 
-      {showDiscover && !query.trim() && !regions.length && !selectedTypes.length && featuredDestinations.length > 0 && <section className={styles.featuredSection} aria-labelledby="featured-title">
+      <section className={`${styles.featuredSection} ${showDiscover && !query.trim() && !regions.length && !selectedTypes.length && featuredDestinations.length > 0 ? "" : styles.inactivePanel}`} aria-labelledby="featured-title">
         <div className={styles.featuredHeading}><div><span>GỢI Ý HÀNH TRÌNH</span><h2 id="featured-title">Địa điểm nổi bật</h2></div><button className={styles.featuredSwipe} type="button" aria-label={`Xem tất cả ${matchingDestinations.length} địa điểm`} onClick={openAllDestinations}><span>Xem tất cả</span><small>{matchingDestinations.length}</small><ChevronRight aria-hidden="true" /></button></div>
-        <div className={styles.featuredRail}>{featuredDestinations.map(({ destination: place }, index) => <motion.button key={place.id} type="button" className={styles.featuredCard} onClick={() => { requestDestinationRating(place); setDetailDestination(place); }} whileTap={reduced ? undefined : { scale: .975 }}>
+        <div className={styles.featuredRail}>{discoverMounted && featuredDestinations.map(({ destination: place }, index) => <motion.button key={place.id} type="button" className={styles.featuredCard} onClick={() => { requestDestinationRating(place); setDetailDestination(place); }} whileTap={reduced ? undefined : { scale: .975 }}>
           {place.cover && <img src={place.cover} alt={`Phong cảnh ${place.name}`} loading={index === 0 ? "eager" : "lazy"} decoding="async" />}
           <span className={styles.featuredShade} />
           <span className={styles.featuredBadge}><MapPin />{place.province}</span>
           <span className={styles.featuredRating}><Star aria-hidden="true" fill="currentColor" />4.5/5</span>
           <span className={styles.featuredCopy}><small>{getDestinationDisplayType(place)}</small><strong>{place.name}</strong></span>
         </motion.button>)}</div>
-      </section>}
+      </section>
 
-      {active === "Chuyến đi" ? <section className={styles.tripList}>
+      <section className={`${styles.tripList} ${active === "Chuyến đi" ? "" : styles.inactivePanel}`}>
         <div className={styles.tripIntro}><p>{tripDayTotal} ngày · {tripActionTotal} thao tác</p></div>
         <label className={styles.tripSearch}><Search /><input value={tripQuery} onChange={(event) => setTripQuery(event.target.value)} placeholder="Tìm kiếm chuyến đi..." aria-label="Tìm kiếm chuyến đi" /></label>
         <div className={styles.tripCards}>{filteredTrips.length ? filteredTrips.map(({ trip, index }) => {
@@ -357,14 +365,14 @@ export default function DashboardExperience({ trips, onSelectTrip, onOpenTrip, o
             </span>
           </motion.button></div>;
         }) : <p className={styles.tripListEmpty}>{tripQuery ? "Không tìm thấy chuyến đi phù hợp." : "Chưa có chuyến đi. Tạo chuyến đầu tiên để bắt đầu lên kế hoạch."}</p>}</div>
-      </section> : <>
-        <section className={styles.destinations} id="discover-destinations"><div className={styles.sectionHeading}><div><span className={styles.editorialEyebrow}>{active === "Yêu thích" ? "BỘ SƯU TẬP CỦA BẠN" : "KHÁM PHÁ VIỆT NAM"}</span><h2>{active === "Yêu thích" ? "Điểm đến yêu thích" : "Khám phá điểm đến"}</h2></div><span className={styles.editorialFeedMeta}>{visibleDestinations.length} địa điểm</span></div><div className={styles.destinationGrid}>
-          {renderedDestinations.map((place, index) => <DestinationCard key={place.id} place={place} favorite={favorites.includes(place.id) || favorites.includes(place.name)} reduced={Boolean(reduced)} loading={index < (firstDestinationBatch === 12 ? 2 : 4) ? "eager" : "lazy"} highPriority={index < 2} rating={destinationRatings[place.id]} onChoose={setDetailDestination} onPlan={setPlanningDestination} onToggleFavorite={toggleFavorite} onRequestRating={requestDestinationRating} compactFavorite={active === "Yêu thích"} />)}
-          {visibleDestinations.length === 0 && !(showDiscover && query.trim()) && <p className={styles.empty}>{active === "Yêu thích" ? "Chưa lưu điểm đến nào. Chạm trái tim trên một thẻ để lưu." : "Không tìm thấy điểm đến phù hợp."}</p>}
-          {renderedDestinations.length < visibleDestinations.length && <div ref={destinationSentinelRef} className={styles.destinationSentinel} aria-hidden="true" />}
+      </section>
+      <section className={`${styles.destinations} ${active === "Chuyến đi" || active === "Cá nhân" ? styles.inactivePanel : ""}`} id="discover-destinations"><div className={styles.sectionHeading}><div><span className={styles.editorialEyebrow}>{destinationTab === "Yêu thích" ? "BỘ SƯU TẬP CỦA BẠN" : "KHÁM PHÁ VIỆT NAM"}</span><h2>{destinationTab === "Yêu thích" ? "Điểm đến yêu thích" : "Khám phá điểm đến"}</h2></div><span className={styles.editorialFeedMeta}>{visibleDestinations.length} địa điểm</span></div><div className={styles.destinationGrid}>
+          {browseMounted && <>
+            {renderedDestinations.map((place, index) => <DestinationCard key={place.id} place={place} favorite={favorites.includes(place.id) || favorites.includes(place.name)} reduced={Boolean(reduced)} loading={index < (firstDestinationBatch === 12 ? 2 : 4) ? "eager" : "lazy"} highPriority={index < 2} rating={destinationRatings[place.id]} onChoose={setDetailDestination} onPlan={setPlanningDestination} onToggleFavorite={toggleFavorite} onRequestRating={requestDestinationRating} compactFavorite={destinationTab === "Yêu thích"} />)}
+            {visibleDestinations.length === 0 && !(showDiscover && query.trim()) && <p className={styles.empty}>{destinationTab === "Yêu thích" ? "Chưa lưu điểm đến nào. Chạm trái tim trên một thẻ để lưu." : "Không tìm thấy điểm đến phù hợp."}</p>}
+            {renderedDestinations.length < visibleDestinations.length && <div ref={destinationSentinelRef} className={styles.destinationSentinel} aria-hidden="true" />}
+          </>}
         </div></section>
-      </>}
-    </>}
     <MobileDock active={active} visible={dockVisible && !modalOpen} favoriteCount={favorites.length} tripCount={trips.length} onChange={changeSection} />
     {filterSheet}
     {exportSheet}

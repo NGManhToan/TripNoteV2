@@ -13,6 +13,7 @@
 .flightTrail { position:absolute;top:22%;right:-11%;width:67%;height:25%;border-top:1px solid rgba(138,211,236,.3);border-radius:50%;transform:rotate(-23deg);filter:drop-shadow(0 0 8px rgba(93,202,231,.38)); }
 .environmentPlane { position:absolute;z-index:1;top:4%;right:5%;width:15%;height:auto;opacity:.16;filter:drop-shadow(0 5px 12px rgba(108,196,235,.4)); }
 .header,.greeting,.categoryRail,.destinations,.tripList,.profile { position:relative;z-index:2; }
+.inactivePanel { display:none !important; }
 .header { display:flex;min-height:42px;align-items:center;justify-content:space-between;gap:8px;margin-top:0;border-bottom:1px solid rgba(222,238,247,.08); }
 .menuOpen { z-index:24; }
 .discoverHeader { min-height:52px;justify-content:space-between;border-bottom:0; }
