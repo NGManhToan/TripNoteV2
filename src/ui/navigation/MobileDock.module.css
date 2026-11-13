@@ -6,3 +6,9 @@
 .dock .active { color:#54e4da;background:rgba(69,190,190,.14); }
 .dock .active::after { position:absolute;bottom:3px;width:12px;height:2px;border-radius:5px;background:#54e4da;content:""; }
 @media (prefers-reduced-motion:reduce) { .dock { transition:none; }.dock * { scroll-behavior:auto; } }
+/* Porcelain dock with a calm mint selection state. */
+.dock { border-color:rgba(40,98,92,.14);background:rgba(255,255,255,.93);box-shadow:0 8px 24px rgba(25,75,69,.11),inset 0 1px #fff; }
+.compact { background:rgba(255,255,255,.97); }
+.dock button { color:#718784; }
+.dock .active { color:#168e82;background:#e7f6f1; }
+.dock .active::after { background:#31b5a5; }

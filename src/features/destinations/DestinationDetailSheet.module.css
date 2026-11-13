@@ -1,0 +1,42 @@
+.destinationSheet.destinationSheet { display:flex;width:min(calc(100% - 16px),460px);max-height:min(88dvh,780px);flex-direction:column;overflow:hidden;padding:12px 18px calc(24px + env(safe-area-inset-bottom));border:1px solid rgba(255,255,255,.94);border-radius:30px 30px 25px 25px;color:#132337;background:#fff;box-shadow:0 22px 70px rgba(18,44,62,.22);backdrop-filter:none; }
+.destinationSheet.destinationSheet::after { bottom:9px;background:#8293a2; }
+.detailContent { display:flex;min-height:0;flex:1;flex-direction:column; }
+.hero { position:relative;flex:none;padding-top:20px; }
+.cover { display:block;width:100%;height:clamp(150px,36vh,228px);border-radius:17px;object-fit:cover;background:#e8f0f2; }
+.detailBody { min-height:0;overflow-y:auto;padding:15px 1px 8px;overscroll-behavior:contain;scrollbar-width:none; }
+.detailBody::-webkit-scrollbar { display:none; }
+.meta { display:flex;align-items:center;justify-content:space-between;gap:10px;color:#0b9f9c;font-size:.72rem;font-weight:650; }
+.rating { display:inline-flex;align-items:center;gap:4px;white-space:nowrap; }
+.rating strong { display:inline-flex;align-items:center;gap:3px;color:#ed8a1d;font-size:.74rem; }
+.rating svg { width:13px;height:13px; }
+.rating small { color:#607489;font-size:.65rem; }
+.detailBody h2 { margin:12px 0 7px;color:#11233c;font-family:var(--font-heading),Georgia,serif;font-size:1.42rem;line-height:1.15;letter-spacing:-.02em; }
+.description { margin:0;color:#40566d;font-size:.8rem;font-weight:500;line-height:1.6; }
+.priceSearch { display:inline-flex;margin-top:6px;color:#007f78;font-size:.72rem;font-weight:800;text-decoration:underline;text-underline-offset:2px; }
+.priceNote { display:block;margin-top:5px;color:#52677a;font-size:.68rem;font-weight:600;line-height:1.4; }
+.reviewRow { display:flex;min-height:42px;align-items:center;justify-content:space-between;gap:10px;margin-top:10px;padding:0 11px;border:1px solid #e2ebef;border-radius:12px;background:#f7fafb; }
+.reviewRow span { display:inline-flex;align-items:center;gap:6px;color:#3f566b;font-size:.72rem;font-weight:700; }
+.reviewRow span svg { width:15px;height:15px;color:#f0a51b; }
+.reviewRow a { color:#087f78;font-size:.69rem;font-weight:800;white-space:nowrap; }
+.infoGrid { display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;margin-top:17px;padding-inline:12px; }
+.infoGrid section { min-width:0; }
+.infoGrid section>span,.experiences h3 { color:#007f78;font-size:.6rem;font-weight:850;letter-spacing:.035em;white-space:nowrap; }
+.infoGrid p { margin:6px 0 0;color:#132b43;font-size:.78rem;font-weight:700;line-height:1.45; }
+.infoGrid section:first-child p,.infoGrid section:nth-child(2) p { font-size:.74rem;letter-spacing:0;line-height:1.38; }
+.experiences { margin-top:17px;padding:0 12px; }
+.experiences h3 { margin:0 0 9px; }
+.experiences ul { display:grid;gap:7px;margin:0;padding-left:16px;color:#263d54;font-size:.76rem;line-height:1.45; }
+.experiences li::marker { color:#18c9b8; }
+.destinationNote { margin:0;color:#52677b;font-size:.76rem;line-height:1.55; }
+.location { display:flex;align-items:center;gap:6px;margin-top:18px;color:#6d8094;font-size:.72rem; }
+.location svg { width:15px;height:15px;color:#0aa69d; }
+.location small { margin-left:auto;color:#7b8da0;font-size:.65rem; }
+.actions { display:grid;flex:none;grid-template-columns:minmax(90px,.72fr) minmax(0,1.35fr);align-items:center;gap:10px;padding-top:10px; }
+.actions button { display:flex;min-width:0;min-height:48px;align-items:center;justify-content:center;gap:7px;border:0;border-radius:15px;font:inherit;font-size:.75rem;font-weight:750;white-space:nowrap; }
+.actions svg { width:17px;height:17px;flex:0 0 auto; }
+.favorite { color:#18334d;background:#fff; }
+.favorite[aria-pressed="true"] { color:#e7475f; }
+.plan { color:#fff;background:linear-gradient(105deg,#12cbb8,#09b8a9);box-shadow:0 7px 17px rgba(18,190,172,.2); }
+.plan:active,.favorite:active { transform:scale(.97); }
+@media (max-height:680px) { .cover { height:clamp(125px,30vh,190px); }.infoGrid,.experiences { margin-top:15px; } }
+@media (prefers-reduced-motion:reduce) { .actions button { transition:none; } }

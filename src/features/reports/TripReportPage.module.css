@@ -1,4 +1,4 @@
-.page { --ink:#17344b;display:flex;width:100%;max-width:430px;min-height:100dvh;flex-direction:column;gap:13px;margin-inline:auto;padding:calc(16px + env(safe-area-inset-top)) 16px calc(18px + env(safe-area-inset-bottom));overflow:visible;color:var(--ink);background:linear-gradient(180deg,#eaf7ff,#f6f9fb 36%,#eef7f8); }
+.page { --ink:#183a3c;display:flex;width:100%;max-width:430px;min-height:100dvh;flex-direction:column;gap:13px;margin-inline:auto;padding:calc(16px + env(safe-area-inset-top)) 16px calc(88px + env(safe-area-inset-bottom));overflow:visible;color:var(--ink);background:linear-gradient(180deg,#eef8f5,#f8fbfa 36%,#f0f7f4); }
 .header { display:flex;flex:0 0 auto;align-items:center;gap:12px; }
 .header button { display:grid;width:var(--mobile-back-size);height:var(--mobile-back-size);flex:0 0 var(--mobile-back-size);place-items:center;border:1px solid rgba(33,91,128,.12);border-radius:50%;color:var(--ink);background:rgba(255,255,255,.76);box-shadow:0 5px 16px rgba(43,90,124,.09); }
 .header button svg { width:var(--mobile-back-icon-size);height:var(--mobile-back-icon-size); }
@@ -33,4 +33,9 @@
 .success button:last-child { color:#f1fffc;background:linear-gradient(110deg,#6bd8c4,#398eb6); }
 .success button:disabled { opacity:.45; }
 .success svg { width:17px;height:17px; }
+.bottomNav { position:fixed;z-index:20;right:max(0px,calc((100vw - 430px)/2));bottom:0;left:max(0px,calc((100vw - 430px)/2));display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;padding:7px 10px calc(7px + env(safe-area-inset-bottom));border-top:1px solid #e4ebef;background:rgba(255,255,255,.98);box-shadow:0 -5px 18px rgba(23,54,76,.07);backdrop-filter:blur(16px); }
+.bottomNav button { display:grid;min-width:0;min-height:52px;grid-template-rows:20px auto;place-content:center;justify-items:center;gap:3px;padding:4px 2px;border:0;border-radius:12px;color:#71869a;background:transparent;font:inherit;font-size:.61rem;font-weight:700;white-space:nowrap; }
+.bottomNav button svg { width:17px;height:17px; }
+.bottomNav .activeNav { color:#13834a;background:#e9f8ef; }
+.bottomNav button:focus-visible { outline:2px solid #69cfa7;outline-offset:1px; }
 @media (min-width:640px) { .page { width:min(100%,780px);min-height:min(100dvh,950px);margin-block:auto;padding:24px;border:1px solid rgba(221,239,248,.12);border-radius:28px; }.metrics { grid-template-columns:repeat(4,minmax(0,1fr)); }.daily { display:grid;grid-template-columns:minmax(180px,.7fr) minmax(0,1.3fr);align-items:center;column-gap:20px; }.daily h2,.daily>p { grid-column:1; }.bars { grid-column:2;grid-row:1/span 2;height:100px;margin-top:0; } }

@@ -9,7 +9,7 @@ import GlassButton from "../../ui/glass/GlassButton";
 import { GlassSheet } from "../../ui/sheets/GlassSheet";
 import styles from "./TripDetailExperience.module.css";
 
-type Props = { trip: Trip; onBack: () => void; onOpenPreparation: () => void; onOpenReport: () => void; onPhotoSelected: (photo: File) => void; onSaveActivity: (date: string, activity: TripActivity) => void; onDeleteActivity: (id: string) => void; onRenameActivityCategory: (typeId: string, previousName: string, name: string, group: string) => void; onExportTrip: () => void; onDeleteTrip: () => void };
+type Props = { trip: Trip; onBack: () => void; onOpenPreparation: () => void; onOpenReport: () => void; onPhotoSelected: (photo: File) => void; onSaveActivity: (date: string, activity: TripActivity) => void; onDeleteActivity: (id: string) => void; onRenameActivityCategory: (typeId: string, previousName: string, name: string, group: string) => void; onExportTrip: () => void; onDeleteTrip: () => void; onNotify: (message: string) => void };
 type SelectedDay = number | "all";
 type CustomActivityType = { id: string; name: string; group: string; icon: string; color: string };
 type FormValues = { name: string; location: string; address: string; time: string; category: string; categoryGroup: string; planned: string; actual: string; note: string; mapUrl: string; date: string; status: TripActivityStatus };
@@ -66,7 +66,7 @@ function readTypes(): CustomActivityType[] {
   } catch { return []; }
 }
 
-export default function TripDetailExperience({ trip, onBack, onOpenPreparation, onOpenReport, onPhotoSelected, onSaveActivity, onDeleteActivity, onRenameActivityCategory, onExportTrip, onDeleteTrip }: Props) {
+export default function TripDetailExperience({ trip, onBack, onOpenPreparation, onOpenReport, onPhotoSelected, onSaveActivity, onDeleteActivity, onRenameActivityCategory, onExportTrip, onDeleteTrip, onNotify }: Props) {
   const reduced = useReducedMotion();
   const days = useMemo(() => trip.itinerary ?? [], [trip.itinerary]);
   const firstActivityDay = Math.max(0, days.findIndex((day) => day.activities.length));
@@ -163,6 +163,7 @@ export default function TripDetailExperience({ trip, onBack, onOpenPreparation, 
       const matchedCustomType = customTypes.find((item) => item.name === values.category);
       const activity: TripActivity = { id: editing?.id ?? `activity-${crypto.randomUUID()}`, name: values.name.trim(), location: values.location.trim(), address: values.address.trim() || undefined, time: values.time, category: values.category, categoryGroup: values.categoryGroup, customTypeId: matchedCustomType?.id, cost: plannedValue, plannedCost: plannedValue, actualCost: actualValue, note: values.note.trim() || undefined, mapUrl: values.mapUrl.trim() || undefined, attachmentId, status: values.status };
       onSaveActivity(values.date, activity);
+      onNotify(editing ? "Đã lưu thay đổi hoạt động" : "Đã thêm hoạt động vào lịch trình");
       setActivitySheet(false); setEditing(null); setValues(blankForm()); setImageFile(null); setImagePreview(null); setEditImage(null);
     } catch { setSaveError("Không thể lưu hoạt động. Vui lòng thử lại."); }
     finally { savingRef.current = false; setSaving(false); }
@@ -179,6 +180,7 @@ export default function TripDetailExperience({ trip, onBack, onOpenPreparation, 
     setTypeDraft({ name: "", group: "Tham quan", icon: iconChoices[0]!, color: "#18a899" });
     setEditingTypeId(null);
     setCustomTypeFormOpen(false); setCustomTypeStep(false); setActivityTypeStep(false);
+    onNotify(previous ? "Đã cập nhật danh mục hoạt động" : "Đã tạo danh mục hoạt động");
   };
   const removeCustomType = (type: CustomActivityType) => {
     onRenameActivityCategory(type.id, type.name, "", "");

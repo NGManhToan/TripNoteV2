@@ -1,15 +1,15 @@
 :root {
-  --ui-bg: #050b15;
-  --ui-surface: rgba(12, 25, 42, .76);
-  --ui-surface-raised: rgba(20, 39, 60, .84);
-  --ui-stroke: rgba(187, 224, 243, .14);
-  --ui-text: #f2f7fb;
-  --ui-muted: #9aafbf;
-  --ui-cyan: #72d9df;
-  --ui-teal: #72dfca;
-  --ui-gold: #edc987;
+  --ui-bg: #f5f8f7;
+  --ui-surface: rgba(255, 255, 255, .9);
+  --ui-surface-raised: #ffffff;
+  --ui-stroke: rgba(45, 100, 98, .15);
+  --ui-text: #183a3c;
+  --ui-muted: #708784;
+  --ui-cyan: #31aaa4;
+  --ui-teal: #69d2bd;
+  --ui-gold: #d8a94d;
   --ui-radius-card: 22px;
   --ui-radius-sheet: 30px;
   --ui-blur-card: 18px;
-  --ui-shadow-depth: 0 20px 54px rgba(0, 0, 0, .34), inset 0 1px rgba(255,255,255,.06);
+  --ui-shadow-depth: 0 16px 40px rgba(30, 76, 71, .1), inset 0 1px rgba(255,255,255,.9);
 }

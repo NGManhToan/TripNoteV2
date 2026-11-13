@@ -1,12 +1,12 @@
 .page {
-  --paper: #faf9f6;
-  --paper-alt: #f3f1ec;
-  --ink: #18181b;
-  --muted: #71717a;
-  --terracotta: #c2593f;
-  --sage: #4d7c6f;
-  --ocean: #1e607a;
-  --hairline: #e6e4dd;
+  --paper: #f7faf8;
+  --paper-alt: #edf5f2;
+  --ink: #183a3c;
+  --muted: #718784;
+  --terracotta: #219d91;
+  --sage: #2d9b79;
+  --ocean: #238c9a;
+  --hairline: #dce9e5;
   position: relative;
   display: flex;
   width: min(100%, 430px);

@@ -5,7 +5,7 @@ import type { Trip, TripPreparationTask } from "./data";
 import { tripRouteLabel } from "./data";
 import styles from "./TripPreparationPage.module.css";
 
-type Props = { trip: Trip; onBack: () => void; onHome: () => void; onReport: () => void; onSave: (tasks: TripPreparationTask[]) => void };
+type Props = { trip: Trip; onBack: () => void; onHome: () => void; onReport: () => void; onSave: (tasks: TripPreparationTask[]) => void; onNotify: (message: string) => void };
 type Filter = "all" | "pending" | "completed";
 type SuggestionGroup = { zone: string; accent: "sage" | "ocean"; items: string[] };
 
@@ -27,7 +27,7 @@ const suggestionsFor = (firstStop: string, lastStop: string): SuggestionGroup[] 
       ]),
 ];
 
-export default function TripPreparationPage({ trip, onBack, onHome, onReport, onSave }: Props) {
+export default function TripPreparationPage({ trip, onBack, onHome, onReport, onSave, onNotify }: Props) {
   const reduceMotion = useReducedMotion();
   const [draft, setDraft] = useState("");
   const [addExpanded, setAddExpanded] = useState(false);
@@ -75,6 +75,7 @@ export default function TripPreparationPage({ trip, onBack, onHome, onReport, on
     onSave([{ id: "prep-" + crypto.randomUUID(), title, done: false }, ...tasks]);
     setDraft("");
     setAddExpanded(false);
+    onNotify("Đã thêm mục chuẩn bị");
   };
   const toggleTask = (taskId: string) => onSave(tasks.map((task) => task.id === taskId ? { ...task, done: !task.done } : task));
   const deleteTask = (taskId: string) => {
@@ -101,7 +102,11 @@ export default function TripPreparationPage({ trip, onBack, onHome, onReport, on
   };
   const saveEdit = (taskId: string) => {
     const title = editDraft.trim();
-    if (title) onSave(tasks.map((task) => task.id === taskId ? { ...task, title } : task));
+    const currentTask = tasks.find((task) => task.id === taskId);
+    if (title && currentTask && title !== currentTask.title) {
+      onSave(tasks.map((task) => task.id === taskId ? { ...task, title } : task));
+      onNotify("Đã cập nhật mục chuẩn bị");
+    }
     setEditingId(null);
   };
   const handleEditKey = (event: KeyboardEvent<HTMLInputElement>, taskId: string) => {
@@ -111,6 +116,7 @@ export default function TripPreparationPage({ trip, onBack, onHome, onReport, on
   const addSuggestion = (title: string) => {
     if (tasks.some((task) => task.title.trim().toLocaleLowerCase("vi") === title.toLocaleLowerCase("vi"))) return;
     onSave([{ id: "prep-" + crypto.randomUUID(), title, done: false }, ...tasks]);
+    onNotify("Đã thêm mục chuẩn bị");
   };
   const resetTasks = () => {
     onSave(starterTasks.map((task) => ({ ...task })));

@@ -12,6 +12,7 @@ import { exportTripWorkbook, parseTripWorkbook, type ImportPreview } from "../..
 import ImportExcelDialog from "../../features/excel/ImportExcelDialog";
 import TripPreparationPage from "../../features/trips/TripPreparationPage";
 import TripReportPage from "../Report";
+import ToastViewport from "../../ui/feedback/ToastViewport";
 import styles from "./Dashboard.module.css";
 
 type DialogState = "new" | "date" | null;
@@ -70,9 +71,11 @@ export default function DashboardPage() {
   const [importBusy, setImportBusy] = useState(false);
   const [importedTrip, setImportedTrip] = useState<Trip | null>(null);
   const [exportError, setExportError] = useState("");
+  const [toastMessage, setToastMessage] = useState("");
   const importInputRef = useRef<HTMLInputElement>(null);
   const photoUrlsRef = useRef<Record<string, string>>({});
   const restoredCoversRef = useRef(false);
+  const toastTimerRef = useRef<number | null>(null);
   const trip = trips[selectedIndex] ?? trips[0];
   const tripRoute = location.pathname.match(/^\/home\/trip\/([^/]+)(?:\/(prep|map|report))?$/);
   const showingTripDetail = Boolean(tripRoute);
@@ -121,6 +124,12 @@ export default function DashboardPage() {
   useEffect(() => () => Object.values(photoUrlsRef.current).forEach(URL.revokeObjectURL), []);
   useEffect(() => () => { if (draftCoverPreview) URL.revokeObjectURL(draftCoverPreview); }, [draftCoverPreview]);
   useEffect(() => saveTrips(trips), [trips]);
+  useEffect(() => () => { if (toastTimerRef.current !== null) window.clearTimeout(toastTimerRef.current); }, []);
+  const notify = useCallback((message: string) => {
+    setToastMessage(message);
+    if (toastTimerRef.current !== null) window.clearTimeout(toastTimerRef.current);
+    toastTimerRef.current = window.setTimeout(() => setToastMessage(""), 2400);
+  }, []);
 
   const closeDialog = () => setDialog(null);
   const chooseDestination = useCallback((destination: { name: string; id: string }) => {
@@ -163,6 +172,7 @@ export default function DashboardPage() {
     setDraftCover(null);
     setDraftCoverPreview(null);
     setDialog(null);
+    notify("Đã tạo chuyến đi");
     navigate(`/home/trip/${encodeURIComponent(created.id)}`, { state: { from: location.pathname, section: activeSection } });
   };
   const updateDate = (event: FormEvent<HTMLFormElement>) => {
@@ -184,6 +194,7 @@ export default function DashboardPage() {
       };
     }));
     setDialog(null);
+    notify("Đã cập nhật thời gian chuyến đi");
   };
   const pickPhoto = async (file: File) => {
     if (!displayTrip) return;
@@ -283,9 +294,9 @@ export default function DashboardPage() {
   if (showingTripDetail) {
     if (!routeTrip) return <main className={styles.notFound}><p>Không tìm thấy chuyến đi này.</p><button type="button" onClick={() => navigate("/home")}>Về trang chủ</button></main>;
     if (!displayTrip) return null;
-    if (tripSubpage === "prep" || tripSubpage === "map") return <TripPreparationPage trip={displayTrip} onBack={() => navigate(`/home/trip/${encodeURIComponent(displayTrip.id)}`)} onHome={() => navigate(navigationState?.from ?? "/home", { state: { section: navigationState?.section ?? "Chuyến đi" } })} onReport={() => navigate(`/home/trip/${encodeURIComponent(displayTrip.id)}/report`)} onSave={updatePreparation} />;
-    if (tripSubpage === "report") return <TripReportPage trip={displayTrip} onBack={() => navigate(`/home/trip/${encodeURIComponent(displayTrip.id)}`)} />;
-    return <><TripDetailExperience key={displayTrip.id} trip={displayTrip} onBack={() => navigate(navigationState?.from ?? "/home", { state: { section: navigationState?.section ?? "Khám phá" } })} onPhotoSelected={pickPhoto} onSaveActivity={addActivity} onDeleteActivity={deleteActivity} onRenameActivityCategory={renameActivityCategory} onExportTrip={() => exportTrip(displayTrip)} onDeleteTrip={() => { deleteTrip(displayTrip); navigate(navigationState?.from ?? "/home", { state: { section: navigationState?.section ?? "Chuyến đi" } }); }} onOpenPreparation={() => navigate(`/home/trip/${encodeURIComponent(displayTrip.id)}/prep`)} onOpenReport={() => navigate(`/home/trip/${encodeURIComponent(displayTrip.id)}/report`)} />{exportErrorSheet}</>;
+    if (tripSubpage === "prep" || tripSubpage === "map") return <><TripPreparationPage trip={displayTrip} onBack={() => navigate(`/home/trip/${encodeURIComponent(displayTrip.id)}`)} onHome={() => navigate(navigationState?.from ?? "/home", { state: { section: navigationState?.section ?? "Chuyến đi" } })} onReport={() => navigate(`/home/trip/${encodeURIComponent(displayTrip.id)}/report`)} onSave={updatePreparation} onNotify={notify} /><ToastViewport message={toastMessage} /></>;
+    if (tripSubpage === "report") return <TripReportPage trip={displayTrip} onBack={() => navigate(`/home/trip/${encodeURIComponent(displayTrip.id)}`)} onHome={() => navigate(navigationState?.from ?? "/home", { state: { section: navigationState?.section ?? "Chuyến đi" } })} onPreparation={() => navigate(`/home/trip/${encodeURIComponent(displayTrip.id)}/prep`)} />;
+    return <><TripDetailExperience key={displayTrip.id} trip={displayTrip} onBack={() => navigate(navigationState?.from ?? "/home", { state: { section: navigationState?.section ?? "Khám phá" } })} onPhotoSelected={pickPhoto} onSaveActivity={addActivity} onDeleteActivity={deleteActivity} onRenameActivityCategory={renameActivityCategory} onExportTrip={() => exportTrip(displayTrip)} onDeleteTrip={() => { deleteTrip(displayTrip); navigate(navigationState?.from ?? "/home", { state: { section: navigationState?.section ?? "Chuyến đi" } }); }} onOpenPreparation={() => navigate(`/home/trip/${encodeURIComponent(displayTrip.id)}/prep`)} onOpenReport={() => navigate(`/home/trip/${encodeURIComponent(displayTrip.id)}/report`)} onNotify={notify} />{exportErrorSheet}<ToastViewport message={toastMessage} /></>;
   }
   return <>
       <input ref={importInputRef} className={styles.hiddenInput} type="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" aria-label="Chọn sổ lịch trình Excel" onChange={readWorkbook} />
@@ -306,6 +317,7 @@ export default function DashboardPage() {
       </form></GlassSheet>}
       {importOpen && <ImportExcelDialog preview={importPreview} error={importError} busy={importBusy} onChoose={() => importInputRef.current?.click()} onCancel={() => { setImportOpen(false); setImportPreview(null); setImportError(""); }} onConfirm={confirmWorkbookImport} />}
       {exportErrorSheet}
+      <ToastViewport message={toastMessage} />
       {importedTrip && <GlassSheet title="Đọc dữ liệu thành công" subtitle="Chuyến đi đã được lưu trên thiết bị này." icon={<Check aria-hidden="true" />} onClose={() => setImportedTrip(null)}><div className={styles.importSuccess}><strong>{importedTrip.name}</strong><span>{importedTrip.itinerary?.flatMap((day) => day.activities).length ?? 0} hoạt động đã nhập</span><button type="button" onClick={() => { setImportedTrip(null); navigate(`/home/trip/${encodeURIComponent(importedTrip.id)}`); }}>Mở lịch trình</button></div></GlassSheet>}
       {welcomeArrival && <div className={styles.welcomeArrival} onAnimationEnd={finishWelcomeArrival} aria-hidden="true" />}
     </>;

@@ -2,46 +2,126 @@ import haLong from "../../assets/images/dashboard/island-bay.png";
 import phuQuoc from "../../assets/images/dashboard/reference-phu-quoc.png";
 import saPa from "../../assets/images/dashboard/reference-sa-pa.png";
 import hoiAn from "../../assets/images/dashboard/reference-hoi-an.png";
-import thacPhuCuong from "../../assets/images/destinations/thac-phu-cuong.jpg";
-import thacLeKim from "../../assets/images/destinations/thac-le-kim.jpg";
-import thacChinTang from "../../assets/images/destinations/thac-chin-tang.jpg";
-import thacBauCan from "../../assets/images/destinations/thac-bau-can.jpg";
-import nuiHamRong from "../../assets/images/destinations/nui-ham-rong.jpg";
-import thanhDiaLaVang from "../../assets/images/destinations/thanh-dia-la-vang.jpg";
-import thacTaPuong from "../../assets/images/destinations/thac-ta-puong.jpg";
-import thacChenhVenh from "../../assets/images/destinations/thac-chenh-venh.jpg";
-import muiTreo from "../../assets/images/destinations/mui-treo.jpg";
-import langCoBichLa from "../../assets/images/destinations/lang-co-bich-la.jpg";
-import hangBrai from "../../assets/images/destinations/hang-brai.jpg";
-import daoConCo from "../../assets/images/destinations/dao-con-co.jpg";
-import daLatPhoto from "../../assets/images/destinations/da-lat-pines.jpg";
-import daNangPhoto from "../../assets/images/destinations/da-nang-beach.jpg";
-import huePhoto from "../../assets/images/destinations/hue-citadel.jpg";
-import haGiangPhoto from "../../assets/images/destinations/ha-giang-road.jpg";
-import haNoiPhoto from "../../assets/images/destinations/ha-noi-old-quarter.jpg";
-import ninhBinhPhoto from "../../assets/images/destinations/ninh-binh-trang-an.jpg";
-import dinhHaiChauPhoto from "../../assets/images/destinations/dinh-hai-chau.jpg";
-import asiaParkPhoto from "../../assets/images/destinations/asia-park-da-nang.jpg";
-import linhUngPhoto from "../../assets/images/destinations/chua-linh-ung.jpg";
-import buddhistMuseumPhoto from "../../assets/images/destinations/bao-tang-phat-giao-da-nang.jpg";
-import fineArtsMuseumPhoto from "../../assets/images/destinations/bao-tang-my-thuat-da-nang.jpg";
-import bayMauPhoto from "../../assets/images/destinations/rung-dua-bay-mau.jpg";
-import heroicMotherPhoto from "../../assets/images/destinations/tuong-dai-me-vietnam-anh-hung.jpg";
-import chuaHienPhoto from "../../assets/images/destinations/chua-hien-hung-yen-01.jpg";
-import chuaNeChauPhoto from "../../assets/images/destinations/chua-ne-chau-01.jpg";
-import denMauPhoto from "../../assets/images/destinations/den-mau-hung-yen-01.jpg";
-import denDauAnPhoto from "../../assets/images/destinations/den-dau-an.jpg";
-import kimBoiPhoto from "../../assets/images/destinations/kim-boi-hot-spring.jpg";
-import suoiGiangPhoto from "../../assets/images/destinations/suoi-giang-tea.jpg";
-import thuyDienHoaBinhPhoto from "../../assets/images/destinations/thuy-dien-hoa-binh.jpg";
-import hoDakKePhoto from "../../assets/images/destinations/ho-dak-ke.jpg";
-import hangMoLuongPhoto from "../../assets/images/destinations/hang-mo-luong.jpg";
-import thacPuNhuPhoto from "../../assets/images/destinations/thac-pu-nhu.jpg";
-import thacPaSyPhoto from "../../assets/images/destinations/thac-pa-sy-kon-tum.jpg";
-import konKlorBridgePhoto from "../../assets/images/destinations/cau-treo-kon-klor.jpg";
-import chuHrengPhoto from "../../assets/images/destinations/nui-chu-hreng.jpg";
-import konTumMuseumPhoto from "../../assets/images/destinations/bao-tang-kon-tum.jpg";
-import hoChiMinhCityPhoto from "../../assets/images/destinations/ho-chi-minh-city.jpg";
+import thacPhuCuong from "../../assets/images/destinations/optimized/thac-phu-cuong.webp";
+import thacLeKim from "../../assets/images/destinations/optimized/thac-le-kim.webp";
+import thacChinTang from "../../assets/images/destinations/optimized/thac-chin-tang.webp";
+import thacBauCan from "../../assets/images/destinations/optimized/thac-bau-can.webp";
+import nuiHamRong from "../../assets/images/destinations/optimized/nui-ham-rong.webp";
+import thanhDiaLaVang from "../../assets/images/destinations/optimized/thanh-dia-la-vang.webp";
+import thacTaPuong from "../../assets/images/destinations/optimized/thac-ta-puong.webp";
+import thacChenhVenh from "../../assets/images/destinations/optimized/thac-chenh-venh.webp";
+import muiTreo from "../../assets/images/destinations/optimized/mui-treo.webp";
+import langCoBichLa from "../../assets/images/destinations/optimized/lang-co-bich-la.webp";
+import hangBrai from "../../assets/images/destinations/optimized/hang-brai.webp";
+import daoConCo from "../../assets/images/destinations/optimized/dao-con-co.webp";
+import daLatPhoto from "../../assets/images/destinations/optimized/da-lat-pines.webp";
+import daNangPhoto from "../../assets/images/destinations/optimized/da-nang-beach.webp";
+import huePhoto from "../../assets/images/destinations/optimized/hue-citadel.webp";
+import haGiangPhoto from "../../assets/images/destinations/optimized/ha-giang-road.webp";
+import haNoiPhoto from "../../assets/images/destinations/optimized/ha-noi-old-quarter.webp";
+import haNoiStreetPhoto from "../../assets/images/destinations/optimized/ha-noi-street.webp";
+import ninhBinhPhoto from "../../assets/images/destinations/optimized/ninh-binh-trang-an.webp";
+import dinhHaiChauPhoto from "../../assets/images/destinations/optimized/dinh-hai-chau.webp";
+import asiaParkPhoto from "../../assets/images/destinations/optimized/asia-park-da-nang.webp";
+import linhUngPhoto from "../../assets/images/destinations/optimized/chua-linh-ung.webp";
+import buddhistMuseumPhoto from "../../assets/images/destinations/optimized/bao-tang-phat-giao-da-nang.webp";
+import fineArtsMuseumPhoto from "../../assets/images/destinations/optimized/bao-tang-my-thuat-da-nang.webp";
+import bayMauPhoto from "../../assets/images/destinations/optimized/rung-dua-bay-mau.webp";
+import heroicMotherPhoto from "../../assets/images/destinations/optimized/tuong-dai-me-vietnam-anh-hung.webp";
+import chuaHienPhoto from "../../assets/images/destinations/optimized/chua-hien-hung-yen-01.webp";
+import chuaNeChauPhoto from "../../assets/images/destinations/optimized/chua-ne-chau-01.webp";
+import denMauPhoto from "../../assets/images/destinations/optimized/den-mau-hung-yen-01.webp";
+import denDauAnPhoto from "../../assets/images/destinations/optimized/den-dau-an.webp";
+import kimBoiPhoto from "../../assets/images/destinations/optimized/kim-boi-hot-spring.webp";
+import suoiGiangPhoto from "../../assets/images/destinations/optimized/suoi-giang-tea.webp";
+import thuyDienHoaBinhPhoto from "../../assets/images/destinations/optimized/thuy-dien-hoa-binh.webp";
+import hoDakKePhoto from "../../assets/images/destinations/optimized/ho-dak-ke.webp";
+import hangMoLuongPhoto from "../../assets/images/destinations/optimized/hang-mo-luong.webp";
+import thacPuNhuPhoto from "../../assets/images/destinations/optimized/thac-pu-nhu.webp";
+import thacPaSyPhoto from "../../assets/images/destinations/optimized/thac-pa-sy-kon-tum.webp";
+import konKlorBridgePhoto from "../../assets/images/destinations/optimized/cau-treo-kon-klor.webp";
+import chuHrengPhoto from "../../assets/images/destinations/optimized/nui-chu-hreng.webp";
+import konTumMuseumPhoto from "../../assets/images/destinations/optimized/bao-tang-kon-tum.webp";
+import hoChiMinhCityPhoto from "../../assets/images/destinations/optimized/ho-chi-minh-city.webp";
+import paradiseCavePhoto from "../../assets/images/destinations/optimized/dong-thien-duong.webp";
+import sonDoongPhoto from "../../assets/images/destinations/optimized/hang-son-doong.webp";
+import hangEnPhoto from "../../assets/images/destinations/optimized/hang-en-cave.webp";
+import perfumeRiverPhoto from "../../assets/images/destinations/optimized/song-huong.webp";
+import coThachPhoto from "../../assets/images/destinations/optimized/bien-co-thach.webp";
+import hangRaiPhoto from "../../assets/images/destinations/optimized/hang-rai.webp";
+import vinhHyPhoto from "../../assets/images/destinations/optimized/vinh-vinh-hy.webp";
+import lanHaBayPhoto from "../../assets/images/destinations/optimized/vinh-lan-ha.webp";
+import catBaParkPhoto from "../../assets/images/destinations/optimized/vuon-quoc-gia-cat-ba.webp";
+import catBaIslandPhoto from "../../assets/images/destinations/optimized/cat-ba-island.webp";
+import phuCamPhoto from "../../assets/images/destinations/optimized/phu-cam.webp";
+import denSongSonPhoto from "../../assets/images/destinations/optimized/den-song-son.jpg";
+import denThoVuaLePhoto from "../../assets/images/destinations/optimized/den-tho-vua-le-trung-hung.webp";
+import thacMayThanhHoaPhoto from "../../assets/images/destinations/optimized/thac-may-thanh-hoa.jpg";
+import banhGaiTuTruPhoto from "../../assets/images/destinations/optimized/banh-gai-tu-tru.jpg";
+import dienThuaHoaPhoto from "../../assets/images/destinations/optimized/dien-thua-hoa.webp";
+import chuaTauPhoto from "../../assets/images/destinations/optimized/chua-tau.jpg";
+import banBangPhoto from "../../assets/images/destinations/optimized/ban-bang-pu-luong.jpg";
+import chuaKhanhQuangPhoto from "../../assets/images/destinations/optimized/chua-khanh-quang.webp";
+import conDenPhoto from "../../assets/images/destinations/optimized/con-den-thai-binh.jpg";
+import denHanSonPhoto from "../../assets/images/destinations/optimized/den-han-son.webp";
+import phoDamPhoto from "../../assets/images/destinations/optimized/pho-dam.jpg";
+import chienKhuNgocTraoPhoto from "../../assets/images/destinations/optimized/chien-khu-ngoc-trao.webp";
+import leHoiDinhSanPhoto from "../../assets/images/destinations/optimized/le-hoi-dinh-san.jpg";
+import thacHangTeChoPhoto from "../../assets/images/destinations/optimized/thac-hang-te-cho.jpg";
+import damVacPhoto from "../../assets/images/destinations/optimized/dam-vac.jpg";
+import hoXaHuongPhoto from "../../assets/images/destinations/optimized/ho-xa-huong.jpg";
+import bachMaPhoto from "../../assets/images/destinations/optimized/thac-bach-ma.jpg";
+import laiThieuPhoto from "../../assets/images/destinations/optimized/lai-thieu-ecopark.jpg";
+import thacOoPhoto from "../../assets/images/destinations/optimized/thac-o-o-quang-nam.jpg";
+import huynhThucKhangPhoto from "../../assets/images/destinations/optimized/huynh-thuc-khang-memorial.jpg";
+import bienRangPhoto from "../../assets/images/destinations/optimized/bien-rang-quang-nam.jpg";
+import namCuongPhoto from "../../assets/images/destinations/optimized/nam-cuong-dunes.jpg";
+import quanHoaPhoto from "../../assets/images/destinations/optimized/quan-hoa-hai-phong.jpg";
+import haiVanPhoto from "../../assets/images/destinations/optimized/hai-van-pass.jpg";
+import sonTraPhoto from "../../assets/images/destinations/optimized/son-tra-reserve.jpg";
+import caOngFestivalPhoto from "../../assets/images/destinations/optimized/ca-ong-festival.webp";
+import hoChiMinhMuseumDaNangPhoto from "../../assets/images/destinations/optimized/ho-chi-minh-museum-da-nang.jpg";
+import benNinhKieuPhoto from "../../assets/images/destinations/optimized/ben-ninh-kieu.jpg";
+import thienVienTrucLamPhoto from "../../assets/images/destinations/optimized/thien-vien-truc-lam-phuong-nam.jpg";
+import chuaNamNhaPhoto from "../../assets/images/destinations/optimized/chua-nam-nha.jpg";
+import canThoOrchardPhoto from "../../assets/images/destinations/optimized/can-tho-orchard.webp";
+import dinhBinhThuyPhoto from "../../assets/images/destinations/optimized/dinh-binh-thuy.webp";
+import choNoiCaiRangPhoto from "../../assets/images/destinations/optimized/cho-noi-cai-rang.webp";
+import binhThuyAncientHousePhoto from "../../assets/images/destinations/optimized/binh-thuy-ancient-house.jpg";
+import chuaOngCanThoPhoto from "../../assets/images/destinations/optimized/chua-ong-can-tho.jpg";
+import dinhTayDangPhoto from "../../assets/images/destinations/optimized/dinh-tay-dang.jpg";
+import nationalConventionCenterPhoto from "../../assets/images/destinations/optimized/national-convention-center.jpg";
+import bangTaForestPhoto from "../../assets/images/destinations/optimized/bang-ta-forest.jpg";
+import thongNhatParkPhoto from "../../assets/images/destinations/optimized/thong-nhat-park.jpg";
+import vanNienPagodaPhoto from "../../assets/images/destinations/optimized/van-nien-pagoda.jpg";
+import sonDongCraftPhoto from "../../assets/images/destinations/optimized/son-dong-craft.jpg";
+import dongMoLakePhoto from "../../assets/images/destinations/optimized/dong-mo-lake.jpg";
+import baDinhSquarePhoto from "../../assets/images/destinations/optimized/ba-dinh-square.webp";
+import dongMoGolfPhoto from "../../assets/images/destinations/optimized/dong-mo-golf.jpg";
+import hoChiMinhMuseumHanoiPhoto from "../../assets/images/destinations/optimized/ho-chi-minh-museum-hanoi.jpg";
+import hauLauPhoto from "../../assets/images/destinations/optimized/hau-lau.jpg";
+import baiLuPhoto from "../../assets/images/destinations/optimized/bai-lu.webp";
+import thachDongPhoto from "../../assets/images/destinations/optimized/thach-dong.jpg";
+import phuQuocPrisonPhoto from "../../assets/images/destinations/optimized/phu-quoc-prison.jpg";
+import haTienScenicPhoto from "../../assets/images/destinations/optimized/ha-tien-scenic.jpg";
+import phuQuocNationalParkPhoto from "../../assets/images/destinations/optimized/phu-quoc-national-park.jpg";
+import uMinhThuongPhoto from "../../assets/images/destinations/optimized/u-minh-thuong.jpg";
+import vinpearlSafariPhoto from "../../assets/images/destinations/optimized/vinpearl-safari.webp";
+import cucPhuongPhoto from "../../assets/images/destinations/optimized/cuc-phuong.webp";
+import thungNhamPhoto from "../../assets/images/destinations/optimized/thung-nham.jpg";
+import kenhGaPhoto from "../../assets/images/destinations/optimized/kenh-ga-hot-spring.jpg";
+import phatDiemPhoto from "../../assets/images/destinations/optimized/phat-diem-cathedral.webp";
+import vanLongPhoto from "../../assets/images/destinations/optimized/van-long-wetland.jpg";
+import poRomePhoto from "../../assets/images/destinations/optimized/po-rome-tower.jpg";
+import caNaPhoto from "../../assets/images/destinations/optimized/ca-na-coast.jpg";
+import phoHienPhoto from "../../assets/images/destinations/optimized/pho-hien.jpg";
+import chuDongTuPhoto from "../../assets/images/destinations/optimized/chu-dong-tu-temple.jpg";
+import denGhenhPhoto from "../../assets/images/destinations/optimized/den-ghenh.jpg";
+import tanLapPhoto from "../../assets/images/destinations/tan-lap-floating-village.jpeg";
+import langSenPhoto from "../../assets/images/destinations/lang-sen-wetland.jpg";
+import baDenPhoto from "../../assets/images/destinations/nui-ba-den.jpg";
+import caoDaiPhoto from "../../assets/images/destinations/toa-thanh-cao-dai.jpg";
+import dauTiengPhoto from "../../assets/images/destinations/ho-dau-tieng.jpg";
 import { officialDestinationRecords } from "./officialRecords";
 
 export type Destination = {
@@ -49,6 +129,7 @@ export type Destination = {
   name: string;
   normalizedName: string;
   province: string;
+  formerProvince?: string;
   region: string;
   macroRegion: "Miền Bắc" | "Miền Trung" | "Miền Nam";
   slug: string;
@@ -74,13 +155,16 @@ const officialSources: Record<string, string> = {
   "ninh-binh": `${portal}red-river-delta/ninh-binh/`,
   "ha-giang": "https://www.vietnam.travel/vi/places-to-go/northern-vietnam/ha-giang",
 };
-const destination = (item: Omit<Destination, "slug" | "normalizedName" | "gallery" | "coordinates" | "sources" | "verification">): Destination => ({
+type CuratedDestination = Omit<Destination, "slug" | "normalizedName" | "gallery" | "coordinates" | "sources" | "verification"> & {
+  sources?: string[];
+};
+const destination = (item: CuratedDestination): Destination => ({
   ...item,
   normalizedName: normalizeVietnamese(item.name),
   slug: normalizeVietnamese(item.name).replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""),
   gallery: item.cover ? [item.cover] : [],
   coordinates: null,
-  sources: [officialSources[item.id] ?? portal],
+  sources: item.sources ?? [officialSources[item.id] ?? portal],
   verification: "official-source",
 });
 
@@ -126,7 +210,6 @@ const imageForDestination = (name: string): string | undefined => {
     "sa pa": saPa,
     "hoi an": hoiAn,
     "da lat": daLatPhoto,
-    "ha noi": haNoiPhoto,
     "hue": huePhoto,
     "da nang": daNangPhoto,
     "ninh binh": ninhBinhPhoto,
@@ -152,6 +235,81 @@ const imageForDestination = (name: string): string | undefined => {
     "cau treo kon klor": konKlorBridgePhoto,
     "nui chu hreng": chuHrengPhoto,
     "bao tang kon tum": konTumMuseumPhoto,
+    "dong thien duong": paradiseCavePhoto,
+    "hang son doong": sonDoongPhoto,
+    "hang en": hangEnPhoto,
+    "song huong": perfumeRiverPhoto,
+    "bien co thach": coThachPhoto,
+    "hang rai": hangRaiPhoto,
+    "vinh vinh hy": vinhHyPhoto,
+    "vinh lan ha": lanHaBayPhoto,
+    "vuon quoc gia cat ba": catBaParkPhoto,
+    "quan dao cat ba": catBaIslandPhoto,
+    "di tich phu cam": phuCamPhoto,
+    "den song son": denSongSonPhoto,
+    "den tho cac vua thoi le trung hung": denThoVuaLePhoto,
+    "thac may": thacMayThanhHoaPhoto,
+    "lang nghe banh gai tu tru": banhGaiTuTruPhoto,
+    "dien thua hoa va tu duong phuc quang": dienThuaHoaPhoto,
+    "di tich lich su van hoa chua tau": chuaTauPhoto,
+    "diem du lich cong dong ban bang": banBangPhoto,
+    "chua khanh quang": chuaKhanhQuangPhoto,
+    "khu du lich con den": conDenPhoto,
+    "den han son": denHanSonPhoto,
+    "pho dam": phoDamPhoto,
+    "chien khu ngoc trao": chienKhuNgocTraoPhoto,
+    "le hoi dinh san": leHoiDinhSanPhoto,
+    "thac hang te cho": thacHangTeChoPhoto,
+    "khu du lich dam vac": damVacPhoto,
+    "ho xa huong": hoXaHuongPhoto,
+    "nui bach ma": bachMaPhoto,
+    "khu du lich sinh thai lai thieu": laiThieuPhoto,
+    "thac o o": thacOoPhoto,
+    "nha luu niem huynh thuc khang": huynhThucKhangPhoto,
+    "bien rang": bienRangPhoto,
+    "doi cat nam cuong": namCuongPhoto,
+    "quan hoa": quanHoaPhoto,
+    "deo hai van": haiVanPhoto,
+    "khu bao ton thien nhien son tra": sonTraPhoto,
+    "le hoi ca ong": caOngFestivalPhoto,
+    "bao tang ho chi minh da nang": hoChiMinhMuseumDaNangPhoto,
+    "ben ninh kieu": benNinhKieuPhoto,
+    "thien vien truc lam phuong nam": thienVienTrucLamPhoto,
+    "chua nam nha": chuaNamNhaPhoto,
+    "du lich vuon can tho": canThoOrchardPhoto,
+    "dinh binh thuy": dinhBinhThuyPhoto,
+    "cho noi cai rang": choNoiCaiRangPhoto,
+    "nha co binh thuy": binhThuyAncientHousePhoto,
+    "chua ong can tho": chuaOngCanThoPhoto,
+    "khu pho co ha noi": haNoiStreetPhoto,
+    "dinh tay dang": dinhTayDangPhoto,
+    "trung tam hoi nghi quoc gia": nationalConventionCenterPhoto,
+    "khu du lich rung tu nhien bang ta": bangTaForestPhoto,
+    "cong vien thong nhat": thongNhatParkPhoto,
+    "chua van nien": vanNienPagodaPhoto,
+    "lang nghe my nghe son dong": sonDongCraftPhoto,
+    "khu du lich dong mo": dongMoLakePhoto,
+    "quang truong ba dinh": baDinhSquarePhoto,
+    "san golf dong mo": dongMoGolfPhoto,
+    "bao tang ho chi minh ha noi": hoChiMinhMuseumHanoiPhoto,
+    "hau lau": hauLauPhoto,
+    "khu du lich sinh thai bien bai lu": baiLuPhoto,
+    "thang canh thach dong": thachDongPhoto,
+    "nha tu phu quoc": phuQuocPrisonPhoto,
+    "thang canh ha tien": haTienScenicPhoto,
+    "vuon quoc gia phu quoc": phuQuocNationalParkPhoto,
+    "vuon quoc gia u minh thuong": uMinhThuongPhoto,
+    "cong vien vinpearl safari phu quoc": vinpearlSafariPhoto,
+    "vuon quoc gia cuc phuong": cucPhuongPhoto,
+    "khu du lich sinh thai vuon chim thung nham": thungNhamPhoto,
+    "suoi nuoc nong kenh ga": kenhGaPhoto,
+    "nha tho phat diem": phatDiemPhoto,
+    "khu bao ton dat ngap nuoc van long": vanLongPhoto,
+    "thap porome": poRomePhoto,
+    "lang du lich ca na": caNaPhoto,
+    "pho hien": phoHienPhoto,
+    "den chu dong tu": chuDongTuPhoto,
+    "den ghenh": denGhenhPhoto,
   };
   const curatedCover = destinationCovers[normalized] ?? Object.entries(destinationCovers)
     .filter(([placeName]) => placeName.length >= 10)
@@ -187,6 +345,22 @@ export function normalizeVietnamese(value: string): string {
   return value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").replace(/Đ/g, "D").toLocaleLowerCase("vi-VN").trim();
 }
 
+export function getDestinationDisplayType(place: Pick<Destination, "name" | "types">): string {
+  const specificType = place.types.find((type) => !["Thiên nhiên", "Sinh thái"].includes(type));
+  if (specificType) return specificType;
+
+  const name = normalizeVietnamese(place.name);
+  if (name.startsWith("thac ")) return "Thác nước";
+  if (name.startsWith("hang ") || name.startsWith("dong ")) return "Hang động";
+  if (name.startsWith("vuon quoc gia")) return "Vườn quốc gia";
+  if (name.startsWith("khu bao ton")) return "Khu bảo tồn";
+  if (name.startsWith("ho ")) return "Hồ";
+  if (name.startsWith("suoi ")) return "Suối";
+  if (name.startsWith("nui ")) return "Núi";
+  if (name.startsWith("rung ")) return "Rừng";
+  return "Điểm tham quan";
+}
+
 const matchesSearchText = (value: string, term: string): boolean => {
   const words = normalizeVietnamese(value).split(/[^a-z0-9]+/).filter(Boolean);
   const queryWords = term.split(/\s+/).filter(Boolean);
@@ -205,6 +379,11 @@ const curatedDestinations: Destination[] = [
   destination({ id: "ninh-binh", name: "Ninh Bình", province: "Ninh Bình", macroRegion: "Miền Bắc", region: "Đồng bằng sông Hồng", types: ["Thiên nhiên", "Di sản", "Sông nước"], description: "Dãy núi đá vôi, sông nước và di sản Hoa Lư.", cover: ninhBinhPhoto }),
   destination({ id: "ha-giang", name: "Hà Giang", province: "Tuyên Quang", macroRegion: "Miền Bắc", region: "Trung du & Miền núi Bắc Bộ", types: ["Núi", "Thiên nhiên", "Phiêu lưu"], description: "Cao nguyên đá, cung đường miền núi và dòng Nho Quế.", cover: haGiangPhoto }),
   destination({ id: "ho-chi-minh-city", name: "Thành phố Hồ Chí Minh", province: "Thành phố Hồ Chí Minh", macroRegion: "Miền Nam", region: "Đông Nam Bộ", types: ["Đô thị", "Văn hóa", "Ẩm thực"], description: "Thành phố năng động với di sản lịch sử, kiến trúc và văn hóa ẩm thực.", cover: hoChiMinhCityPhoto }),
+  destination({ id: "tan-lap-floating-village", name: "Làng nổi Tân Lập", province: "Tây Ninh", formerProvince: "Long An", macroRegion: "Miền Nam", region: "Đồng bằng sông Cửu Long", types: ["Thiên nhiên", "Sông nước", "Sinh thái"], description: "Rừng tràm, tuyến đường xuyên rừng và vùng đất ngập nước Đồng Tháp Mười.", cover: tanLapPhoto, sources: ["https://dulich.tayninh.gov.vn/tin-tuc/khu-du-lich-lang-noi-tan-lap-vung-loi-sinh-thai-cua-dong-thap-muoi-1868", "https://dulich.tayninh.gov.vn/tin-tuc/6-dia-diem-du-lich-long-an-an-tuong-nhat-cua-vung-dat-mien-tay-thanh-binh-214"] }),
+  destination({ id: "lang-sen-wetland", name: "Khu bảo tồn đất ngập nước Láng Sen", province: "Tây Ninh", formerProvince: "Long An", macroRegion: "Miền Nam", region: "Đồng bằng sông Cửu Long", types: ["Thiên nhiên", "Sông nước", "Sinh thái"], description: "Khu Ramsar với rừng tràm, đồng cỏ ngập nước và hệ sinh thái chim nước phong phú.", cover: langSenPhoto, sources: ["https://dulich.tayninh.gov.vn/tin-tuc/6-dia-diem-du-lich-long-an-an-tuong-nhat-cua-vung-dat-mien-tay-thanh-binh-214"] }),
+  destination({ id: "ba-den-mountain", name: "Núi Bà Đen", province: "Tây Ninh", macroRegion: "Miền Nam", region: "Đông Nam Bộ", types: ["Núi", "Thiên nhiên", "Văn hóa"], description: "Ngọn núi cao nhất Nam Bộ, nổi bật với tuyến cáp treo và quần thể tâm linh trên đỉnh.", cover: baDenPhoto, sources: ["https://dulich.tayninh.gov.vn/tin-tuc/nui-ba-den-1298"] }),
+  destination({ id: "cao-dai-holy-see", name: "Tòa Thánh Cao Đài Tây Ninh", province: "Tây Ninh", macroRegion: "Miền Nam", region: "Đông Nam Bộ", types: ["Văn hóa", "Tâm linh", "Kiến trúc"], description: "Trung tâm đạo Cao Đài với quần thể kiến trúc nhiều màu sắc và họa tiết đặc trưng.", cover: caoDaiPhoto, sources: ["https://dulich.tayninh.gov.vn/tin-tuc/tay-ninh-nhung-diem-du-lich-ban-khong-nen-bo-lo-1591"] }),
+  destination({ id: "dau-tieng-lake", name: "Hồ Dầu Tiếng", province: "Tây Ninh", macroRegion: "Miền Nam", region: "Đông Nam Bộ", types: ["Thiên nhiên", "Sông nước", "Cắm trại"], description: "Hồ nước rộng lớn với cảnh hoàng hôn, bờ cỏ và các trải nghiệm ngoài trời.", cover: dauTiengPhoto, sources: ["https://dulich.tayninh.gov.vn/tin-tuc/tay-ninh-nhung-diem-du-lich-ban-khong-nen-bo-lo-1591"] }),
 ];
 
 export const destinationCatalog: Destination[] = [...curatedDestinations, ...officialDestinations].filter((place, index, entries) => entries.findIndex((item) => item.normalizedName === place.normalizedName) === index);
@@ -232,7 +411,7 @@ export function searchDestinations(query: string, region = "Tất cả", type = 
 
   const matchingProvinceGroup = Object.values(mergedProvinceAliases).find((aliases) => aliases.some((alias) => alias === term || (term.length >= 3 && alias.startsWith(term))));
   const matchingProvinces = filteredPlaces.filter((place) => {
-    return matchesSearchText(place.province, term) || Boolean(matchingProvinceGroup?.includes(normalizeVietnamese(place.province)));
+    return matchesSearchText(place.province, term) || Boolean(place.formerProvince && matchesSearchText(place.formerProvince, term)) || Boolean(matchingProvinceGroup?.includes(normalizeVietnamese(place.province)));
   });
   if (matchingProvinces.length > 0) return matchingProvinces;
 

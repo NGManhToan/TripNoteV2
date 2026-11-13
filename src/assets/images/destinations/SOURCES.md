@@ -40,3 +40,13 @@ Destination photos are stored locally so cards load consistently and do not depe
 | `nui-chu-hreng.jpg` | Núi Chư Hreng | [Traveloka](https://www.traveloka.com/vi-vn/explore/destination/gns-dinh-chu-hreng-kon-tum/358361) |
 | `bao-tang-kon-tum.jpg` | Bảo tàng Kon Tum | [Kontum Tourism](https://kontumtourism.com.vn/bao-tang-kon-tum/) |
 | `ho-chi-minh-city.jpg` | Thành phố Hồ Chí Minh skyline | [Pexels — Cityscape of Ho Chi Minh City](https://www.pexels.com/photo/cityscape-of-ho-chi-minh-city-20213630/) |
+| `dong-thien-duong.jpg` | Động Thiên Đường | [Wikimedia Commons, Paradise cave.JPG](https://commons.wikimedia.org/wiki/File:Paradise_cave.JPG), Tycho, CC BY-SA 3.0 |
+| `hang-son-doong.jpg` | Hang Sơn Đoòng | [Wikimedia Commons, Son Doong Cave by Daniel Burka.jpg](https://commons.wikimedia.org/wiki/File:Son_Doong_Cave_by_Daniel_Burka.jpg), Daniel Burka, CC0 (Unsplash source) |
+| `hang-en-cave.jpg` | Hang Én | [Wikimedia Commons, Hang Én Cave - 201505 - JB.jpg](https://commons.wikimedia.org/wiki/File:Hang_%C3%89n_Cave_-_201505_-_JB.jpg), Jérémie B., CC BY-SA 4.0 |
+| `song-huong.jpg` | Sông Hương | [Wikimedia Commons, Sông Hương (Huế).jpg](https://commons.wikimedia.org/wiki/File:S%C3%B4ng_H%C6%B0%C6%A1ng_(Hu%E1%BA%BF).jpg), Bùi Thụy Đào Nguyên, CC BY-SA 3.0 |
+| `bien-co-thach.jpg` | Biển Cổ Thạch | [Wikimedia Commons, Biển Cổ Thạch (14306461541).jpg](https://commons.wikimedia.org/wiki/File:Bi%E1%BB%83n_C%E1%BB%95_Th%E1%BA%A1ch_(14306461541).jpg), Đại Việt quốc/Flickr, CC BY 2.0 |
+| `hang-rai.jpg` | Hang Rái | [Wikimedia Commons, Hang Rái in Ninh Thuan Province, Vietnam.jpg](https://commons.wikimedia.org/wiki/File:Hang_R%C3%A1i_in_Ninh_Thuan_Province,_Vietnam.jpg), P.T.Đ, CC BY-SA 4.0 |
+| `vinh-vinh-hy.jpg` | Vịnh Vĩnh Hy | [Wikimedia Commons, Vịnh Vĩnh Hy.jpg](https://commons.wikimedia.org/wiki/File:V%E1%BB%8Bnh_V%C4%A9nh_Hy.jpg), Huy Phương, public domain |
+| `vinh-lan-ha.jpg` | Vịnh Lan Hạ | [Wikimedia Commons, Vịnh Lan Hạ - Quần đảo Cát Bà.jpg](https://commons.wikimedia.org/wiki/File:V%E1%BB%8Bnh_Lan_H%E1%BA%A1_-_Qu%E1%BA%A7n_%C4%91%E1%BA%A3o_C%C3%A1t_B%C3%A0.jpg), HP1992, CC BY-SA 4.0 |
+| `vuon-quoc-gia-cat-ba.jpg` | Vườn Quốc gia Cát Bà | [Wikimedia Commons, Vườn Quốc gia Cát Bà.jpg](https://commons.wikimedia.org/wiki/File:V%C6%B0%E1%BB%9Dn_Qu%E1%BB%91c_gia_C%C3%A1t_B%C3%A0.jpg), Tuyencabr, CC BY-SA 4.0 |
+| `cat-ba-island.jpg` | Quần đảo Cát Bà | [Wikimedia Commons, Cát Bà Island.jpg](https://commons.wikimedia.org/wiki/File:C%C3%A1t_B%C3%A0_Island.jpg), Christophe95, CC BY-SA 4.0 |

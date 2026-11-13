@@ -24,3 +24,17 @@
 .denseSheet .handle { margin-bottom:8px; }
 .denseSheet .dialogHeader { margin-bottom:8px;padding-bottom:9px; }
 @media (prefers-reduced-motion:reduce) { .dialog,.backdrop { scroll-behavior:auto; } }
+/* Shared sheets use the same bright porcelain surface as the navigation pages. */
+.backdrop { background:rgba(27,63,60,.3); }
+.dialog { border-color:rgba(48,105,99,.14);color:#183a3c;background:linear-gradient(155deg,#fff,#f6faf8);box-shadow:0 22px 70px rgba(28,73,67,.2),inset 0 1px #fff; }
+.dialog h2 { color:#183a3c; }
+.dialogHeader>button { border-color:rgba(44,100,94,.12);color:#607d78;background:#eff6f3; }
+.headingGroup p { color:#718784; }
+.sheetBackdrop { background:rgba(27,63,60,.28); }
+.sheet { border-color:rgba(255,255,255,.92);background:linear-gradient(155deg,rgba(255,255,255,.98),rgba(246,250,248,.99));box-shadow:0 -12px 54px rgba(37,114,101,.12),0 22px 70px rgba(32,74,68,.2),inset 0 1px #fff; }
+.sheet::after { background:#899f9a; }
+.sheet .dialogHeader,.sheet .dialogHeader h2 { color:#183a3c; }
+.sheet .dialogHeader p { color:#718784; }
+.sheet .dialogHeader>button { border-color:rgba(44,100,94,.12);color:#607d78;background:#eff6f3; }
+.handle { background:#c9d9d5; }
+.sheet .dialogHeader { border-color:rgba(44,100,94,.12); }
