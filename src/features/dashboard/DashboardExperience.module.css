@@ -191,7 +191,6 @@
 .homeIconUpdate { display:flex;width:100%;min-height:38px;align-items:center;justify-content:center;gap:7px;margin:7px 0 2px;border:1px solid rgba(31,166,150,.2);border-radius:12px;color:#168e82;background:#f2fbf8;font:inherit;font-size:.64rem;font-weight:800; }
 .homeIconUpdate svg { width:16px;height:16px; }
 .homeIconGuide { display:grid;justify-items:center;gap:12px;padding:8px 0 14px;color:#355366;font-size:.9rem; }
-.homeIconGuide img { width:80px;height:80px;border:1px solid #dbe9e7;border-radius:20px;object-fit:cover; }
 .homeIconGuide ol { display:grid;gap:9px;align-self:stretch;margin:0;padding-left:23px;line-height:1.55; }
 .homeIconGuide p { margin:0;padding:10px 12px;border-radius:12px;color:#617b8d;background:#f2f8f8;font-size:.8rem;line-height:1.45; }
 .settingIconImage { width:100%;height:100%;border-radius:inherit;object-fit:cover; }
