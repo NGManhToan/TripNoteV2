@@ -182,6 +182,7 @@
 .settingCopy { display:grid;min-width:0;gap:3px; }
 .settingCopy strong { overflow:hidden;color:#ecf4f8;font-size:.69rem;font-weight:800;text-overflow:ellipsis;white-space:nowrap; }
 .settingCopy small { overflow:hidden;color:#91a6b5;font-size:.58rem;text-overflow:ellipsis;white-space:nowrap; }
+.appIconSyncStatus { overflow:visible!important;text-overflow:clip!important;white-space:normal!important;line-height:1.35; }
 .settingAction { min-height:32px;padding:0 10px;border:1px solid rgba(31,166,150,.2);border-radius:999px;color:#168e82;background:#e7f6f1;font:inherit;font-size:.61rem;font-weight:800;white-space:nowrap; }
 .settingAction:disabled { opacity:.66; }
 .settingActions { display:flex;align-items:center;gap:5px; }
