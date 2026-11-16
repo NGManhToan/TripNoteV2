@@ -78,7 +78,13 @@ export default function DashboardPage() {
   const photoUrlsRef = useRef<Record<string, string>>({});
   const restoredCoversRef = useRef(false);
   const toastTimerRef = useRef<number | null>(null);
-  const rememberDashboardSection = useCallback((section: DashboardSection) => { dashboardSectionRef.current = section; }, []);
+  const rememberDashboardSection = useCallback((section: DashboardSection) => {
+    dashboardSectionRef.current = section;
+    const currentState = location.state && typeof location.state === "object" ? location.state : {};
+    if ((currentState as { section?: DashboardSection }).section !== section) {
+      navigate(`${location.pathname}${location.search}`, { replace: true, state: { ...currentState, section } });
+    }
+  }, [location.pathname, location.search, location.state, navigate]);
   const trip = trips[selectedIndex] ?? trips[0];
   const tripRoute = location.pathname.match(/^\/home\/trip\/([^/]+)(?:\/(prep|map|report))?$/);
   const showingTripDetail = Boolean(tripRoute);

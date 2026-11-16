@@ -58,10 +58,7 @@ export default function PullToRefresh() {
 
       event.preventDefault();
       distance = Math.min(REFRESH_DISTANCE + 24, deltaY * .88);
-      const ready = distance >= REFRESH_DISTANCE;
       indicator.dataset.pulling = "true";
-      indicator.dataset.ready = String(ready);
-      indicator.querySelector("span:last-child")!.textContent = ready ? "Thả để làm mới" : "Kéo xuống để làm mới";
       indicator.style.opacity = String(Math.min(1, distance / 38));
       indicator.style.transform = `translate3d(-50%, ${Math.max(-8, distance - 64)}px, 0)`;
     };
@@ -74,7 +71,6 @@ export default function PullToRefresh() {
       }
       tracking = false;
       indicator.dataset.refreshing = "true";
-      indicator.querySelector("span:last-child")!.textContent = "Đang tải lại…";
       indicator.style.opacity = "1";
       indicator.style.transform = "translate3d(-50%, 12px, 0)";
       window.setTimeout(() => window.location.reload(), 120);
@@ -92,5 +88,5 @@ export default function PullToRefresh() {
     };
   }, []);
 
-  return <div ref={indicatorRef} className="pullToRefresh" aria-live="polite" aria-atomic="true"><span aria-hidden="true">↻</span><span>Kéo xuống để làm mới</span></div>;
+  return <div ref={indicatorRef} className="pullToRefresh" role="status" aria-label="Đang tải lại" />;
 }

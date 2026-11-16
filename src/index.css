@@ -17,9 +17,9 @@ button:focus:not(:focus-visible),a:focus:not(:focus-visible),[role="button"]:foc
 a { color: inherit; text-decoration: none; }
 img, svg { display: block; }
 img { max-width: 100%; }
-.pullToRefresh { position:fixed;z-index:250;top:0;left:50%;display:flex;min-height:42px;align-items:center;gap:8px;padding:0 15px;border:1px solid rgba(40,98,92,.14);border-radius:999px;color:#176b61;background:rgba(255,255,255,.97);box-shadow:0 6px 22px rgba(20,60,58,.16);font-size:14px;font-weight:750;white-space:nowrap;opacity:0;pointer-events:none;transform:translate3d(-50%,-64px,0);will-change:transform,opacity; }
-.pullToRefresh>span:first-child { display:inline-block;font-size:18px;line-height:1; }
-.pullToRefresh[data-refreshing="true"]>span:first-child { animation:pullRefreshSpin .7s linear infinite; }
+.pullToRefresh { position:fixed;z-index:250;top:0;left:50%;display:grid;width:36px;height:36px;place-items:center;padding:0;border:0;border-radius:50%;background:transparent;box-shadow:none;opacity:0;pointer-events:none;transform:translate3d(-50%,-64px,0);will-change:transform,opacity; }
+.pullToRefresh::after { width:25px;height:25px;border:3px solid rgba(24,142,130,.22);border-top-color:#168e82;border-radius:50%;content:"";opacity:0; }
+.pullToRefresh[data-pulling="true"]::after,.pullToRefresh[data-refreshing="true"]::after { opacity:1;animation:pullRefreshSpin .7s linear infinite; }
 @keyframes pullRefreshSpin { to { transform:rotate(360deg); } }
 ::selection { color: white; background: var(--color-primary); }
 :focus-visible { outline: 3px solid var(--color-focus); outline-offset: 3px; }
