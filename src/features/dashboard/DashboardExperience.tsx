@@ -131,6 +131,7 @@ export default function DashboardExperience({ trips, onSelectTrip, onOpenTrip, o
   const [darkNavy, setDarkNavy] = useState(() => { try { return localStorage.getItem(themeKey) !== "false"; } catch { return true; } });
   const { customAppIcon, saveCustomAppIcon, syncStatus: appIconSyncStatus } = useSharedAppIcon();
   const [iconPreviewOpen, setIconPreviewOpen] = useState(false);
+  const [homeIconGuideOpen, setHomeIconGuideOpen] = useState(false);
   const [favorites, setFavorites] = useState<string[]>(() => { try { return JSON.parse(localStorage.getItem(favoritesKey) ?? "[]") as string[]; } catch { return []; } });
   const [menuOpen, setMenuOpen] = useState(false);
   const [deleteTripTarget, setDeleteTripTarget] = useState<Trip | null>(null);
@@ -219,6 +220,30 @@ export default function DashboardExperience({ trips, onSelectTrip, onOpenTrip, o
     if (!iconLink) return;
     iconLink.href = customAppIcon || "/app-icon.svg";
   }, [customAppIcon]);
+  const prepareHomeScreenIcon = () => {
+    if (!customAppIcon) { showToast("Hãy chọn ảnh icon trước"); return; }
+    const source = new Image();
+    source.onload = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = 180;
+      canvas.height = 180;
+      const context = canvas.getContext("2d");
+      if (!context) { showToast("Không thể chuẩn bị icon Màn hình chính"); return; }
+      const side = Math.min(source.naturalWidth, source.naturalHeight);
+      context.drawImage(source, (source.naturalWidth - side) / 2, (source.naturalHeight - side) / 2, side, side, 0, 0, 180, 180);
+      let touchIcon = document.querySelector<HTMLLinkElement>('link[rel="apple-touch-icon"]');
+      if (!touchIcon) {
+        touchIcon = document.createElement("link");
+        touchIcon.rel = "apple-touch-icon";
+        touchIcon.sizes = "180x180";
+        document.head.append(touchIcon);
+      }
+      touchIcon.href = canvas.toDataURL("image/png");
+      setHomeIconGuideOpen(true);
+    };
+    source.onerror = () => showToast("Không đọc được ảnh icon hiện tại");
+    source.src = customAppIcon;
+  };
   const requestDestinationRating = useCallback((destination: Destination) => {
     if (requestedRatingIdsRef.current.has(destination.id) || destinationRatings[destination.id]) return;
     requestedRatingIdsRef.current.add(destination.id);
@@ -326,7 +351,7 @@ export default function DashboardExperience({ trips, onSelectTrip, onOpenTrip, o
   </AnimatePresence>, document.body);
   const exportSheet = exportOpen && <GlassSheet title="Xuất dữ liệu" subtitle="Tìm và chọn chuyến đi cần xuất." icon={<FileSpreadsheet aria-hidden="true" />} variant="sheet" dense onClose={() => setExportOpen(false)}><div className={styles.exportChooser}><label className={styles.exportSearch}><Search aria-hidden="true" /><input value={exportQuery} onChange={(event) => setExportQuery(event.target.value)} placeholder="Tìm theo địa danh, tên hoặc ngày..." aria-label="Tìm chuyến đi để xuất" /></label>{exportableTrips.length > 4 && <p className={styles.exportScrollHint}>Cuộn danh sách để xem thêm · {exportableTrips.length} chuyến</p>}<div className={styles.exportTripList} role="listbox" aria-label="Danh sách chuyến đi">{exportableTrips.map((item) => { const selected = exportTripId === item.id; const destinationName = tripRouteLabel(item); const distinctName = item.name !== destinationName ? item.name : ""; return <button key={item.id} type="button" role="option" aria-selected={selected} className={`${styles.exportTripOption} ${selected ? styles.exportTripOptionSelected : ""}`} onClick={() => setExportTripId(item.id)}><span><strong>{destinationName}</strong><small>{[distinctName, item.dateRange].filter(Boolean).join(" · ")}</small></span><b>{item.estimate === null ? "Chưa có ngân sách" : `${item.estimate.toLocaleString("vi-VN")} đ`}</b></button>; })}{exportableTrips.length === 0 && <p className={styles.exportNoResults}>{trips.length ? "Không tìm thấy chuyến đi phù hợp." : "Chưa có chuyến đi để xuất."}</p>}</div><button type="button" className={styles.exportConfirm} disabled={!exportTrip} onClick={() => { if (!exportTrip) return; onExport(exportTrip); setExportOpen(false); }}><FileSpreadsheet aria-hidden="true" />{exportTrip ? `Xuất ${tripRouteLabel(exportTrip)} ra Excel` : "Chọn chuyến đi để tiếp tục"}</button></div></GlassSheet>;
   const deleteTripSheet = deleteTripTarget && <GlassSheet title="Xóa chuyến đi?" subtitle={`Bạn có chắc muốn xóa ${deleteTripTarget.destination || deleteTripTarget.name}?`} icon={<Trash2 aria-hidden="true" />} variant="sheet" onClose={() => setDeleteTripTarget(null)}><div className={styles.deleteTripActions}><button type="button" className={styles.deleteTripCancel} onClick={() => setDeleteTripTarget(null)}>Giữ chuyến đi</button><button type="button" className={styles.deleteTripConfirm} onClick={() => { onDeleteTrip(deleteTripTarget); setDeleteTripTarget(null); }}>Xóa chuyến đi</button></div></GlassSheet>;
-  const modalOpen = filtersOpen || exportOpen || Boolean(deleteTripTarget) || Boolean(detailDestination) || Boolean(planningDestination) || iconPreviewOpen;
+  const modalOpen = filtersOpen || exportOpen || Boolean(deleteTripTarget) || Boolean(detailDestination) || Boolean(planningDestination) || iconPreviewOpen || homeIconGuideOpen;
   const tripFab = createPortal(<motion.button id="dashboard-trip-fab" type="button" className={styles.tripFab} hidden={active !== "Chuyến đi" || !dockVisible || modalOpen} aria-label="Tạo chuyến đi mới" onClick={onCreateTrip} whileTap={reduced ? undefined : { scale: .92 }}><Plus /></motion.button>, document.body);
   const toast = createPortal(<AnimatePresence>{toastMessage && <motion.div className={styles.successToast} role="status" aria-live="polite" initial={reduced ? false : { opacity: 0, y: 12, scale: .96 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 8, scale: .98 }} transition={{ duration: reduced ? 0 : .18 }}><CheckCircle2 aria-hidden="true" /><span>{toastMessage}</span></motion.div>}</AnimatePresence>, document.body);
 
@@ -347,6 +372,7 @@ export default function DashboardExperience({ trips, onSelectTrip, onOpenTrip, o
         <div className={styles.settingRow}><span className={styles.settingIcon}><Moon /></span><span className={styles.settingCopy}><strong>Giao diện Dark Navy</strong><small>Tối ưu hiển thị ban đêm</small></span><button type="button" role="switch" aria-checked={darkNavy} className={`${styles.themeSwitch} ${darkNavy ? styles.themeSwitchOn : ""}`} onClick={() => setDarkNavy((value) => !value)} aria-label="Bật hoặc tắt giao diện Dark Navy"><i /></button></div>
         <div className={styles.settingRow}><span className={styles.settingIcon}><Coins /></span><span className={styles.settingCopy}><strong>Đơn vị tiền tệ</strong><small>Đơn vị ngân sách chuyến đi</small></span><span className={styles.currencyPill}>VND (đ)</span></div>
         <div className={styles.settingRow}>{customAppIcon ? <button type="button" className={`${styles.settingIcon} ${styles.settingIconButton}`} aria-label="Xem ảnh icon Trip Note" onClick={() => setIconPreviewOpen(true)}><img className={styles.settingIconImage} src={customAppIcon} alt="" /></button> : <span className={styles.settingIcon}><Smartphone /></span>}<span className={styles.settingCopy}><strong>Tạo icon từ ảnh</strong><small className={styles.appIconSyncStatus}>{appIconSyncStatus === "connecting" ? "Đang kiểm tra đồng bộ…" : appIconSyncStatus === "offline" ? customAppIcon ? "Ảnh chỉ có trên máy này · chưa lên cloud" : "Mất kết nối · chưa kiểm tra ảnh chung" : appIconSyncStatus === "local" ? "Không có Firebase · chỉ lưu tại máy" : customAppIcon ? "Đã đồng bộ ảnh lên Firestore" : "Đã kết nối · chưa có ảnh chung"}</small></span><span className={styles.settingActions}><button type="button" className={styles.settingAction} onClick={() => appIconInputRef.current?.click()}>{customAppIcon ? "Đổi ảnh" : "Chọn ảnh"}</button>{customAppIcon && <button type="button" className={styles.resetIcon} aria-label="Khôi phục icon mặc định" onClick={() => { void saveCustomAppIcon("").then((saved) => showToast(saved ? "Đã khôi phục icon mặc định trên các thiết bị" : "Đã xóa icon trên máy này; chưa đồng bộ")); }}>×</button>}</span></div>
+        {customAppIcon && <button type="button" className={styles.homeIconUpdate} onClick={prepareHomeScreenIcon}><Smartphone aria-hidden="true" />Cập nhật icon Màn hình chính</button>}
         <input ref={appIconInputRef} className={styles.hiddenIconInput} type="file" accept="image/*" aria-label="Chọn ảnh để tạo icon Trip Note" onChange={chooseCustomAppIcon} />
       </section>
       <section className={styles.profileSettings}><h2>TÀI KHOẢN & ĐỒNG BỘ</h2>
@@ -416,6 +442,7 @@ export default function DashboardExperience({ trips, onSelectTrip, onOpenTrip, o
     {detailDestination && <DestinationDetailSheet destination={detailDestination} rating={destinationRatings[detailDestination.id]} isFavorite={favorites.includes(detailDestination.id) || favorites.includes(detailDestination.name)} onToggleFavorite={() => toggleFavorite(detailDestination.id)} onClose={() => setDetailDestination(null)} onPlan={() => { setPlanningDestination(detailDestination); setDetailDestination(null); }} />}
     {planningDestination && <GlassSheet title="Thêm lên kế hoạch" subtitle={planningDestination.name} icon={<Plus aria-hidden="true" />} variant="sheet" dense className={styles.planChoiceSheet} onClose={() => setPlanningDestination(null)}><div className={styles.planChoiceList}><button type="button" onClick={() => { onChooseDestination(planningDestination); setPlanningDestination(null); }}><span className={styles.planChoiceIcon}><Plus /></span><span><strong>Tạo lịch thủ công</strong><small>Tự nhập ngày đi và các điểm dừng.</small></span><ChevronRight /></button><button type="button" onClick={() => { setPlanningDestination(null); onImport(); }}><span className={styles.planChoiceIcon}><FileSpreadsheet /></span><span><strong>Nhập lịch từ Excel</strong><small>Dùng lịch trình bạn đã có sẵn.</small></span><ChevronRight /></button></div></GlassSheet>}
     {iconPreviewOpen && customAppIcon && <GlassSheet title="Ảnh icon Trip Note" subtitle="Ảnh này được dùng chung trên các thiết bị." icon={<Smartphone aria-hidden="true" />} onClose={() => setIconPreviewOpen(false)}><div className={styles.iconPreview}><img src={customAppIcon} alt="Ảnh icon Trip Note" /></div></GlassSheet>}
+    {homeIconGuideOpen && <GlassSheet title="Cập nhật icon iPhone" subtitle="Ảnh mới đã được chuẩn bị cho shortcut tạo tiếp theo." icon={<Smartphone aria-hidden="true" />} onClose={() => setHomeIconGuideOpen(false)}><div className={styles.homeIconGuide}><img src={customAppIcon} alt="Icon Trip Note mới" /><ol><li>Xóa biểu tượng Trip cũ khỏi Màn hình chính.</li><li>Mở link Trip Note bằng Safari, chạm nút Chia sẻ.</li><li>Chọn <strong>Thêm vào MH chính</strong>, rồi chạm <strong>Thêm</strong>.</li></ol><p>iPhone không cho website tự thay icon shortcut đã ghim; cần thêm lại để nhận ảnh mới.</p></div></GlassSheet>}
     {tripFab}
     {toast}
   </main>;
