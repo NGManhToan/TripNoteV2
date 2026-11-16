@@ -54,7 +54,7 @@ export function useFavoritesSync(favorites: string[], setFavorites: Dispatch<Set
 
         if (!sameFavorites(remoteIds, mergedIds)) {
           try {
-            await setDoc(favoriteDoc, { destinationIds: mergedIds, updatedAt: serverTimestamp() });
+            await setDoc(favoriteDoc, { destinationIds: mergedIds, updatedAt: serverTimestamp() }, { merge: true });
           } catch {
             readyRef.current = false;
           }
@@ -84,7 +84,7 @@ export function useFavoritesSync(favorites: string[], setFavorites: Dispatch<Set
     void setDoc(doc(db, "sharedWorkspaces", SHARED_WORKSPACE_ID, "preferences", FAVORITES_DOCUMENT_ID), {
       destinationIds: nextFavorites,
       updatedAt: serverTimestamp(),
-    }).catch(() => {
+    }, { merge: true }).catch(() => {
       readyRef.current = false;
     });
   }, [favorites]);

@@ -1,11 +1,11 @@
 # Firebase shared-link setup
 
-TripNote opens directly from its link. It does not require Firebase Authentication. Trips, saved destination IDs, and the custom app icon are stored in the shared Firestore workspace (`sharedWorkspaces/tripnote-public/trips` and `sharedWorkspaces/tripnote-public/preferences`). Every visitor to the same deployment sees and edits this shared data.
+TripNote opens directly from its link. It does not require Firebase Authentication. Trips, saved destination IDs, and the custom app icon are stored in the shared Firestore workspace (`sharedWorkspaces/tripnote-public/trips` and `sharedWorkspaces/tripnote-public/preferences/favorites`). Every visitor to the same deployment sees and edits this shared data.
 
 ## Configure Firebase
 
 1. In Firebase Console, create/enable Cloud Firestore for the `trip-note-2ab10` project.
-2. Open **Firestore → Rules**, paste the contents of [`firestore.rules`](./firestore.rules), and publish them. The rules allow public read/write access to the shared TripNote trips, favorites, and app icon.
+2. Open **Firestore → Rules**, paste the contents of [`firestore.rules`](./firestore.rules), and publish them. The rules allow public read/write access to the shared TripNote trips and favorites. The custom icon is stored alongside favorites, so it uses the existing favorites permission.
 3. The shared `trip-note-2ab10` Web app configuration is included as a public client config fallback, so a Netlify build can connect without environment variables. You may override it with `.env.local` for a different local/staging project. Do not commit `.env.local`.
 
 ```dotenv

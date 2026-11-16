@@ -10,9 +10,5 @@ service cloud.firestore {
     match /sharedWorkspaces/tripnote-public/preferences/favorites {
       allow read, write: if true;
     }
-    // The app icon is intentionally shared for this public, no-login workspace.
-    match /sharedWorkspaces/tripnote-public/preferences/appIcon {
-      allow read, write: if true;
-    }
   }
 }

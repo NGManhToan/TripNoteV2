@@ -3,7 +3,9 @@ import { doc, onSnapshot, serverTimestamp, setDoc } from "firebase/firestore";
 import { firestore } from "./client";
 
 const SHARED_WORKSPACE_ID = "tripnote-public";
-const APP_ICON_DOCUMENT_ID = "appIcon";
+// Reuse the already-authorized shared preferences document so icon sync works
+// with the Firebase Rules currently published for favorites.
+const APP_ICON_DOCUMENT_ID = "favorites";
 const APP_ICON_STORAGE_KEY = "tripnote-v2-custom-app-icon";
 
 type SharedIconStatus = "local" | "connecting" | "synced" | "offline";
@@ -26,7 +28,7 @@ export function useSharedAppIcon() {
       await setDoc(doc(firestore, "sharedWorkspaces", SHARED_WORKSPACE_ID, "preferences", APP_ICON_DOCUMENT_ID), {
         iconData,
         updatedAt: serverTimestamp(),
-      });
+      }, { merge: true });
       remoteIconRef.current = iconData;
       pendingIconRef.current = null;
       setStatus("synced");
