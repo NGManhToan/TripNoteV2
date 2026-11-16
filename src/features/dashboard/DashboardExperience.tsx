@@ -14,13 +14,13 @@ import type { DashboardSection } from "../../ui/navigation/types";
 import MobileDock from "../../ui/navigation/MobileDock";
 import type { TripSyncState } from "../firebase/useTripSync";
 import { useFavoritesSync } from "../firebase/useFavoritesSync";
+import { useSharedAppIcon } from "../firebase/useSharedAppIcon";
 import { GlassSheet } from "../../ui/sheets/GlassSheet";
 import DestinationDetailSheet from "../destinations/DestinationDetailSheet";
 import styles from "./DashboardExperience.module.css";
 
 const favoritesKey = "tripnote-v2-favorite-destinations";
 const themeKey = "tripnote-v2-dark-navy";
-const appIconKey = "tripnote-v2-custom-app-icon";
 const destinationBatchSize = () => window.matchMedia("(max-width: 600px)").matches ? 12 : 36;
 type Props = { trips: Trip[]; onSelectTrip: (index: number) => void; onOpenTrip: (trip: Trip) => void; onCreateTrip: () => void; onDeleteTrip: (trip: Trip) => void; onChooseDestination: (destination: Destination) => void; onImport: () => void; onExport: (trip: Trip) => void; initialSection: DashboardSection; onRememberSection: (section: DashboardSection) => void; query: string; onQueryChange: (value: string) => void; dockVisible?: boolean; syncStatus?: TripSyncState };
 
@@ -129,7 +129,8 @@ export default function DashboardExperience({ trips, onSelectTrip, onOpenTrip, o
   const [exportQuery, setExportQuery] = useState("");
   const [tripQuery, setTripQuery] = useState("");
   const [darkNavy, setDarkNavy] = useState(() => { try { return localStorage.getItem(themeKey) !== "false"; } catch { return true; } });
-  const [customAppIcon, setCustomAppIcon] = useState(() => { try { return localStorage.getItem(appIconKey) ?? ""; } catch { return ""; } });
+  const { customAppIcon, saveCustomAppIcon, syncStatus: appIconSyncStatus } = useSharedAppIcon();
+  const [iconPreviewOpen, setIconPreviewOpen] = useState(false);
   const [favorites, setFavorites] = useState<string[]>(() => { try { return JSON.parse(localStorage.getItem(favoritesKey) ?? "[]") as string[]; } catch { return []; } });
   const [menuOpen, setMenuOpen] = useState(false);
   const [deleteTripTarget, setDeleteTripTarget] = useState<Trip | null>(null);
@@ -205,14 +206,10 @@ export default function DashboardExperience({ trips, onSelectTrip, onOpenTrip, o
       if (!context) { URL.revokeObjectURL(sourceUrl); showToast("Không thể xử lý ảnh này"); return; }
       context.drawImage(image, (image.naturalWidth - side) / 2, (image.naturalHeight - side) / 2, side, side, 0, 0, 512, 512);
       URL.revokeObjectURL(sourceUrl);
-      const iconData = canvas.toDataURL("image/webp", .88);
-      try {
-        localStorage.setItem(appIconKey, iconData);
-        setCustomAppIcon(iconData);
-        showToast("Đã cập nhật icon Trip Note trên thiết bị này");
-      } catch {
-        showToast("Ảnh quá lớn để lưu. Hãy thử ảnh khác");
-      }
+      let iconData = canvas.toDataURL("image/webp", .82);
+      if (!iconData.startsWith("data:image/webp")) iconData = canvas.toDataURL("image/jpeg", .82);
+      if (iconData.length > 800_000) { showToast("Ảnh sau khi nén vẫn quá lớn để đồng bộ"); return; }
+      void saveCustomAppIcon(iconData).then((saved) => showToast(saved ? "Ảnh icon đã đồng bộ với các thiết bị" : "Đã lưu ảnh trên máy này; kiểm tra kết nối để đồng bộ"));
     };
     image.onerror = () => { URL.revokeObjectURL(sourceUrl); showToast("Không đọc được ảnh này"); };
     image.src = sourceUrl;
@@ -329,7 +326,7 @@ export default function DashboardExperience({ trips, onSelectTrip, onOpenTrip, o
   </AnimatePresence>, document.body);
   const exportSheet = exportOpen && <GlassSheet title="Xuất dữ liệu" subtitle="Tìm và chọn chuyến đi cần xuất." icon={<FileSpreadsheet aria-hidden="true" />} variant="sheet" dense onClose={() => setExportOpen(false)}><div className={styles.exportChooser}><label className={styles.exportSearch}><Search aria-hidden="true" /><input value={exportQuery} onChange={(event) => setExportQuery(event.target.value)} placeholder="Tìm theo địa danh, tên hoặc ngày..." aria-label="Tìm chuyến đi để xuất" /></label>{exportableTrips.length > 4 && <p className={styles.exportScrollHint}>Cuộn danh sách để xem thêm · {exportableTrips.length} chuyến</p>}<div className={styles.exportTripList} role="listbox" aria-label="Danh sách chuyến đi">{exportableTrips.map((item) => { const selected = exportTripId === item.id; const destinationName = tripRouteLabel(item); const distinctName = item.name !== destinationName ? item.name : ""; return <button key={item.id} type="button" role="option" aria-selected={selected} className={`${styles.exportTripOption} ${selected ? styles.exportTripOptionSelected : ""}`} onClick={() => setExportTripId(item.id)}><span><strong>{destinationName}</strong><small>{[distinctName, item.dateRange].filter(Boolean).join(" · ")}</small></span><b>{item.estimate === null ? "Chưa có ngân sách" : `${item.estimate.toLocaleString("vi-VN")} đ`}</b></button>; })}{exportableTrips.length === 0 && <p className={styles.exportNoResults}>{trips.length ? "Không tìm thấy chuyến đi phù hợp." : "Chưa có chuyến đi để xuất."}</p>}</div><button type="button" className={styles.exportConfirm} disabled={!exportTrip} onClick={() => { if (!exportTrip) return; onExport(exportTrip); setExportOpen(false); }}><FileSpreadsheet aria-hidden="true" />{exportTrip ? `Xuất ${tripRouteLabel(exportTrip)} ra Excel` : "Chọn chuyến đi để tiếp tục"}</button></div></GlassSheet>;
   const deleteTripSheet = deleteTripTarget && <GlassSheet title="Xóa chuyến đi?" subtitle={`Bạn có chắc muốn xóa ${deleteTripTarget.destination || deleteTripTarget.name}?`} icon={<Trash2 aria-hidden="true" />} variant="sheet" onClose={() => setDeleteTripTarget(null)}><div className={styles.deleteTripActions}><button type="button" className={styles.deleteTripCancel} onClick={() => setDeleteTripTarget(null)}>Giữ chuyến đi</button><button type="button" className={styles.deleteTripConfirm} onClick={() => { onDeleteTrip(deleteTripTarget); setDeleteTripTarget(null); }}>Xóa chuyến đi</button></div></GlassSheet>;
-  const modalOpen = filtersOpen || exportOpen || Boolean(deleteTripTarget) || Boolean(detailDestination) || Boolean(planningDestination);
+  const modalOpen = filtersOpen || exportOpen || Boolean(deleteTripTarget) || Boolean(detailDestination) || Boolean(planningDestination) || iconPreviewOpen;
   const tripFab = createPortal(<motion.button id="dashboard-trip-fab" type="button" className={styles.tripFab} hidden={active !== "Chuyến đi" || !dockVisible || modalOpen} aria-label="Tạo chuyến đi mới" onClick={onCreateTrip} whileTap={reduced ? undefined : { scale: .92 }}><Plus /></motion.button>, document.body);
   const toast = createPortal(<AnimatePresence>{toastMessage && <motion.div className={styles.successToast} role="status" aria-live="polite" initial={reduced ? false : { opacity: 0, y: 12, scale: .96 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 8, scale: .98 }} transition={{ duration: reduced ? 0 : .18 }}><CheckCircle2 aria-hidden="true" /><span>{toastMessage}</span></motion.div>}</AnimatePresence>, document.body);
 
@@ -341,15 +338,15 @@ export default function DashboardExperience({ trips, onSelectTrip, onOpenTrip, o
     </header>
     <header data-section-panel="Cá nhân" hidden={active !== "Cá nhân"} className={`${styles.header} ${styles.profileHeader}`}><strong>Hồ sơ cá nhân</strong></header>
     <header data-section-panel="Khám phá" hidden={active !== "Khám phá"} className={`${styles.header} ${styles.discoverHeader}`}><div className={styles.brand}><span className={styles.brandMark}>{customAppIcon ? <img src={customAppIcon} alt="" /> : <Send />}</span><span className={styles.brandCopy}><strong>Trip<span>Vibe</span></strong><small>Khám phá Việt Nam</small></span></div><div className={styles.headerActions}><span className={styles.discoverCount}>{matchingDestinations.length} điểm đến</span></div></header>
-    <header data-section-panel="Yêu thích" hidden={active !== "Yêu thích"} className={styles.header}><div className={styles.brand}><span><strong>Trip Note</strong></span></div><div className={styles.headerActions}><button type="button" className={styles.avatar} aria-label="Hồ sơ cá nhân" onClick={() => changeSection("Cá nhân")}>{customAppIcon ? <img src={customAppIcon} alt="" /> : <UserRound />}</button></div></header>
+    <header data-section-panel="Yêu thích" hidden={active !== "Yêu thích"} className={styles.header}><div className={styles.brand}><span><strong>Trip Note</strong></span></div><div className={styles.headerActions}><button type="button" className={styles.avatar} aria-label={customAppIcon ? "Xem ảnh icon Trip Note" : "Hồ sơ cá nhân"} onClick={() => customAppIcon ? setIconPreviewOpen(true) : changeSection("Cá nhân")}>{customAppIcon ? <img src={customAppIcon} alt="" /> : <UserRound />}</button></div></header>
 
     <section data-section-panel="Cá nhân" hidden={active !== "Cá nhân"} className={styles.profile}>
-      <div className={styles.profileIdentity}><div className={styles.profileAvatar} aria-hidden="true">{customAppIcon ? <img src={customAppIcon} alt="" /> : "TN"}</div><div className={styles.profileIdentityCopy}><strong>TripNote</strong><span>Không gian dùng chung qua link</span><small><i /> {syncStatus === "synced" ? "Đồng bộ trên các thiết bị" : syncStatus === "connecting" ? "Đang kết nối dữ liệu" : syncStatus === "offline" ? "Đang chờ kết nối mạng" : "Lưu trên thiết bị này"}</small></div></div>
+      <div className={styles.profileIdentity}><button type="button" className={styles.profileAvatar} aria-label={customAppIcon ? "Xem ảnh icon Trip Note" : "Chưa có ảnh icon"} disabled={!customAppIcon} onClick={() => setIconPreviewOpen(true)}>{customAppIcon ? <img src={customAppIcon} alt="" /> : "TN"}</button><div className={styles.profileIdentityCopy}><strong>TripNote</strong><span>Không gian dùng chung qua link</span><small><i /> {syncStatus === "synced" ? "Đồng bộ trên các thiết bị" : syncStatus === "connecting" ? "Đang kết nối dữ liệu" : syncStatus === "offline" ? "Đang chờ kết nối mạng" : "Lưu trên thiết bị này"}</small></div></div>
       <div className={styles.profileStats}><div><strong>{trips.length}</strong><span>Chuyến đi</span></div><div><strong>{new Set(trips.flatMap((trip) => trip.destinations?.map((stop) => stop.name) ?? [trip.destination || trip.name])).size}</strong><span>Địa điểm</span></div><div><strong>{favorites.length}</strong><span>Yêu thích</span></div></div>
       <section className={styles.profileSettings}><h2>TÙY CHỈNH ỨNG DỤNG</h2>
         <div className={styles.settingRow}><span className={styles.settingIcon}><Moon /></span><span className={styles.settingCopy}><strong>Giao diện Dark Navy</strong><small>Tối ưu hiển thị ban đêm</small></span><button type="button" role="switch" aria-checked={darkNavy} className={`${styles.themeSwitch} ${darkNavy ? styles.themeSwitchOn : ""}`} onClick={() => setDarkNavy((value) => !value)} aria-label="Bật hoặc tắt giao diện Dark Navy"><i /></button></div>
         <div className={styles.settingRow}><span className={styles.settingIcon}><Coins /></span><span className={styles.settingCopy}><strong>Đơn vị tiền tệ</strong><small>Đơn vị ngân sách chuyến đi</small></span><span className={styles.currencyPill}>VND (đ)</span></div>
-        <div className={styles.settingRow}><span className={styles.settingIcon}>{customAppIcon ? <img className={styles.settingIconImage} src={customAppIcon} alt="" /> : <Smartphone />}</span><span className={styles.settingCopy}><strong>Tạo icon từ ảnh</strong><small>Chọn ảnh và dùng làm icon trong Trip Note</small></span><span className={styles.settingActions}><button type="button" className={styles.settingAction} onClick={() => appIconInputRef.current?.click()}>{customAppIcon ? "Đổi ảnh" : "Chọn ảnh"}</button>{customAppIcon && <button type="button" className={styles.resetIcon} aria-label="Khôi phục icon mặc định" onClick={() => { localStorage.removeItem(appIconKey); setCustomAppIcon(""); showToast("Đã khôi phục icon mặc định"); }}>×</button>}</span></div>
+        <div className={styles.settingRow}>{customAppIcon ? <button type="button" className={`${styles.settingIcon} ${styles.settingIconButton}`} aria-label="Xem ảnh icon Trip Note" onClick={() => setIconPreviewOpen(true)}><img className={styles.settingIconImage} src={customAppIcon} alt="" /></button> : <span className={styles.settingIcon}><Smartphone /></span>}<span className={styles.settingCopy}><strong>Tạo icon từ ảnh</strong><small>{appIconSyncStatus === "synced" ? "Ảnh đã đồng bộ trên các thiết bị" : appIconSyncStatus === "offline" ? "Chưa đồng bộ · kiểm tra kết nối" : "Chọn ảnh và dùng làm icon trong Trip Note"}</small></span><span className={styles.settingActions}><button type="button" className={styles.settingAction} onClick={() => appIconInputRef.current?.click()}>{customAppIcon ? "Đổi ảnh" : "Chọn ảnh"}</button>{customAppIcon && <button type="button" className={styles.resetIcon} aria-label="Khôi phục icon mặc định" onClick={() => { void saveCustomAppIcon("").then((saved) => showToast(saved ? "Đã khôi phục icon mặc định trên các thiết bị" : "Đã xóa icon trên máy này; chưa đồng bộ")); }}>×</button>}</span></div>
         <input ref={appIconInputRef} className={styles.hiddenIconInput} type="file" accept="image/*" aria-label="Chọn ảnh để tạo icon Trip Note" onChange={chooseCustomAppIcon} />
       </section>
       <section className={styles.profileSettings}><h2>TÀI KHOẢN & ĐỒNG BỘ</h2>
@@ -418,6 +415,7 @@ export default function DashboardExperience({ trips, onSelectTrip, onOpenTrip, o
     {deleteTripSheet}
     {detailDestination && <DestinationDetailSheet destination={detailDestination} rating={destinationRatings[detailDestination.id]} isFavorite={favorites.includes(detailDestination.id) || favorites.includes(detailDestination.name)} onToggleFavorite={() => toggleFavorite(detailDestination.id)} onClose={() => setDetailDestination(null)} onPlan={() => { setPlanningDestination(detailDestination); setDetailDestination(null); }} />}
     {planningDestination && <GlassSheet title="Thêm lên kế hoạch" subtitle={planningDestination.name} icon={<Plus aria-hidden="true" />} variant="sheet" dense className={styles.planChoiceSheet} onClose={() => setPlanningDestination(null)}><div className={styles.planChoiceList}><button type="button" onClick={() => { onChooseDestination(planningDestination); setPlanningDestination(null); }}><span className={styles.planChoiceIcon}><Plus /></span><span><strong>Tạo lịch thủ công</strong><small>Tự nhập ngày đi và các điểm dừng.</small></span><ChevronRight /></button><button type="button" onClick={() => { setPlanningDestination(null); onImport(); }}><span className={styles.planChoiceIcon}><FileSpreadsheet /></span><span><strong>Nhập lịch từ Excel</strong><small>Dùng lịch trình bạn đã có sẵn.</small></span><ChevronRight /></button></div></GlassSheet>}
+    {iconPreviewOpen && customAppIcon && <GlassSheet title="Ảnh icon Trip Note" subtitle="Ảnh này được dùng chung trên các thiết bị." icon={<Smartphone aria-hidden="true" />} onClose={() => setIconPreviewOpen(false)}><div className={styles.iconPreview}><img src={customAppIcon} alt="Ảnh icon Trip Note" /></div></GlassSheet>}
     {tripFab}
     {toast}
   </main>;

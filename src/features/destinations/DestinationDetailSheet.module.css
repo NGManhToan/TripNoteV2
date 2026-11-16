@@ -34,6 +34,7 @@
 .actions { display:grid;flex:none;grid-template-columns:minmax(90px,.72fr) minmax(0,1.35fr);align-items:center;gap:10px;padding-top:10px; }
 .actions button { display:flex;min-width:0;min-height:48px;align-items:center;justify-content:center;gap:7px;border:0;border-radius:15px;font:inherit;font-size:.75rem;font-weight:750;white-space:nowrap; }
 .actions svg { width:17px;height:17px;flex:0 0 auto; }
+.actions .plan svg { width:var(--mobile-fab-icon-size);height:var(--mobile-fab-icon-size);stroke-width:2.6; }
 .favorite { color:#18334d;background:#fff; }
 .favorite[aria-pressed="true"] { color:#e7475f; }
 .plan { color:#fff;background:linear-gradient(105deg,#12cbb8,#09b8a9);box-shadow:0 7px 17px rgba(18,190,172,.2); }

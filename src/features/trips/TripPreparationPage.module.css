@@ -97,9 +97,9 @@
 .empty { padding: 54px 10px; color: var(--muted); font-size: .84rem; line-height: 1.5; text-align: center; }
 
 .addBar { position: fixed; z-index: 12; right: max(0px, calc((100vw - 430px) / 2)); bottom: calc(64px + env(safe-area-inset-bottom)); left: max(0px, calc((100vw - 430px) / 2)); padding: 26px 20px 13px; background: linear-gradient(0deg, var(--paper) 64%, rgba(250, 249, 246, .94) 75%, transparent); pointer-events: none; }
-.addFab { position: fixed; z-index: 12; right: max(20px, calc((100vw - 390px) / 2)); bottom: calc(82px + env(safe-area-inset-bottom)); display: grid; width: 42px; height: 42px; place-items: center; border: 0; border-radius: 50%; color: #fff; background: var(--ink); box-shadow: 0 8px 18px rgba(24, 24, 27, .2); transition: transform .14s ease, background .16s ease; }
+.addFab { position: fixed; z-index: 12; right: max(20px, calc((100vw - 390px) / 2)); bottom: calc(82px + env(safe-area-inset-bottom)); display: grid; width: var(--mobile-fab-size); height: var(--mobile-fab-size); place-items: center; border: 0; border-radius: 50%; color: #fff; background: var(--ink); box-shadow: 0 8px 18px rgba(24, 24, 27, .2); transition: transform .14s ease, background .16s ease; }
 .addFab:active { transform: scale(.92); }
-.addFab svg { width: 19px; height: 19px; stroke-width: 2.2; }
+.addFab svg { width: var(--mobile-fab-icon-size); height: var(--mobile-fab-icon-size); stroke-width: 2.2; }
 .addForm { display: flex; min-height: 48px; align-items: center; gap: 8px; padding: 5px 6px 5px 10px; border: 1px solid var(--hairline); border-radius: 99px; background: #fff; box-shadow: 0 12px 32px -6px rgba(24, 24, 27, .12), 0 2px 6px -1px rgba(24, 24, 27, .05); pointer-events: auto; transition: border-color .15s ease, box-shadow .15s ease; }
 .addForm:focus-within { border-color: rgba(24, 24, 27, .32); box-shadow: 0 12px 32px -6px rgba(24, 24, 27, .15), 0 0 0 3px rgba(24, 24, 27, .04); }
 .addForm input { width: 100%; min-width: 0; flex: 1; border: 0; outline: 0; color: var(--ink); background: transparent; font: inherit; font-size: .77rem; }

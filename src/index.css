@@ -3,7 +3,7 @@
 @import "./styles/animations.css";
 @import "./ui/design-system/tokens.css";
 
-:root { font-family: var(--font-body); color: var(--color-ink); background: var(--color-canvas); font-synthesis: none; text-rendering: optimizeLegibility; }
+:root { --mobile-fab-size:48px;--mobile-fab-icon-size:22px;font-family: var(--font-body); color: var(--color-ink); background: var(--color-canvas); font-synthesis: none; text-rendering: optimizeLegibility; }
 body,button,input,textarea,select { font-family:var(--font-body); }
 *, *::before, *::after { box-sizing: border-box; }
 * { margin: 0; }
