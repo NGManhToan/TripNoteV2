@@ -22,7 +22,36 @@ import styles from "./DashboardExperience.module.css";
 
 const favoritesKey = "tripnote-v2-favorite-destinations";
 const themeKey = "tripnote-v2-dark-navy";
+const homeIconProfileKey = "tripnote-v2-home-icon-profile-id";
+const homeIconClipKey = "tripnote-v2-home-icon-clip-id";
 const destinationBatchSize = () => window.matchMedia("(max-width: 600px)").matches ? 12 : 36;
+function xmlEscape(value: string) { return value.replace(/[<>&'\"]/g, (character) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", "'": "&apos;", '\"': "&quot;" })[character] ?? character); }
+function getHomeIconProfileIds() {
+  try {
+    let profileId = localStorage.getItem(homeIconProfileKey);
+    let clipId = localStorage.getItem(homeIconClipKey);
+    if (!profileId) { profileId = crypto.randomUUID(); localStorage.setItem(homeIconProfileKey, profileId); }
+    if (!clipId) { clipId = crypto.randomUUID(); localStorage.setItem(homeIconClipKey, clipId); }
+    return { profileId, clipId };
+  } catch { return { profileId: crypto.randomUUID(), clipId: crypto.randomUUID() }; }
+}
+function downloadHomeIconProfile(iconData: string) {
+  const iconBase64 = iconData.slice(iconData.indexOf(",") + 1);
+  const { profileId, clipId } = getHomeIconProfileIds();
+  const profileUuid = profileId.toUpperCase();
+  const clipUuid = clipId.toUpperCase();
+  const url = xmlEscape(window.location.origin);
+  const profile = `<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">\n<plist version="1.0"><dict><key>PayloadContent</key><array><dict><key>FullScreen</key><true/><key>Icon</key><data>${iconBase64}</data><key>IsRemovable</key><true/><key>Label</key><string>Trip Note</string><key>PayloadDescription</key><string>Biểu tượng Trip Note với ảnh bạn đã chọn.</string><key>PayloadDisplayName</key><string>Trip Note</string><key>PayloadIdentifier</key><string>vn.tripnote.webclip.${profileUuid}</string><key>PayloadType</key><string>com.apple.webClip.managed</string><key>PayloadUUID</key><string>${clipUuid}</string><key>PayloadVersion</key><integer>1</integer><key>Precomposed</key><true/><key>URL</key><string>${url}</string></dict></array><key>PayloadDescription</key><string>Icon Trip Note cá nhân trên Màn hình chính.</string><key>PayloadDisplayName</key><string>Icon Trip Note</string><key>PayloadIdentifier</key><string>vn.tripnote.homeicon.${profileUuid}</string><key>PayloadOrganization</key><string>Trip Note</string><key>PayloadRemovalDisallowed</key><false/><key>PayloadType</key><string>Configuration</string><key>PayloadUUID</key><string>${profileUuid}</string><key>PayloadVersion</key><integer>1</integer></dict></plist>`;
+  const blob = new Blob([profile], { type: "application/x-apple-aspen-config" });
+  const downloadUrl = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = downloadUrl;
+  link.download = "TripNote-Icon.mobileconfig";
+  document.body.append(link);
+  link.click();
+  link.remove();
+  window.setTimeout(() => URL.revokeObjectURL(downloadUrl), 60_000);
+}
 function makeHomeScreenPng(sourceData: string) {
   return new Promise<string | null>((resolve) => {
     const image = new Image();
@@ -266,8 +295,7 @@ export default function DashboardExperience({ trips, onSelectTrip, onOpenTrip, o
   }, [deviceHomeIcon, deviceHomeIconVersion, homeIconDeviceId]);
   const prepareHomeScreenIcon = () => {
     if (!deviceHomeIcon) { showToast("Chọn ảnh ở mục Tạo icon từ ảnh trước"); return; }
-    const touchIcon = document.querySelector<HTMLLinkElement>('link[rel="apple-touch-icon"]');
-    if (touchIcon) touchIcon.href = `/.netlify/functions/device-home-icon?deviceId=${encodeURIComponent(homeIconDeviceId)}&v=${Date.now()}`;
+    downloadHomeIconProfile(deviceHomeIcon);
     setHomeIconGuideOpen(true);
   };
   const requestDestinationRating = useCallback((destination: Destination) => {
@@ -398,7 +426,7 @@ export default function DashboardExperience({ trips, onSelectTrip, onOpenTrip, o
         <div className={styles.settingRow}><span className={styles.settingIcon}><Moon /></span><span className={styles.settingCopy}><strong>Giao diện Dark Navy</strong><small>Tối ưu hiển thị ban đêm</small></span><button type="button" role="switch" aria-checked={darkNavy} className={`${styles.themeSwitch} ${darkNavy ? styles.themeSwitchOn : ""}`} onClick={() => setDarkNavy((value) => !value)} aria-label="Bật hoặc tắt giao diện Dark Navy"><i /></button></div>
         <div className={styles.settingRow}><span className={styles.settingIcon}><Coins /></span><span className={styles.settingCopy}><strong>Đơn vị tiền tệ</strong><small>Đơn vị ngân sách chuyến đi</small></span><span className={styles.currencyPill}>VND (đ)</span></div>
         <div className={styles.settingRow}>{deviceHomeIcon || customAppIcon ? <button type="button" className={`${styles.settingIcon} ${styles.settingIconButton}`} aria-label="Xem ảnh icon iPhone trên thiết bị này" onClick={() => setIconPreviewOpen(true)}><img className={styles.settingIconImage} src={deviceHomeIcon || customAppIcon} alt="" /></button> : <span className={styles.settingIcon}><Smartphone /></span>}<span className={styles.settingCopy}><strong>Tạo icon từ ảnh</strong><small className={styles.appIconSyncStatus}>{appIconSyncStatus === "connecting" ? "Đang kiểm tra đồng bộ…" : appIconSyncStatus === "offline" ? customAppIcon ? "Ảnh trong app chưa lên cloud" : "Mất kết nối · chưa kiểm tra ảnh chung" : appIconSyncStatus === "local" ? "Không có Firebase · ảnh chỉ lưu tại máy" : customAppIcon ? deviceHomeIcon ? "Ảnh trong app dùng chung · icon iPhone riêng máy này" : "Ảnh trong app đã đồng bộ" : "Đã kết nối · chưa có ảnh chung"}</small></span><span className={styles.settingActions}><button type="button" className={styles.settingAction} onClick={() => appIconInputRef.current?.click()}>{customAppIcon ? "Đổi ảnh" : "Chọn ảnh"}</button>{customAppIcon && <button type="button" className={styles.resetIcon} aria-label="Khôi phục icon mặc định" onClick={() => { void Promise.all([saveCustomAppIcon(""), saveDeviceHomeIcon("")]).then(([saved]) => showToast(saved ? "Đã khôi phục icon mặc định" : "Chưa đồng bộ được thay đổi")); }}>×</button>}</span></div>
-        <button type="button" className={styles.homeIconUpdate} disabled={!deviceHomeIcon} onClick={prepareHomeScreenIcon}><Smartphone aria-hidden="true" />Dùng ảnh này cho icon ngoài iPhone</button>
+        <button type="button" className={styles.homeIconUpdate} disabled={!deviceHomeIcon} onClick={prepareHomeScreenIcon}><Smartphone aria-hidden="true" />Tạo icon iPhone từ ảnh đã chọn</button>
         <input ref={appIconInputRef} className={styles.hiddenIconInput} type="file" accept="image/*" aria-label="Chọn ảnh để tạo icon Trip Note" onChange={chooseCustomAppIcon} />
       </section>
       <section className={styles.profileSettings}><h2>TÀI KHOẢN & ĐỒNG BỘ</h2>
@@ -468,7 +496,7 @@ export default function DashboardExperience({ trips, onSelectTrip, onOpenTrip, o
     {detailDestination && <DestinationDetailSheet destination={detailDestination} rating={destinationRatings[detailDestination.id]} isFavorite={favorites.includes(detailDestination.id) || favorites.includes(detailDestination.name)} onToggleFavorite={() => toggleFavorite(detailDestination.id)} onClose={() => setDetailDestination(null)} onPlan={() => { setPlanningDestination(detailDestination); setDetailDestination(null); }} />}
     {planningDestination && <GlassSheet title="Thêm lên kế hoạch" subtitle={planningDestination.name} icon={<Plus aria-hidden="true" />} variant="sheet" dense className={styles.planChoiceSheet} onClose={() => setPlanningDestination(null)}><div className={styles.planChoiceList}><button type="button" onClick={() => { onChooseDestination(planningDestination); setPlanningDestination(null); }}><span className={styles.planChoiceIcon}><Plus /></span><span><strong>Tạo lịch thủ công</strong><small>Tự nhập ngày đi và các điểm dừng.</small></span><ChevronRight /></button><button type="button" onClick={() => { setPlanningDestination(null); onImport(); }}><span className={styles.planChoiceIcon}><FileSpreadsheet /></span><span><strong>Nhập lịch từ Excel</strong><small>Dùng lịch trình bạn đã có sẵn.</small></span><ChevronRight /></button></div></GlassSheet>}
     {iconPreviewOpen && (deviceHomeIcon || customAppIcon) && <GlassSheet title="Ảnh icon iPhone" subtitle="Ảnh riêng cho Màn hình chính trên thiết bị này." icon={<Smartphone aria-hidden="true" />} onClose={() => setIconPreviewOpen(false)}><div className={styles.iconPreview}><img src={deviceHomeIcon || customAppIcon} alt="Ảnh icon iPhone" /></div></GlassSheet>}
-    {homeIconGuideOpen && <GlassSheet title="Cài ảnh làm icon iPhone" subtitle="Ảnh đã được lưu riêng cho thiết bị này." icon={<Smartphone aria-hidden="true" />} onClose={() => setHomeIconGuideOpen(false)}><div className={styles.homeIconGuide}>{deviceHomeIcon && <img src={deviceHomeIcon} alt="Ảnh sẽ dùng làm icon iPhone" />}<ol><li>Xóa biểu tượng Trip cũ khỏi Màn hình chính nếu đã cài trước đó.</li><li>Quay lại link Trip Note trong Safari và tải lại trang.</li><li>Chạm <strong>Chia sẻ → Thêm vào Màn hình chính</strong>, rồi chạm <strong>Thêm</strong>.</li></ol><p>Icon sẽ lấy ảnh bạn vừa tải lên trên iPhone này. Điện thoại khác có thể chọn ảnh riêng.</p></div></GlassSheet>}
+    {homeIconGuideOpen && <GlassSheet title="Cài icon ảnh lên iPhone" subtitle="Trip Note đã tạo hồ sơ Web Clip từ ảnh trên máy này." icon={<Smartphone aria-hidden="true" />} onClose={() => setHomeIconGuideOpen(false)}><div className={styles.homeIconGuide}>{deviceHomeIcon && <img src={deviceHomeIcon} alt="Ảnh sẽ dùng làm icon iPhone" />}<ol><li>Mở tệp <strong>TripNote-Icon.mobileconfig</strong> vừa tải.</li><li>Vào <strong>Cài đặt → Đã tải về hồ sơ</strong> (hoặc <strong>Cài đặt → Cài đặt chung → VPN & Quản lý thiết bị</strong>).</li><li>Chạm <strong>Cài đặt</strong> và xác nhận. Hồ sơ này chỉ thêm biểu tượng Trip Note mở website.</li><li>Nếu đã tạo icon Trip cũ bằng Safari, xóa icon cũ một lần để tránh trùng.</li></ol><p>Lần đổi ảnh sau, tạo và cài lại hồ sơ Trip Note để cập nhật icon. Mỗi iPhone tự có ảnh riêng. Apple yêu cầu xác nhận hồ sơ trong Cài đặt.</p></div></GlassSheet>}
     {tripFab}
     {toast}
   </main>;
