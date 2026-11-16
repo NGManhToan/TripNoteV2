@@ -22,24 +22,13 @@ import styles from "./DashboardExperience.module.css";
 
 const favoritesKey = "tripnote-v2-favorite-destinations";
 const themeKey = "tripnote-v2-dark-navy";
-const homeIconProfileKey = "tripnote-v2-home-icon-profile-id";
-const homeIconClipKey = "tripnote-v2-home-icon-clip-id";
 const destinationBatchSize = () => window.matchMedia("(max-width: 600px)").matches ? 12 : 36;
 function xmlEscape(value: string) { return value.replace(/[<>&'\"]/g, (character) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", "'": "&apos;", '\"': "&quot;" })[character] ?? character); }
-function getHomeIconProfileIds() {
-  try {
-    let profileId = localStorage.getItem(homeIconProfileKey);
-    let clipId = localStorage.getItem(homeIconClipKey);
-    if (!profileId) { profileId = crypto.randomUUID(); localStorage.setItem(homeIconProfileKey, profileId); }
-    if (!clipId) { clipId = crypto.randomUUID(); localStorage.setItem(homeIconClipKey, clipId); }
-    return { profileId, clipId };
-  } catch { return { profileId: crypto.randomUUID(), clipId: crypto.randomUUID() }; }
-}
 function downloadHomeIconProfile(iconData: string) {
   const iconBase64 = iconData.slice(iconData.indexOf(",") + 1);
-  const { profileId, clipId } = getHomeIconProfileIds();
-  const profileUuid = profileId.toUpperCase();
-  const clipUuid = clipId.toUpperCase();
+  // Keep these identifiers stable so iOS replaces the installed Web Clip profile on updates.
+  const profileUuid = "9140D0D8-6F30-4F74-A50B-44DFB72E11A1";
+  const clipUuid = "E1087EC9-51E7-4F23-99D1-3ED06352B986";
   const url = xmlEscape(window.location.origin);
   const profile = `<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">\n<plist version="1.0"><dict><key>PayloadContent</key><array><dict><key>FullScreen</key><true/><key>Icon</key><data>${iconBase64}</data><key>IsRemovable</key><true/><key>Label</key><string>Trip Note</string><key>PayloadDescription</key><string>Biểu tượng Trip Note với ảnh bạn đã chọn.</string><key>PayloadDisplayName</key><string>Trip Note</string><key>PayloadIdentifier</key><string>vn.tripnote.webclip.${profileUuid}</string><key>PayloadType</key><string>com.apple.webClip.managed</string><key>PayloadUUID</key><string>${clipUuid}</string><key>PayloadVersion</key><integer>1</integer><key>Precomposed</key><true/><key>URL</key><string>${url}</string></dict></array><key>PayloadDescription</key><string>Icon Trip Note cá nhân trên Màn hình chính.</string><key>PayloadDisplayName</key><string>Icon Trip Note</string><key>PayloadIdentifier</key><string>vn.tripnote.homeicon.${profileUuid}</string><key>PayloadOrganization</key><string>Trip Note</string><key>PayloadRemovalDisallowed</key><false/><key>PayloadType</key><string>Configuration</string><key>PayloadUUID</key><string>${profileUuid}</string><key>PayloadVersion</key><integer>1</integer></dict></plist>`;
   const blob = new Blob([profile], { type: "application/x-apple-aspen-config" });
@@ -479,7 +468,7 @@ export default function DashboardExperience({ trips, onSelectTrip, onOpenTrip, o
           </motion.button></div>;
         }) : <p className={styles.tripListEmpty}>{tripQuery ? "Không tìm thấy chuyến đi phù hợp." : "Chưa có chuyến đi. Tạo chuyến đầu tiên để bắt đầu lên kế hoạch."}</p>}</div>
       </section>
-      <section data-section-panel="Khám phá" hidden={active !== "Khám phá"} className={styles.destinations} id="discover-destinations"><div className={styles.sectionHeading}><div><span className={styles.editorialEyebrow}>KHÁM PHÁ VIỆT NAM</span><h2>Khám phá điểm đến</h2></div><span className={styles.editorialFeedMeta}>{matchingDestinations.length} địa điểm</span></div><div className={styles.destinationGrid}>
+      <section data-section-panel="Khám phá" hidden={active !== "Khám phá"} className={styles.destinations} id="discover-destinations"><div className={styles.sectionHeading}><div><h2>Khám phá điểm đến</h2></div><span className={styles.editorialFeedMeta}>{matchingDestinations.length} địa điểm</span></div><div className={styles.destinationGrid}>
           {renderedDiscoverDestinations.map((place, index) => <DestinationCard key={place.id} place={place} favorite={favorites.includes(place.id) || favorites.includes(place.name)} reduced={Boolean(reduced)} loading={initialSection === "Khám phá" && index < 2 ? "eager" : "lazy"} highPriority={initialSection === "Khám phá" && index < 2} rating={destinationRatings[place.id]} onChoose={setDetailDestination} onPlan={setPlanningDestination} onToggleFavorite={toggleFavorite} onRequestRating={requestDestinationRating} compactFavorite={false} />)}
           {matchingDestinations.length === 0 && query.trim() && <p className={styles.empty}>Không tìm thấy điểm đến phù hợp.</p>}
           {renderedDiscoverDestinations.length < matchingDestinations.length && <div ref={discoverSentinelRef} data-destination-section="discover" className={styles.destinationSentinel} aria-hidden="true" />}
@@ -496,7 +485,7 @@ export default function DashboardExperience({ trips, onSelectTrip, onOpenTrip, o
     {detailDestination && <DestinationDetailSheet destination={detailDestination} rating={destinationRatings[detailDestination.id]} isFavorite={favorites.includes(detailDestination.id) || favorites.includes(detailDestination.name)} onToggleFavorite={() => toggleFavorite(detailDestination.id)} onClose={() => setDetailDestination(null)} onPlan={() => { setPlanningDestination(detailDestination); setDetailDestination(null); }} />}
     {planningDestination && <GlassSheet title="Thêm lên kế hoạch" subtitle={planningDestination.name} icon={<Plus aria-hidden="true" />} variant="sheet" dense className={styles.planChoiceSheet} onClose={() => setPlanningDestination(null)}><div className={styles.planChoiceList}><button type="button" onClick={() => { onChooseDestination(planningDestination); setPlanningDestination(null); }}><span className={styles.planChoiceIcon}><Plus /></span><span><strong>Tạo lịch thủ công</strong><small>Tự nhập ngày đi và các điểm dừng.</small></span><ChevronRight /></button><button type="button" onClick={() => { setPlanningDestination(null); onImport(); }}><span className={styles.planChoiceIcon}><FileSpreadsheet /></span><span><strong>Nhập lịch từ Excel</strong><small>Dùng lịch trình bạn đã có sẵn.</small></span><ChevronRight /></button></div></GlassSheet>}
     {iconPreviewOpen && (deviceHomeIcon || customAppIcon) && <GlassSheet title="Ảnh icon iPhone" subtitle="Ảnh riêng cho Màn hình chính trên thiết bị này." icon={<Smartphone aria-hidden="true" />} onClose={() => setIconPreviewOpen(false)}><div className={styles.iconPreview}><img src={deviceHomeIcon || customAppIcon} alt="Ảnh icon iPhone" /></div></GlassSheet>}
-    {homeIconGuideOpen && <GlassSheet title="Cài icon ảnh lên iPhone" subtitle="Trip Note đã tạo hồ sơ Web Clip từ ảnh trên máy này." icon={<Smartphone aria-hidden="true" />} onClose={() => setHomeIconGuideOpen(false)}><div className={styles.homeIconGuide}>{deviceHomeIcon && <img src={deviceHomeIcon} alt="Ảnh sẽ dùng làm icon iPhone" />}<ol><li>Mở tệp <strong>TripNote-Icon.mobileconfig</strong> vừa tải.</li><li>Vào <strong>Cài đặt → Đã tải về hồ sơ</strong> (hoặc <strong>Cài đặt → Cài đặt chung → VPN & Quản lý thiết bị</strong>).</li><li>Chạm <strong>Cài đặt</strong> và xác nhận. Hồ sơ này chỉ thêm biểu tượng Trip Note mở website.</li><li>Nếu đã tạo icon Trip cũ bằng Safari, xóa icon cũ một lần để tránh trùng.</li></ol><p>Lần đổi ảnh sau, tạo và cài lại hồ sơ Trip Note để cập nhật icon. Mỗi iPhone tự có ảnh riêng. Apple yêu cầu xác nhận hồ sơ trong Cài đặt.</p></div></GlassSheet>}
+    {homeIconGuideOpen && <GlassSheet title="Cài icon ảnh lên iPhone" subtitle="Trip Note đã tạo hồ sơ Web Clip từ ảnh trên máy này." icon={<Smartphone aria-hidden="true" />} onClose={() => setHomeIconGuideOpen(false)}><div className={styles.homeIconGuide}>{deviceHomeIcon && <img src={deviceHomeIcon} alt="Ảnh sẽ dùng làm icon iPhone" />}<ol><li><strong>Lần chuyển sang cách mới:</strong> gỡ icon Trip Note cũ và hồ sơ Trip Note cũ trong Cài đặt → Cài đặt chung → VPN & Quản lý thiết bị.</li><li>Mở tệp <strong>TripNote-Icon.mobileconfig</strong> vừa tải.</li><li>Vào <strong>Cài đặt → Đã tải về hồ sơ</strong> (hoặc <strong>Cài đặt chung → VPN & Quản lý thiết bị</strong>), chọn hồ sơ Trip Note rồi chạm <strong>Cài đặt</strong>.</li></ol><p>Chỉ cần gỡ hồ sơ cũ một lần vì các bản trước dùng mã khác. Từ lần sau, cài hồ sơ mới cùng tên để cập nhật ảnh trên icon hiện có. Hồ sơ chỉ thêm Web Clip mở Trip Note; iPhone vẫn yêu cầu xác nhận cài đặt.</p></div></GlassSheet>}
     {tripFab}
     {toast}
   </main>;
