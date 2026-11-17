@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { doc, onSnapshot, serverTimestamp, setDoc } from "firebase/firestore";
+import { deleteField, doc, onSnapshot, serverTimestamp, setDoc } from "firebase/firestore";
 import { firestore } from "./client";
 
 const SHARED_WORKSPACE_ID = "tripnote-public";
@@ -21,6 +21,7 @@ export function useSharedAppIcon() {
   const readyRef = useRef(false);
   const remoteIconRef = useRef("");
   const pendingIconRef = useRef<string | null>(null);
+  const pendingSaveResolverRef = useRef<((saved: boolean) => void) | null>(null);
 
   const writeIcon = useCallback(async (iconData: string) => {
     if (!firestore) return false;
@@ -28,13 +29,23 @@ export function useSharedAppIcon() {
       await setDoc(doc(firestore, "sharedWorkspaces", SHARED_WORKSPACE_ID, "preferences", APP_ICON_DOCUMENT_ID), {
         iconData,
         updatedAt: serverTimestamp(),
+        // Older builds stored per-device PNGs in this same document. Remove those
+        // large fields so shared icon updates cannot exceed Firestore's 1 MiB limit.
+        deviceHomeIcons: deleteField(),
+        deviceHomeIconVersions: deleteField(),
+        deviceHomeIconUpdatedAt: deleteField(),
       }, { merge: true });
       remoteIconRef.current = iconData;
       pendingIconRef.current = null;
       setStatus("synced");
+      pendingSaveResolverRef.current?.(true);
+      pendingSaveResolverRef.current = null;
       return true;
-    } catch {
+    } catch (error) {
+      console.error("Could not sync the shared in-app icon", error);
       setStatus("offline");
+      pendingSaveResolverRef.current?.(false);
+      pendingSaveResolverRef.current = null;
       return false;
     }
   }, []);
@@ -90,7 +101,11 @@ export function useSharedAppIcon() {
       pendingIconRef.current = null;
       setCustomAppIcon(remoteIcon);
       setStatus("synced");
-    }, () => setStatus("offline"));
+    }, () => {
+      setStatus("offline");
+      pendingSaveResolverRef.current?.(false);
+      pendingSaveResolverRef.current = null;
+    });
 
     return () => {
       readyRef.current = false;
@@ -106,13 +121,29 @@ export function useSharedAppIcon() {
   }, [customAppIcon]);
 
   const saveCustomAppIcon = useCallback(async (iconData: string) => {
+    pendingSaveResolverRef.current?.(false);
+    pendingSaveResolverRef.current = null;
     pendingIconRef.current = iconData;
     setCustomAppIcon(iconData);
     if (!firestore) {
       setStatus("local");
       return false;
     }
-    if (!readyRef.current) return false;
+    if (!readyRef.current) {
+      setStatus("connecting");
+      return new Promise<boolean>((resolve) => {
+        let settled = false;
+        const finish = (saved: boolean) => {
+          if (settled) return;
+          settled = true;
+          window.clearTimeout(timeout);
+          if (pendingSaveResolverRef.current === finish) pendingSaveResolverRef.current = null;
+          resolve(saved);
+        };
+        const timeout = window.setTimeout(() => finish(false), 15_000);
+        pendingSaveResolverRef.current = finish;
+      });
+    }
     return writeIcon(iconData);
   }, [writeIcon]);
 
