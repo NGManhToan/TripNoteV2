@@ -24,12 +24,14 @@ const favoritesKey = "tripnote-v2-favorite-destinations";
 const themeKey = "tripnote-v2-dark-navy";
 const destinationBatchSize = () => window.matchMedia("(max-width: 600px)").matches ? 12 : 36;
 function xmlEscape(value: string) { return value.replace(/[<>&"]/g, (character) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;" })[character] ?? character); }
-function downloadHomeIconProfile(iconData: string) {
+function downloadHomeIconProfile(iconData: string, iconToken: string) {
   const iconBase64 = iconData.slice(iconData.indexOf(",") + 1);
   // Keep these identifiers stable so iOS replaces the installed Web Clip profile on updates.
   const profileUuid = "9140D0D8-6F30-4F74-A50B-44DFB72E11A1";
   const clipUuid = "E1087EC9-51E7-4F23-99D1-3ED06352B986";
-  const url = xmlEscape(window.location.origin);
+  const clipUrl = new URL("/home", window.location.origin);
+  clipUrl.searchParams.set("tripnoteHomeIcon", iconToken);
+  const url = xmlEscape(clipUrl.toString());
   const profile = `<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">\n<plist version="1.0"><dict><key>PayloadContent</key><array><dict><key>FullScreen</key><true/><key>Icon</key><data>${iconBase64}</data><key>IsRemovable</key><true/><key>Label</key><string>Trip Note</string><key>PayloadDescription</key><string>Biểu tượng Trip Note với ảnh bạn đã chọn.</string><key>PayloadDisplayName</key><string>Trip Note</string><key>PayloadIdentifier</key><string>vn.tripnote.webclip.${profileUuid}</string><key>PayloadType</key><string>com.apple.webClip.managed</string><key>PayloadUUID</key><string>${clipUuid}</string><key>PayloadVersion</key><integer>1</integer><key>Precomposed</key><true/><key>URL</key><string>${url}</string></dict></array><key>PayloadDescription</key><string>Icon Trip Note cá nhân trên Màn hình chính.</string><key>PayloadDisplayName</key><string>Icon Trip Note</string><key>PayloadIdentifier</key><string>vn.tripnote.homeicon.${profileUuid}</string><key>PayloadOrganization</key><string>Trip Note</string><key>PayloadRemovalDisallowed</key><false/><key>PayloadType</key><string>Configuration</string><key>PayloadUUID</key><string>${profileUuid}</string><key>PayloadVersion</key><integer>1</integer></dict></plist>`;
   const blob = new Blob([profile], { type: "application/x-apple-aspen-config" });
   const downloadUrl = URL.createObjectURL(blob);
@@ -167,7 +169,7 @@ export default function DashboardExperience({ trips, onSelectTrip, onOpenTrip, o
   const [tripQuery, setTripQuery] = useState("");
   const [darkNavy, setDarkNavy] = useState(() => { try { return localStorage.getItem(themeKey) !== "false"; } catch { return true; } });
   const { customAppIcon, saveCustomAppIcon, syncStatus: appIconSyncStatus } = useSharedAppIcon();
-  const { homeIcon: deviceHomeIcon, saveDeviceHomeIcon } = useDeviceHomeIcon();
+  const { token: deviceHomeIconToken, homeIcon: deviceHomeIcon, saveDeviceHomeIcon } = useDeviceHomeIcon();
   const [iconPreviewOpen, setIconPreviewOpen] = useState(false);
   const [homeIconGuideOpen, setHomeIconGuideOpen] = useState(false);
   const [favorites, setFavorites] = useState<string[]>(() => { try { return JSON.parse(localStorage.getItem(favoritesKey) ?? "[]") as string[]; } catch { return []; } });
@@ -256,15 +258,19 @@ export default function DashboardExperience({ trips, onSelectTrip, onOpenTrip, o
     image.onload = () => {
       const side = Math.min(image.naturalWidth, image.naturalHeight);
       const canvas = document.createElement("canvas");
-      canvas.width = 180;
-      canvas.height = 180;
       const context = canvas.getContext("2d");
       if (!context) { URL.revokeObjectURL(sourceUrl); showToast("Không thể xử lý ảnh này"); return; }
-      context.drawImage(image, (image.naturalWidth - side) / 2, (image.naturalHeight - side) / 2, side, side, 0, 0, 180, 180);
       URL.revokeObjectURL(sourceUrl);
-      const iconData = canvas.toDataURL("image/png");
-      if (iconData.length > 250_000) { showToast("Ảnh icon ngoài quá lớn, hãy chọn ảnh khác"); return; }
-      void saveDeviceHomeIcon(iconData).then((saved) => showToast(saved ? "Đã lưu riêng ảnh icon ngoài trên iPhone này" : "Không lưu được ảnh trên iPhone này"));
+      let iconData = "";
+      for (const size of [180, 160, 144, 128, 112]) {
+        canvas.width = size;
+        canvas.height = size;
+        context.drawImage(image, (image.naturalWidth - side) / 2, (image.naturalHeight - side) / 2, side, side, 0, 0, size, size);
+        iconData = canvas.toDataURL("image/png");
+        if (iconData.length <= 180_000) break;
+      }
+      if (iconData.length > 180_000) { showToast("Ảnh icon ngoài quá lớn, hãy chọn ảnh khác"); return; }
+      void saveDeviceHomeIcon(iconData).then((saved) => showToast(saved ? "Ảnh icon ngoài đã lưu cho iPhone này" : "Đã lưu trên máy nhưng chưa đồng bộ ảnh icon ngoài"));
     };
     image.onerror = () => { URL.revokeObjectURL(sourceUrl); showToast("Không đọc được ảnh này"); };
     image.src = sourceUrl;
@@ -274,9 +280,11 @@ export default function DashboardExperience({ trips, onSelectTrip, onOpenTrip, o
     if (!iconLink) return;
     iconLink.href = customAppIcon || "/app-icon.svg";
   }, [customAppIcon]);
-  const prepareHomeScreenIcon = () => {
+  const prepareHomeScreenIcon = async () => {
     if (!deviceHomeIcon) { showToast("Chọn ảnh cho icon ngoài Màn hình chính trước"); return; }
-    downloadHomeIconProfile(deviceHomeIcon);
+    const synced = await saveDeviceHomeIcon(deviceHomeIcon);
+    if (!synced) { showToast("Chưa lưu được ảnh icon ngoài lên Firebase; hãy thử lại khi có mạng"); return; }
+    downloadHomeIconProfile(deviceHomeIcon, deviceHomeIconToken);
     setHomeIconGuideOpen(true);
   };
   const requestDestinationRating = useCallback((destination: Destination) => {
