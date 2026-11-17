@@ -41,6 +41,24 @@ function downloadHomeIconProfile(iconData: string) {
   link.remove();
   window.setTimeout(() => URL.revokeObjectURL(downloadUrl), 60_000);
 }
+function encodeSharedAppIcon(image: HTMLImageElement) {
+  const sourceSide = Math.min(image.naturalWidth, image.naturalHeight);
+  const canvas = document.createElement("canvas");
+  const context = canvas.getContext("2d");
+  if (!context) return null;
+  for (const size of [512, 384, 256]) {
+    canvas.width = size;
+    canvas.height = size;
+    context.drawImage(image, (image.naturalWidth - sourceSide) / 2, (image.naturalHeight - sourceSide) / 2, sourceSide, sourceSide, 0, 0, size, size);
+    for (const quality of [.82, .68, .54, .42]) {
+      let data = canvas.toDataURL("image/webp", quality);
+      if (!data.startsWith("data:image/webp")) data = canvas.toDataURL("image/jpeg", quality);
+      // Keep the Firestore document comfortably below its 1 MiB document limit.
+      if (data.length <= 220_000) return data;
+    }
+  }
+  return null;
+}
 type Props = { trips: Trip[]; onSelectTrip: (index: number) => void; onOpenTrip: (trip: Trip) => void; onCreateTrip: () => void; onDeleteTrip: (trip: Trip) => void; onChooseDestination: (destination: Destination) => void; onImport: () => void; onExport: (trip: Trip) => void; initialSection: DashboardSection; onRememberSection: (section: DashboardSection) => void; query: string; onQueryChange: (value: string) => void; dockVisible?: boolean; syncStatus?: TripSyncState };
 
 type FeaturedDestination = { destination: Destination; rating: FeaturedPlaceRating };
@@ -220,17 +238,9 @@ export default function DashboardExperience({ trips, onSelectTrip, onOpenTrip, o
     const sourceUrl = URL.createObjectURL(file);
     const image = new Image();
     image.onload = () => {
-      const side = Math.min(image.naturalWidth, image.naturalHeight);
-      const canvas = document.createElement("canvas");
-      canvas.width = 512;
-      canvas.height = 512;
-      const context = canvas.getContext("2d");
-      if (!context) { URL.revokeObjectURL(sourceUrl); showToast("Không thể xử lý ảnh này"); return; }
-      context.drawImage(image, (image.naturalWidth - side) / 2, (image.naturalHeight - side) / 2, side, side, 0, 0, 512, 512);
       URL.revokeObjectURL(sourceUrl);
-      let iconData = canvas.toDataURL("image/webp", .82);
-      if (!iconData.startsWith("data:image/webp")) iconData = canvas.toDataURL("image/jpeg", .82);
-      if (iconData.length > 800_000) { showToast("Ảnh sau khi nén vẫn quá lớn để đồng bộ"); return; }
+      const iconData = encodeSharedAppIcon(image);
+      if (!iconData) { showToast("Không thể nén ảnh đủ nhỏ để đồng bộ; hãy chọn ảnh khác"); return; }
       void saveCustomAppIcon(iconData).then((saved) => showToast(saved ? "Ảnh icon trong app đã đồng bộ" : "Ảnh icon trong app chưa đồng bộ được"));
     };
     image.onerror = () => { URL.revokeObjectURL(sourceUrl); showToast("Không đọc được ảnh này"); };
