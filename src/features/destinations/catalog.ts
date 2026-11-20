@@ -159,8 +159,44 @@ const officialSources: Record<string, string> = {
 type CuratedDestination = Omit<Destination, "slug" | "normalizedName" | "gallery" | "coordinates" | "sources" | "verification"> & {
   sources?: string[];
 };
+// Keep old provincial names searchable because most of the official tourism
+// catalogue predates the 2025 provincial reorganization.
+const provincesByCurrentName: Record<string, string[]> = {
+  "Tuyên Quang": ["Tuyên Quang", "Hà Giang"],
+  "Lào Cai": ["Lào Cai", "Yên Bái"],
+  "Thái Nguyên": ["Thái Nguyên", "Bắc Kạn"],
+  "Phú Thọ": ["Phú Thọ", "Vĩnh Phúc", "Hòa Bình"],
+  "Bắc Ninh": ["Bắc Ninh", "Bắc Giang"],
+  "Hưng Yên": ["Hưng Yên", "Thái Bình"],
+  "Ninh Bình": ["Ninh Bình", "Hà Nam", "Nam Định"],
+  "Hải Phòng": ["Hải Phòng", "Hải Dương"],
+  "Quảng Trị": ["Quảng Trị", "Quảng Bình"],
+  "Đà Nẵng": ["Đà Nẵng", "Quảng Nam"],
+  "Quảng Ngãi": ["Quảng Ngãi", "Kon Tum"],
+  "Gia Lai": ["Gia Lai", "Bình Định"],
+  "Đắk Lắk": ["Đắk Lắk", "Phú Yên"],
+  "Khánh Hòa": ["Khánh Hòa", "Ninh Thuận"],
+  "Lâm Đồng": ["Lâm Đồng", "Đắk Nông", "Bình Thuận"],
+  "Đồng Nai": ["Đồng Nai", "Bình Phước"],
+  "Tây Ninh": ["Tây Ninh", "Long An"],
+  "Thành phố Hồ Chí Minh": ["Thành phố Hồ Chí Minh", "Bà Rịa - Vũng Tàu", "Bình Dương"],
+  "Đồng Tháp": ["Đồng Tháp", "Tiền Giang"],
+  "Vĩnh Long": ["Vĩnh Long", "Bến Tre", "Trà Vinh"],
+  "Cần Thơ": ["Cần Thơ", "Hậu Giang", "Sóc Trăng"],
+  "An Giang": ["An Giang", "Kiên Giang"],
+  "Cà Mau": ["Cà Mau", "Bạc Liêu"],
+};
+const legacyProvinceToCurrent = new Map(
+  Object.entries(provincesByCurrentName).flatMap(([currentName, formerNames]) => formerNames.map((formerName) => [normalizeVietnamese(formerName), currentName] as const)),
+);
+const canonicalProvince = (name: string) => legacyProvinceToCurrent.get(normalizeVietnamese(name)) ?? name;
+const normalizeFormerProvince = (name: string, currentName: string, explicitFormer?: string) =>
+  explicitFormer ?? (normalizeVietnamese(name) !== normalizeVietnamese(currentName) ? name : undefined);
+
 const destination = (item: CuratedDestination): Destination => ({
   ...item,
+  province: canonicalProvince(item.province),
+  formerProvince: normalizeFormerProvince(item.province, canonicalProvince(item.province), item.formerProvince),
   normalizedName: normalizeVietnamese(item.name),
   slug: normalizeVietnamese(item.name).replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""),
   gallery: item.cover ? [item.cover] : [],
@@ -170,9 +206,9 @@ const destination = (item: CuratedDestination): Destination => ({
 });
 
 const provincesByMacroRegion: Record<Destination["macroRegion"], string[]> = {
-  "Miền Bắc": ["Bắc Giang", "Bắc Kạn", "Bắc Ninh", "Cao Bằng", "Điện Biên", "Hà Giang", "Hà Nam", "Hà Nội", "Hải Dương", "Hải Phòng", "Hòa Bình", "Hưng Yên", "Lai Châu", "Lạng Sơn", "Lào Cai", "Nam Định", "Ninh Bình", "Phú Thọ", "Quảng Ninh", "Sơn La", "Thái Bình", "Thái Nguyên", "Tuyên Quang", "Vĩnh Phúc", "Yên Bái"],
-  "Miền Trung": ["Bình Định", "Bình Thuận", "Đà Nẵng", "Đắk Lắk", "Đắk Nông", "Gia Lai", "Hà Tĩnh", "Huế", "Khánh Hòa", "Kon Tum", "Lâm Đồng", "Nghệ An", "Ninh Thuận", "Phú Yên", "Quảng Bình", "Quảng Nam", "Quảng Ngãi", "Quảng Trị", "Thanh Hóa"],
-  "Miền Nam": ["An Giang", "Bạc Liêu", "Bến Tre", "Bình Dương", "Bình Phước", "Cà Mau", "Cần Thơ", "Đồng Nai", "Đồng Tháp", "Hậu Giang", "Kiên Giang", "Long An", "Sóc Trăng", "Tây Ninh", "Tiền Giang", "Trà Vinh", "Vĩnh Long", "Thành phố Hồ Chí Minh"],
+  "Miền Bắc": ["Bắc Ninh", "Cao Bằng", "Điện Biên", "Hà Nội", "Hải Phòng", "Hưng Yên", "Lai Châu", "Lạng Sơn", "Lào Cai", "Ninh Bình", "Phú Thọ", "Quảng Ninh", "Sơn La", "Thái Nguyên", "Tuyên Quang"],
+  "Miền Trung": ["Đà Nẵng", "Đắk Lắk", "Gia Lai", "Hà Tĩnh", "Huế", "Khánh Hòa", "Lâm Đồng", "Nghệ An", "Quảng Ngãi", "Quảng Trị", "Thanh Hóa"],
+  "Miền Nam": ["An Giang", "Cà Mau", "Cần Thơ", "Đồng Nai", "Đồng Tháp", "Thành phố Hồ Chí Minh", "Tây Ninh", "Vĩnh Long"],
 };
 
 const macroRegionFor = (province: string): Destination["macroRegion"] => {
@@ -321,7 +357,8 @@ const imageForDestination = (name: string): string | undefined => {
 
 const officialDestinations: Destination[] = officialDestinationRecords.map((record) => {
   const id = `vnt-${normalizeVietnamese(record.name).replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}`;
-  const macroRegion = macroRegionFor(record.province);
+  const province = canonicalProvince(record.province);
+  const macroRegion = macroRegionFor(province);
   const types = inferredTypes(record.name);
   const cover = imageForDestination(record.name);
   return {
@@ -329,7 +366,8 @@ const officialDestinations: Destination[] = officialDestinationRecords.map((reco
     slug: normalizeVietnamese(record.name).replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""),
     name: record.name,
     normalizedName: normalizeVietnamese(record.name),
-    province: record.province,
+    province,
+    formerProvince: normalizeFormerProvince(record.province, province),
     macroRegion,
     region: macroRegion,
     types,
@@ -397,9 +435,8 @@ export const destinationCatalog: Destination[] = [...curatedDestinations, ...off
 export const destinationRegions = ["Miền Bắc", "Miền Trung", "Miền Nam"];
 export const destinationTypes = ["Biển", "Núi", "Đô thị", "Văn hóa", "Ẩm thực", "Thiên nhiên", ...new Set(destinationCatalog.flatMap((place) => place.types))].filter((type, index, all) => all.indexOf(type) === index);
 
-const mergedProvinceAliases: Record<string, string[]> = {
-  "ninh binh": ["ninh binh", "ha nam", "nam dinh"],
-  "thanh pho ho chi minh": ["thanh pho ho chi minh", "ho chi minh", "sai gon", "tp hcm", "tphcm"],
+const provinceSearchAliases: Record<string, string[]> = {
+  "thanh pho ho chi minh": ["ho chi minh", "sai gon", "tp hcm", "tphcm", "hcm"],
 };
 
 export function searchDestinations(query: string, region = "Tất cả", type = "Tất cả"): Destination[] {
@@ -415,9 +452,9 @@ export function searchDestinations(query: string, region = "Tất cả", type = 
   // Hải Phòng, ...). Prefer destination names until the query is specific.
   if (term.length <= 2 && matchingNames.length > 0) return matchingNames;
 
-  const matchingProvinceGroup = Object.values(mergedProvinceAliases).find((aliases) => aliases.some((alias) => alias === term || (term.length >= 3 && alias.startsWith(term))));
   const matchingProvinces = filteredPlaces.filter((place) => {
-    return matchesSearchText(place.province, term) || Boolean(place.formerProvince && matchesSearchText(place.formerProvince, term)) || Boolean(matchingProvinceGroup?.includes(normalizeVietnamese(place.province)));
+    const aliases = provinceSearchAliases[normalizeVietnamese(place.province)] ?? [];
+    return matchesSearchText(place.province, term) || Boolean(place.formerProvince && matchesSearchText(place.formerProvince, term)) || aliases.some((alias) => alias === term || (term.length >= 3 && alias.startsWith(term)));
   });
   if (matchingNames.length > 0) {
     const nameIds = new Set(matchingNames.map((place) => place.id));

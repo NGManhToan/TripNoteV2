@@ -348,8 +348,14 @@ export default function DashboardExperience({ trips, onSelectTrip, onOpenTrip, o
     tripActionTotal: trips.reduce((total, trip) => total + (trip.itinerary?.reduce((count, day) => count + day.activities.length, 0) ?? 0) + (trip.places?.length ?? 0), 0),
   }), [trips]);
   const toggleFavorite = useCallback((id: string) => {
-    const isSaved = favorites.includes(id);
-    setFavorites((current) => current.includes(id) ? current.filter((item) => item !== id) : [...current, id]);
+    const legacyName = destinationCatalog.find((place) => place.id === id)?.name;
+    const isSaved = favorites.includes(id) || Boolean(legacyName && favorites.includes(legacyName));
+    setFavorites((current) => {
+      const alreadySaved = current.includes(id) || Boolean(legacyName && current.includes(legacyName));
+      return alreadySaved
+        ? current.filter((item) => item !== id && item !== legacyName)
+        : [...current, id];
+    });
     showToast(isSaved ? "Đã bỏ khỏi mục yêu thích" : "Đã lưu vào mục yêu thích");
   }, [favorites, showToast]);
   const featuredDestinations = useMemo<FeaturedDestination[]>(() => {

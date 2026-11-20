@@ -45,16 +45,19 @@ export function useFavoritesSync(favorites: string[], setFavorites: Dispatch<Set
       const remoteIds = uniqueFavorites(snapshot.data()?.destinationIds);
       if (firstServerSnapshot) {
         firstServerSnapshot = false;
-        // Merge this browser's existing saved places into the shared list once, so
-        // connecting Firebase does not discard favorites already stored locally.
-        const mergedIds = [...new Set([...remoteIds, ...readLocalFavorites()])];
-        remoteFavoritesRef.current = mergedIds;
+        // Import this browser's old local list only when the shared document has
+        // never existed. Once Firestore has a list, it is authoritative: merging
+        // stale local data here would resurrect favorites removed on another device.
+        const initialIds = snapshot.exists()
+          ? remoteIds
+          : [...new Set([...remoteIds, ...readLocalFavorites()])];
+        remoteFavoritesRef.current = initialIds;
         readyRef.current = true;
-        setFavorites((current) => sameFavorites(current, mergedIds) ? current : mergedIds);
+        setFavorites((current) => sameFavorites(current, initialIds) ? current : initialIds);
 
-        if (!sameFavorites(remoteIds, mergedIds)) {
+        if (!snapshot.exists() || !sameFavorites(remoteIds, initialIds)) {
           try {
-            await setDoc(favoriteDoc, { destinationIds: mergedIds, updatedAt: serverTimestamp() }, { merge: true });
+            await setDoc(favoriteDoc, { destinationIds: initialIds, updatedAt: serverTimestamp() }, { merge: true });
           } catch {
             readyRef.current = false;
           }
