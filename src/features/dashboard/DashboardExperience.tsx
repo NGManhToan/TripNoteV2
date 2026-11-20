@@ -1,5 +1,5 @@
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { ArrowLeft, BookOpen, Building2, CalendarDays, Check, CheckCircle2, ChevronRight, Coins, Ellipsis, FileSpreadsheet, Heart, MapPin, Moon, Mountain, Palmtree, Plus, Search, Send, SlidersHorizontal, Smartphone, Star, Trash2, UserRound, Waves, X } from "lucide-react";
+import { ArrowLeft, BookOpen, Building2, CalendarDays, Check, CheckCircle2, ChevronRight, Coins, Ellipsis, FileSpreadsheet, Globe2, Heart, MapPin, Moon, Mountain, Palmtree, Plus, Search, Send, SlidersHorizontal, Smartphone, Star, Trash2, UserRound, Waves, X } from "lucide-react";
 import { createPortal } from "react-dom";
 import { memo, useCallback, useEffect, useMemo, useRef, useState, type ChangeEvent } from "react";
 import earth from "../../assets/images/welcome/earth.png";
@@ -120,7 +120,7 @@ const DestinationCard = memo(function DestinationCard({ place, favorite, reduced
   return <article ref={cardRef} className={`${styles.destinationCard} ${styles.editorialDestinationCard}`}>
     <div className={styles.editorialMedia}>
       <motion.button className={styles.cardOpen} type="button" aria-label={`Xem ${place.name}`} onClick={() => { onRequestRating(place); onChoose(place); }} onContextMenu={(event) => event.preventDefault()} whileTap={reduced ? undefined : { scale: .99, transition: { duration: .12 } }}>
-        {place.cover && <img src={place.cover} alt={`Phong cảnh ${place.name}`} loading={loading} fetchPriority={highPriority ? "high" : "auto"} decoding="async" />}
+        <img src={place.cover || defaultTripCover} alt={`Phong cảnh ${place.name}`} loading={loading} fetchPriority={highPriority ? "high" : "auto"} decoding="async" onError={(event) => { const image = event.currentTarget; if (image.dataset.fallbackApplied) return; image.dataset.fallbackApplied = "true"; image.src = defaultTripCover; }} />
         <span className={styles.destinationShade} />
         <span className={styles.destinationTag}>{displayType}</span>
       </motion.button>
@@ -390,7 +390,7 @@ export default function DashboardExperience({ trips, onSelectTrip, onOpenTrip, o
         <div className={styles.filterSheetHeader}><div><h2 id="destination-filter-title">Bộ lọc</h2></div><button type="button" className={styles.filterReset} onClick={clearDraftFilters}>Đặt lại</button><button type="button" className={styles.filterClose} aria-label="Đóng bộ lọc" onClick={closeFilters}><X /></button></div>
         <div className={styles.filterContent}>
           <section className={styles.filterSection} aria-labelledby="region-filter-title"><div className={styles.filterSectionHeading}><h3 id="region-filter-title">KHU VỰC</h3><span>Chọn nhiều</span></div><div className={styles.filterTileGrid}>
-            {destinationRegions.map((region, index) => { const RegionIcon = [Mountain, Waves, Palmtree][index]; const selected = draftRegions.includes(region); return <button key={region} type="button" aria-pressed={selected} className={selected ? styles.filterTileSelected : styles.filterTile} onClick={() => toggleDraftRegion(region)} onContextMenu={(event) => event.preventDefault()}><span className={styles.filterTileIcon}><RegionIcon /></span><strong>{region}</strong><i className={styles.filterCheck}>{selected && <Check />}</i></button>; })}
+            {destinationRegions.map((region, index) => { const RegionIcon = [Mountain, Waves, Palmtree, Globe2][index] ?? Globe2; const selected = draftRegions.includes(region); return <button key={region} type="button" aria-pressed={selected} className={selected ? styles.filterTileSelected : styles.filterTile} onClick={() => toggleDraftRegion(region)} onContextMenu={(event) => event.preventDefault()}><span className={styles.filterTileIcon}><RegionIcon /></span><strong>{region}</strong><i className={styles.filterCheck}>{selected && <Check />}</i></button>; })}
           </div></section>
           <section className={styles.filterSection} aria-labelledby="type-filter-title"><div className={styles.filterSectionHeading}><h3 id="type-filter-title">LOẠI HÌNH DU LỊCH</h3><span>Chọn nhiều</span></div><div className={`${styles.filterTileGrid} ${styles.typeTileGrid}`}>
             {destinationTypes.map((type, index) => { const TypeIcon = [Waves, Star, BookOpen, Mountain, Palmtree, MapPin, Building2, CalendarDays, SlidersHorizontal][index % 9]; const selected = draftTypes.includes(type); return <button key={type} type="button" aria-pressed={selected} className={selected ? styles.filterTileSelected : styles.filterTile} onClick={() => toggleDraftType(type)} onContextMenu={(event) => event.preventDefault()}><span className={styles.filterTileIcon}><TypeIcon /></span><strong>{type}</strong><i className={styles.filterCheck}>{selected && <Check />}</i></button>; })}
