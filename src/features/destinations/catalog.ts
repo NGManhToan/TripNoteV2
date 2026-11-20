@@ -130,6 +130,7 @@ export type Destination = {
   normalizedName: string;
   province: string;
   formerProvince?: string;
+  searchAliases?: string[];
   region: string;
   macroRegion: "Miền Bắc" | "Miền Trung" | "Miền Nam";
   slug: string;
@@ -384,6 +385,11 @@ const curatedDestinations: Destination[] = [
   destination({ id: "ba-den-mountain", name: "Núi Bà Đen", province: "Tây Ninh", macroRegion: "Miền Nam", region: "Đông Nam Bộ", types: ["Núi", "Thiên nhiên", "Văn hóa"], description: "Ngọn núi cao nhất Nam Bộ, nổi bật với tuyến cáp treo và quần thể tâm linh trên đỉnh.", cover: baDenPhoto, sources: ["https://dulich.tayninh.gov.vn/tin-tuc/nui-ba-den-1298"] }),
   destination({ id: "cao-dai-holy-see", name: "Tòa Thánh Cao Đài Tây Ninh", province: "Tây Ninh", macroRegion: "Miền Nam", region: "Đông Nam Bộ", types: ["Văn hóa", "Tâm linh", "Kiến trúc"], description: "Trung tâm đạo Cao Đài với quần thể kiến trúc nhiều màu sắc và họa tiết đặc trưng.", cover: caoDaiPhoto, sources: ["https://dulich.tayninh.gov.vn/tin-tuc/tay-ninh-nhung-diem-du-lich-ban-khong-nen-bo-lo-1591"] }),
   destination({ id: "dau-tieng-lake", name: "Hồ Dầu Tiếng", province: "Tây Ninh", macroRegion: "Miền Nam", region: "Đông Nam Bộ", types: ["Thiên nhiên", "Sông nước", "Cắm trại"], description: "Hồ nước rộng lớn với cảnh hoàng hôn, bờ cỏ và các trải nghiệm ngoài trời.", cover: dauTiengPhoto, sources: ["https://dulich.tayninh.gov.vn/tin-tuc/tay-ninh-nhung-diem-du-lich-ban-khong-nen-bo-lo-1591"] }),
+  destination({ id: "phan-thiet", name: "Phan Thiết", province: "Lâm Đồng", formerProvince: "Bình Thuận", macroRegion: "Miền Trung", region: "Nam Trung Bộ & Tây Nguyên", types: ["Biển", "Đô thị", "Ẩm thực"], description: "Thành phố biển với làng chài, chợ hải sản, di tích Chăm và văn hóa nước mắm.", searchAliases: ["Phan Thiet", "Bình Thuận", "Binh Thuan"], sources: ["https://vietnam.travel/vi/things-to-do/binh-thuan-much-more-white-sand-golden-sunshine-and-blue-sea/"] }),
+  destination({ id: "mui-ne", name: "Mũi Né", province: "Lâm Đồng", formerProvince: "Bình Thuận", macroRegion: "Miền Trung", region: "Nam Trung Bộ & Tây Nguyên", types: ["Biển", "Thiên nhiên", "Phiêu lưu"], description: "Dải biển, đồi cát, suối Tiên và các hoạt động lướt ván diều.", searchAliases: ["Mui Ne", "Phan Thiết", "Phan Thiet", "Bình Thuận", "Binh Thuan"], sources: ["https://vietnam.travel/things-to-do/wind-sand-and-sea-mui-nes-must-do-list/"] }),
+  destination({ id: "bau-trang", name: "Bàu Trắng", province: "Lâm Đồng", formerProvince: "Bình Thuận", macroRegion: "Miền Trung", region: "Nam Trung Bộ & Tây Nguyên", types: ["Thiên nhiên", "Phiêu lưu"], description: "Đồi cát trắng và hồ sen nổi bật ở khu vực Mũi Né.", searchAliases: ["Bau Trang", "Bàu Sen", "Phan Thiết", "Phan Thiet", "Mũi Né", "Mui Ne", "Bình Thuận", "Binh Thuan"], sources: ["https://vietnam.travel/things-to-do/mui-ne-southeast-asia%E2%80%99s-ultimate-adventure-escape/"] }),
+  destination({ id: "suoi-tien-mui-ne", name: "Suối Tiên Mũi Né", province: "Lâm Đồng", formerProvince: "Bình Thuận", macroRegion: "Miền Trung", region: "Nam Trung Bộ & Tây Nguyên", types: ["Thiên nhiên", "Sông nước"], description: "Lối đi bộ dưới dòng suối nông giữa các vách cát đỏ và trắng.", searchAliases: ["Fairy Stream", "Suoi Tien", "Phan Thiết", "Phan Thiet", "Mũi Né", "Mui Ne", "Bình Thuận", "Binh Thuan"], sources: ["https://vietnam.travel/things-to-do/7-ways-have-fun-mui-ne/"] }),
+  destination({ id: "poshanu-towers", name: "Tháp Chăm Poshanu", province: "Lâm Đồng", formerProvince: "Bình Thuận", macroRegion: "Miền Trung", region: "Nam Trung Bộ & Tây Nguyên", types: ["Văn hóa", "Lịch sử", "Kiến trúc"], description: "Cụm tháp Chăm cổ trên đồi Bà Nài, phía đông bắc trung tâm Phan Thiết.", searchAliases: ["Po Sah Inu", "Po Shanu", "Poshanu", "Phan Thiết", "Phan Thiet", "Bình Thuận", "Binh Thuan"], sources: ["https://vietnam.travel/places-to-go/south-central-coast-central-highlands/binh-thuan"] }),
 ];
 
 export const destinationCatalog: Destination[] = [...curatedDestinations, ...officialDestinations].filter((place, index, entries) => entries.findIndex((item) => item.normalizedName === place.normalizedName) === index);
@@ -404,7 +410,7 @@ export function searchDestinations(query: string, region = "Tất cả", type = 
   );
   if (!term) return filteredPlaces;
 
-  const matchingNames = filteredPlaces.filter((place) => matchesSearchText(place.name, term));
+  const matchingNames = filteredPlaces.filter((place) => matchesSearchText(place.name, term) || Boolean(place.searchAliases?.some((alias) => matchesSearchText(alias, term))));
   // Short inputs such as "ha" are ambiguous across province names (Hà Nội,
   // Hải Phòng, ...). Prefer destination names until the query is specific.
   if (term.length <= 2 && matchingNames.length > 0) return matchingNames;
@@ -413,9 +419,11 @@ export function searchDestinations(query: string, region = "Tất cả", type = 
   const matchingProvinces = filteredPlaces.filter((place) => {
     return matchesSearchText(place.province, term) || Boolean(place.formerProvince && matchesSearchText(place.formerProvince, term)) || Boolean(matchingProvinceGroup?.includes(normalizeVietnamese(place.province)));
   });
+  if (matchingNames.length > 0) {
+    const nameIds = new Set(matchingNames.map((place) => place.id));
+    return [...matchingNames, ...matchingProvinces.filter((place) => !nameIds.has(place.id))];
+  }
   if (matchingProvinces.length > 0) return matchingProvinces;
-
-  if (matchingNames.length > 0) return matchingNames;
 
   return filteredPlaces.filter((place) => matchesSearchText(`${place.province} ${place.types.join(" ")}`, term));
 }

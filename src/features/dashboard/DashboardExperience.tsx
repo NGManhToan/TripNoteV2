@@ -6,7 +6,7 @@ import earth from "../../assets/images/welcome/earth.png";
 import plane from "../../assets/images/welcome/plane.png";
 import defaultTripCover from "../../assets/images/dashboard/mountain-valley.png";
 import { tripRouteLabel, type Trip } from "../trips/data";
-import { destinationRegions, destinationTypes, getDestinationDisplayType, normalizeVietnamese, searchDestinations, type Destination } from "../destinations/catalog";
+import { destinationCatalog, destinationRegions, destinationTypes, getDestinationDisplayType, normalizeVietnamese, searchDestinations, type Destination } from "../destinations/catalog";
 import { destinationEditorialDetails, destinationEntryPrices, estimateDestinationBudget } from "../destinations/editorialDetails";
 import { fetchOpenStreetMapClassification, type FeaturedPlaceRating } from "../destinations/featuredRatings";
 import { fetchOnlineDestinationInfo } from "../destinations/onlineDestinationInfo";
@@ -312,10 +312,12 @@ export default function DashboardExperience({ trips, onSelectTrip, onOpenTrip, o
   const selectedTypes = useMemo(() => [...new Set([...destinationTypesSelected, ...(categoryType ? [categoryType] : [])])], [categoryType, destinationTypesSelected]);
   const matchingDestinations = useMemo(() => searchDestinations(query).filter((place) => (!regions.length || regions.includes(place.macroRegion)) && (!selectedTypes.length || place.types.some((type) => selectedTypes.includes(type)))), [query, regions, selectedTypes]);
   const draftDestinationCount = useMemo(() => searchDestinations(query).filter((place) => (!draftRegions.length || draftRegions.includes(place.macroRegion)) && (!draftTypes.length || place.types.some((type) => draftTypes.includes(type)))).length, [query, draftRegions, draftTypes]);
-  const favoriteDestinations = useMemo(() => matchingDestinations.filter((place) => favorites.includes(place.id) || favorites.includes(place.name)), [favorites, matchingDestinations]);
+  // Discovery search and filters are scoped to Discover. Favorites must remain
+  // a stable collection, even when the user switches tabs with a search active.
+  const favoriteDestinations = useMemo(() => destinationCatalog.filter((place) => favorites.includes(place.id) || favorites.includes(place.name)), [favorites]);
   const visibleDestinations = destinationTab === "Yêu thích" ? favoriteDestinations : matchingDestinations;
   const discoverListKey = `discover|${query}|${regions.join(",")}|${selectedTypes.join(",")}`;
-  const favoritesListKey = `favorites|${query}|${regions.join(",")}|${selectedTypes.join(",")}|${favorites.join(",")}`;
+  const favoritesListKey = `favorites|${favorites.join(",")}`;
   const firstDestinationBatch = destinationBatchSize();
   const discoverCount = destinationWindows.discover.key === discoverListKey ? destinationWindows.discover.count : firstDestinationBatch;
   const favoritesCount = destinationWindows.favorites.key === favoritesListKey ? destinationWindows.favorites.count : firstDestinationBatch;
