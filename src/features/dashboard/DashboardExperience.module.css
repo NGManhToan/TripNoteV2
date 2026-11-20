@@ -531,8 +531,8 @@
 .searchContext { color:#78d5cc;font-size:.62rem; }
 
 .editorialDestinationCard { display:grid; height:auto; border-color:rgba(15,23,42,.08); border-radius:24px; color:#0f172a; background:#fff; box-shadow:0 8px 24px -6px rgba(15,23,42,.08); }
-.editorialMedia { position:relative; width:100%; aspect-ratio:16 / 10; overflow:hidden; border-radius:inherit; background:#cbd5e1; }
-.editorialMedia .cardOpen { position:absolute; inset:0; width:100%; height:100%; border-radius:0; background:#cbd5e1; }
+.editorialMedia { position:relative; width:100%; aspect-ratio:16 / 10; overflow:hidden; border-radius:inherit; background:linear-gradient(105deg,#d5dfe6 8%,#edf2f4 24%,#d5dfe6 40%); }
+.editorialMedia .cardOpen { position:absolute; inset:0; width:100%; height:100%; border-radius:0; background:transparent; }
 .editorialMedia .cardOpen>img { z-index:0; }
 .editorialMedia .destinationShade { z-index:1; }
 .editorialMedia .destinationTag { z-index:2; }
@@ -772,8 +772,8 @@
   box-shadow: 0 8px 24px -6px rgba(15,23,42,.08);
   contain: layout paint;
 }
-.discoverMode .editorialMedia { position: relative; width: 100%; aspect-ratio: 16 / 10; overflow: hidden; background: #cbd5e1; }
-.discoverMode .cardOpen { position: absolute; inset: 0; width: 100%; height: 100%; border-radius: 0; background: #cbd5e1; }
+.discoverMode .editorialMedia { position: relative; width: 100%; aspect-ratio: 16 / 10; overflow: hidden; background:linear-gradient(105deg,#d5dfe6 8%,#edf2f4 24%,#d5dfe6 40%); }
+.discoverMode .cardOpen { position: absolute; inset: 0; width: 100%; height: 100%; border-radius: 0; background: transparent; }
 .discoverMode .cardOpen > img { z-index: 0; transition: transform .55s cubic-bezier(.22,1,.36,1); }
 .discoverMode .destinationCard:active .cardOpen > img { transform: scale(1.025); }
 .discoverMode .destinationShade { z-index: 1; background: linear-gradient(180deg, rgba(15,23,42,.12), transparent 45%, rgba(15,23,42,.26)); }
